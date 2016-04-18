@@ -1,2 +1,2 @@
 # HeriophantSystem
-shoolWord
+Graduation Project
