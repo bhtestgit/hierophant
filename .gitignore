@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 .DS_Store
 mac.xcuserdatad
-.xcodeproj/*
+校外导师管理系统/校外导师.xcodeproj/project.xcworkspace/xcshareddata/
+=======
+*.DS_Store
+>>>>>>> origin/master

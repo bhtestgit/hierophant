@@ -11,31 +11,31 @@
 @interface DataController : NSObject
 
 //添加学生数据
--(BOOL)insertStudentTable:(int)StuId :(NSMutableString *)name :(NSMutableString *)password;
+-(BOOL)insertStudentTable:(NSMutableString *)name password:(NSMutableString *)password;
 //添加老师数据
--(BOOL)insertHierophantTable:(int)HieroId :(NSMutableString *)name :(NSMutableString *)password :(NSMutableString *)sex :(NSMutableString *)birthday :(NSMutableString *)PFT :(NSMutableString *)skills :(NSMutableString *)timeOfPFT :(NSMutableString *)workUnit :(NSMutableString *)positions :(int)phone :(NSMutableString *)email :(NSMutableString *)experience;
+-(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //添加题目数据
--(BOOL)insertTitleTable:(int)titleId :(NSMutableString *)name :(int)hieroId :(int)studentId :(int)score;
+-(BOOL)insertTitleTable:(NSMutableString *)name :(NSMutableString *)hieroId :(NSMutableString *)studentId :(int)score;
 //添加中间层数据
--(BOOL)insertInterlayerTable:(int)titleId :(int)hieroId :(int)student1ID :(int)student2Id :(int)student3Id;
+-(BOOL)insertInterlayerTable:(NSMutableString *)titleId hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
 //获取学生数据
--(NSMutableArray *)getStudentData :(int)stuId;
+-(NSMutableArray *)getStudentData :(NSMutableString *)stuId;
 //获取老师数据
--(NSMutableArray *)getHierophantData :(int)hieroId;
+-(NSMutableArray *)getHierophantData :(NSMutableString *)hieroId;
 //获取题目数据
--(NSMutableArray *)getTitleData :(int)titleId;
+-(NSMutableArray *)getTitleData :(NSMutableString *)titleId;
 //获取所有题目信息
 -(NSMutableDictionary *)getAllSubject;
 //获取中间数据
--(NSMutableArray *)getInterlayerData :(int)titleId;
+-(NSMutableArray *)getInterlayerData :(NSMutableString *)titleId;
 //更新学生数据
--(BOOL)updateStudentData :(int)StuId :(NSMutableString *)name :(NSMutableString *)password;
+-(BOOL)updateStudentData:(NSMutableString *)name :(NSMutableString *)password;
 //更新老师数据
--(BOOL)updateHieroData :(int)HieroId :(NSMutableString *)name :(NSMutableString *)password :(NSMutableString *)sex :(NSMutableString *)birthday :(NSMutableString *)PFT :(NSMutableString *)skills :(NSMutableString *)timeOfPFT :(NSMutableString *)workUnit :(NSMutableString *)positions :(int)phone :(NSMutableString *)email :(NSMutableString *)experience;
+-(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //更新题目数据
--(BOOL)updateTitleData :(int)titleId :(NSMutableString *)name :(int)hieroId :(int)studentId :(int)score;
+-(BOOL)updateTitleData:(NSMutableString *)name hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
 //更新中间数据
--(BOOL)updateInterlayerData :(int)titleId :(int)student1Id :(int)student2Id :(int)student3Id;
+-(BOOL)updateInterlayerData:(NSMutableString *)titleId student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
 //删除题目
--(BOOL)deleteTitle :(int)titleId;
+-(BOOL)deleteTitle :(NSMutableString *)titleId;
 @end
