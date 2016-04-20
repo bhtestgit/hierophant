@@ -147,7 +147,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KPs-NY-ong">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="KPs-NY-ong">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="第一题" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kjJ-GB-vqS" userLabel="First Title Label">
@@ -309,9 +309,12 @@
                     </view>
                     <connections>
                         <outlet property="confirm" destination="b97-GR-7P3" id="LHB-yJ-7JJ"/>
+                        <outlet property="firstTitleF" destination="VGD-6M-IB3" id="pzp-ec-Fnh"/>
                         <outlet property="firstTitleLabel" destination="kjJ-GB-vqS" id="AZs-vY-nl0"/>
                         <outlet property="scrollView" destination="KPs-NY-ong" id="7RG-Rg-XJE"/>
+                        <outlet property="secondTitleF" destination="IkT-hb-MaN" id="oKC-MM-rjA"/>
                         <outlet property="secondTitleLabel" destination="qFN-aQ-wxj" id="njt-Hd-38E"/>
+                        <outlet property="thirdTitleF" destination="cYf-50-8g6" id="DUZ-iF-2DJ"/>
                         <outlet property="thirdTitleLabel" destination="M07-op-qak" id="IzK-L1-Eou"/>
                     </connections>
                 </viewController>

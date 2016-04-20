@@ -28,6 +28,9 @@
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunched"]) {
         [self createTable];
     }
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatTable"]) {
+        [self createTable];
+    }
     return self;
 }
 
@@ -42,9 +45,7 @@
 
 //打开数据库
 -(BOOL)openDataBase : (NSString *)dataFileName{
-    NSString *dataPath =[self getDataFilePath];
-    
-    if (sqlite3_open([dataPath UTF8String], &_database) == SQLITE_OK) {
+    if (sqlite3_open([dataFileName UTF8String], &_database) == SQLITE_OK) {
         return YES;
     } else {
         return NO;
@@ -61,14 +62,15 @@
     
     char *hieroSql = "create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone int, email text, experience text)";
     
-    char *titleSql = "create table if not exists title(name text primary key, hieroId text, studentId text, score int, foreign key (hieroId) references hierophant(name) on delete cascade on update cascade, foreign key studentId references student(name) on delete set null on update cascade)";
-    char *interlayerSql = "create table if not exists interlayer(name text primary key, hieroId text, student1Id text, student2Id text, student3Id text foreign key (name) references title(name) on delete casecade on update cascade)";
+    char *titleSql = "create table if not exists title(name text primary key, hieroId text, studentId text, score int)";
+    char *interlayerSql = "create table if not exists interlayer(name text primary key, hieroId text, student1Id text, student2Id text, student3Id text)";
 
     if (sqlite3_exec(_database, stuSql, NULL, NULL, &zErr) == SQLITE_OK) {
         if (sqlite3_exec(_database, hieroSql, NULL, NULL, &zErr) == SQLITE_OK) {
             if (sqlite3_exec(_database, titleSql, NULL, NULL, &zErr) == SQLITE_OK) {
                 if (sqlite3_exec(_database, interlayerSql, NULL, NULL, &zErr) == SQLITE_OK) {
                     sqlite3_close(_database);
+                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isCreatTable"];
                     return YES;
                 }
             }
@@ -139,12 +141,13 @@
 }
 
 //添加题目数据
--(BOOL)insertTitleTable:(NSMutableString *)name :(NSMutableString *)hieroId :(NSMutableString *)studentId :(int)score{
+-(BOOL)insertTitleTable:(NSMutableString *)name hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    char *sql = "insert into title(name, hiero, student, score) values(?, ?, ?, ?)";
+    char *sql = "insert into title values(?, ?, ?, ?)";
     
-    if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
+    int results = sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL);
+    if ( results != SQLITE_OK) {
         sqlite3_close(_database);
         return  NO;
     }
@@ -167,7 +170,7 @@
 //添加中间数据
 -(BOOL)insertInterlayerTable:(NSMutableString *)titleId hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
     [self openDataBase:[self getDataFilePath]];
-    char *sql = "insert into interlayer(id, hieroId, student1Id, student2Id, student3Id) value(?, ?, ?, ?, ?)";
+    char *sql = "insert into interlayer(id, hieroId, student1Id, student2Id, student3Id) values(?, ?, ?, ?, ?)";
     if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
         sqlite3_close(_database);
         return NO;
@@ -255,15 +258,23 @@
 //获取题目数据
 -(NSMutableArray *)getTitleData:(NSMutableString *)titleId {
     NSMutableArray *datas = [NSMutableArray array];
+    
+    char *sql = "select * from title where name = ?";
+    datas= [NSMutableArray arrayWithArray:[self getTitleBySQL:sql message:titleId]];
+    return datas;
+}
+
+-(NSMutableArray *)getTitleBySQL: (char *)sql message:(NSMutableString *)message{
+    
+    NSMutableArray *datas = [NSMutableArray array];
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    char *sql = "select * from title where name = ?";
     
     if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
-//        NSLog(@"编译失败");
+        //        NSLog(@"编译失败");
         return datas;
     }
-    sqlite3_bind_text(_statement, 1, [titleId UTF8String], -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(_statement, 1, [message UTF8String], -1, SQLITE_TRANSIENT);
     while (sqlite3_step(_statement) == SQLITE_ROW) {
         char *tCName = (char *)sqlite3_column_text(_statement, 0);
         char *tHiero = (char *)sqlite3_column_text(_statement, 1);
@@ -275,6 +286,14 @@
         [datas addObject:[NSNumber numberWithInt:score]];
     }
     
+    return datas;
+}
+
+-(NSMutableArray *)getTitleByHiero:(NSMutableString *)hieroId {
+    NSMutableArray *datas = [NSMutableArray array];
+    
+    char *sql = "select * from title where hieroId = ?";
+    datas= [NSMutableArray arrayWithArray:[self getTitleBySQL:sql message:hieroId]];
     return datas;
 }
 
@@ -356,7 +375,7 @@
 }
 
 //更新学生数据
--(BOOL)updateStudentData:(NSMutableString *)name :(NSMutableString *)password {
+-(BOOL)updateStudentData:(NSMutableString *)name password:(NSMutableString *)password {
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
     //语句
