@@ -7,6 +7,7 @@
 //
 
 #import "TitleViewController.h"
+#import "DataController.h"
 
 @interface TitleViewController () {
     
@@ -39,4 +40,10 @@
 - (IBAction)turnToDesignTitleView:(UIButton *)sender {
 }
 
+
+-(void)reloadData {
+    //获取数据库
+    DataController *dataController = [[DataController alloc] init];
+    [dataController getTitleByHiero:@""];
+}
 @end

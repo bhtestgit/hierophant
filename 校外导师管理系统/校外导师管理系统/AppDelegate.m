@@ -19,9 +19,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //判断是否第一次登陆
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"firstLaunched"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunched"];
-    } else {
         [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"firstLaunched"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunched"];
     }
     //初始化主界面
     ViewController *view = [[ViewController alloc] init];

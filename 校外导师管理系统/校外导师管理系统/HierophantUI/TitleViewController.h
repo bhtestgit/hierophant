@@ -10,4 +10,6 @@
 
 @interface TitleViewController : UIViewController
 
+
+-(void)reloadData;
 @end
