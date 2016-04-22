@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *secondTitleF;
 @property (weak, nonatomic) IBOutlet UITextField *thirdTitleF;
 @property (weak, nonatomic) IBOutlet UIButton *confirm;
+@property (nonatomic) BOOL isNill;
 
 @end
 
@@ -36,23 +37,45 @@
     _secondTitleLabel.layer.masksToBounds = YES;
     _thirdTitleLabel.layer.cornerRadius = 5.0;
     _thirdTitleLabel.layer.masksToBounds = YES;
+    [_firstTitleF addTarget:self action:@selector(textOnEdite) forControlEvents:UIControlEventEditingChanged];
+    [_secondTitleF addTarget:self action:@selector(textOnEdite) forControlEvents:UIControlEventEditingChanged];
+    [_thirdTitleF addTarget:self action:@selector(textOnEdite) forControlEvents:UIControlEventEditingChanged];
     _confirm.layer.cornerRadius = 5.0;
     _confirm.layer.masksToBounds = YES;
+    _isNill = YES;
     [_confirm addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 //确定按钮
 -(void)buttonPressed:(UIButton *)sender {
+    if (_isNill) {
+        [self addAlert];
+    } else {
     //获取数据
     NSMutableString *title1 = (NSMutableString *)_firstTitleF.text;
     NSMutableString *title2 = (NSMutableString *)_secondTitleF.text;
     NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
     //添加到数据库
     DataController *dataController = [[DataController alloc] init];
-    [dataController insertTitleTable:title1 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
-    [dataController insertTitleTable:title2 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
-    [dataController insertTitleTable:title3 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
+    BOOL rst1 = [dataController insertTitleTable:title1 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
+    BOOL rst2 = [dataController insertTitleTable:title2 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
+    BOOL rst3 = [dataController insertTitleTable:title3 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
     
+    BOOL rst4 = [dataController deleteTitle:title1];
+    BOOL rst5 = [dataController deleteTitle:title2];
+    BOOL rst6 = [dataController deleteTitle:title3];
+    }
+}
+
+//通知
+-(void)addAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"输入值不能为空" message:@"必须设置每个题目" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
+-(void)textOnEdite {
+    _isNill = [_firstTitleF.text isEqualToString:[NSString string]] || [_secondTitleF.text isEqualToString:[NSString string]] || [_thirdTitleF.text isEqualToString:[NSString string]];
 }
 
 @end
