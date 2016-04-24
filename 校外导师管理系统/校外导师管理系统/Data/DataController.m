@@ -132,7 +132,7 @@
     
     int  result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return NO;
     }
@@ -158,7 +158,7 @@
     
     int result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return  NO;
     }
@@ -183,7 +183,7 @@
     
     int result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return NO;
     }
@@ -392,7 +392,7 @@
     int result = sqlite3_step(_statement);
     //释放statment
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return NO;
     }
@@ -425,7 +425,7 @@
     
     int  result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return NO;
     }
@@ -449,7 +449,7 @@
     
     int result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return  NO;
     }
@@ -474,7 +474,7 @@
     
     int result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return NO;
     }
@@ -497,7 +497,7 @@
     
     int result = sqlite3_step(_statement);
     sqlite3_finalize(_statement);
-    if (result != SQLITE_OK) {
+    if (result != SQLITE_DONE) {
         sqlite3_close(_database);
         return  NO;
     }

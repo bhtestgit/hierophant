@@ -7,11 +7,14 @@
 //
 
 #import "RegistView.h"
+#import "DataController.h"
+
 @interface RegistView ()<UITextFieldDelegate>{
 }
 
 @property(nonatomic)UITextField* countTextField;
 @property(nonatomic)UITextField* passwordTextField;
+@property(nonatomic)BOOL isNill;
 @end
 
 #define MIDY CGRectGetMidY(self.view.frame)
@@ -56,6 +59,7 @@
     _countTextField.center = CGPointMake(MIDX+20, _countLable.center.y);
     _countTextField.borderStyle = UITextBorderStyleRoundedRect;  //圆角
     _countTextField.placeholder = @"账户";
+    [_countTextField addTarget:self action:@selector(textOnEdit) forControlEvents:UIControlEventEditingChanged];
     
     _passwordTextField = [[UITextField alloc] init];
     _passwordTextField.delegate = self;
@@ -64,6 +68,7 @@
     _passwordTextField.placeholder = @"请输入密码";
     _passwordTextField.borderStyle = UITextBorderStyleRoundedRect;
     _passwordTextField.secureTextEntry = YES;
+    [_passwordTextField addTarget:self action:@selector(textOnEdit) forControlEvents:UIControlEventEditingChanged];
     
     [self.view addSubview:_countTextField];
     [self.view addSubview:_passwordTextField];
@@ -73,8 +78,8 @@
     _loginButton.tag = 11;
     _loginButton.frame = CGRectMake(MIDX-90, CGRectGetMaxY(_passwordLabel.frame)+40, 60, 37);
     [_loginButton setTitle:@"确定" forState:UIControlStateNormal];
-    _loginButton.backgroundColor = [UIColor redColor];
     _loginButton.layer.cornerRadius = 10;
+    _isNill = YES;
     [_loginButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton* _cancle = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -92,16 +97,30 @@
 //连接数据库,判断并跳转
 - (void)buttonPressed:(UIButton *)sender {
     if (sender.tag == 11) {
+        if (_isNill) {
+            [self addAlert];
+        } else {
         //连接数据库
+        DataController *dataController = [[DataController alloc] init];
+        NSMutableString *name = (NSMutableString *)_countTextField.text;
+        NSMutableString *password = (NSMutableString *)_passwordTextField.text;
+        //判断用户类型
         
-        //跳转界面
-
+        }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
-//点击事件
+-(void)addAlert {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"输入值不能为空" message:@"密码和账户都要设置" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+//监听
+-(void)textOnEdit {
+    _isNill = [_countTextField.text isEqualToString:[NSString string]] || [_passwordTextField.text isEqualToString:[NSString string]];
+}
 
 //回收键盘
 
