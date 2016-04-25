@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B92C1A1C088544B69F910FBCE67484511D63ED9F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C82892DD7C7F7BBE50DDAF5CC62DADF42A299884" : 0,
+    "B92C1A1C088544B69F910FBCE67484511D63ED9F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "FD9C75E8-4C32-4DE1-886A-F3B55F69EBB0",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C82892DD7C7F7BBE50DDAF5CC62DADF42A299884" : "",
+    "B92C1A1C088544B69F910FBCE67484511D63ED9F" : "hierophant\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "校外导师",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "校外导师管理系统\/校外导师.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bhtestgit\/hierophant.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B92C1A1C088544B69F910FBCE67484511D63ED9F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/bhtestgit\/test.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C82892DD7C7F7BBE50DDAF5CC62DADF42A299884"
+    }
+  ]
+}

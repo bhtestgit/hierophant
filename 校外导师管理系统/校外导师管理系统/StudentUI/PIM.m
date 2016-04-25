@@ -7,6 +7,7 @@
 //
 
 #import "PIM.h"
+#import <Masonry.h>
 
 @implementation PIM
 
@@ -23,32 +24,32 @@
     
     //姓名
     UILabel* _name = [[UILabel alloc] initWithFrame:CGRectMake(16, 100, 40, 37)];
-    _name.backgroundColor = [UIColor orangeColor];
+//    _name.backgroundColor = [UIColor orangeColor];
     _name.layer.cornerRadius = 5.0;
     _name.layer.masksToBounds = YES;
     _name.layer.borderWidth = 1.0;
     _name.layer.borderColor = [UIColor grayColor].CGColor;
     _name.text = @"姓名";
     _name.textAlignment = NSTextAlignmentCenter;
-    _name.textColor = [UIColor whiteColor];
+//    _name.textColor = [UIColor whiteColor];
     [self.view addSubview:_name];
     UILabel* _nameD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_name.frame)+30, CGRectGetMinY(_name.frame), 200, 37)];
     _nameD.backgroundColor = [UIColor colorWithRed:235/255.0 green:236/255.0 blue:237/255.0 alpha:1];
     _nameD.layer.cornerRadius = 5.0;
     _nameD.layer.masksToBounds = YES;
     _nameD.layer.borderWidth = 1.0;
-    _nameD.text = @"俄乌佛 i 然后跟 i 哦韩国 i";
+    _nameD.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     [self.view addSubview:_nameD];
     //学号
     UILabel* _stuId = [[UILabel alloc] initWithFrame:CGRectMake(16, CGRectGetMaxY(_name.frame)+20, 40, 37)];
-    _stuId.backgroundColor = [UIColor orangeColor];
+//    _stuId.backgroundColor = [UIColor orangeColor];
     _stuId.layer.cornerRadius = 5.0;
     _stuId.layer.masksToBounds = YES;
     _stuId.layer.borderWidth = 1.0;
     _stuId.layer.borderColor = [UIColor grayColor].CGColor;
     _stuId.text = @"学号";
     _stuId.textAlignment = NSTextAlignmentCenter;
-    _stuId.textColor = [UIColor whiteColor];
+//    _stuId.textColor = [UIColor whiteColor];
     [self.view addSubview:_stuId];
     UILabel* _stuIdD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_stuId.frame)+30, CGRectGetMinY(_stuId.frame), 200, 37)];
     _stuIdD.backgroundColor = [UIColor colorWithRed:235/255.0 green:236/255.0 blue:237/255.0 alpha:1];
@@ -56,10 +57,10 @@
     _stuIdD.layer.masksToBounds = YES;
     _stuIdD.layer.borderWidth = 1.0;
     _stuIdD.layer.borderColor = [UIColor grayColor].CGColor;
-    _stuIdD.text = @"学...............号";
+    _stuIdD.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     [self.view addSubview:_stuIdD];
     
-    UIButton* _comfirm = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.view.frame)/2-40, CGRectGetMaxY(self.view.frame)-120, 80, 37)];
+    UIButton* _comfirm = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.view.frame)/2-100, CGRectGetMaxY(self.view.frame)-120, 80, 37)];
     _comfirm.backgroundColor = [UIColor orangeColor];
     _comfirm.layer.cornerRadius = 5.0;
     _comfirm.layer.masksToBounds = YES;
@@ -68,6 +69,34 @@
     [_comfirm setTitle:@"修改信息" forState:UIControlStateNormal];
     [_comfirm setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.view addSubview:_comfirm];
+    
+    UIButton *logout = [[UIButton alloc] init];
+    [logout setTitle:@"退出" forState:UIControlStateNormal];
+    logout.backgroundColor = [UIColor greenColor];
+    logout.layer.cornerRadius = 5.0;
+    logout.layer.masksToBounds = YES;
+    logout.layer.borderWidth = 1.0;
+    logout.layer.borderColor = [UIColor grayColor].CGColor;
+    [logout setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [logout addTarget:self action:@selector(toLogout) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:logout];
+    
+    [logout mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(80, 37));
+        make.topMargin.equalTo(_comfirm.mas_topMargin);
+        make.left.equalTo(_comfirm.mas_right).offset(20);
+    }];
+}
+
+-(void)toLogout {
+    //通知是否退出
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否退出" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //退出
+        
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end
