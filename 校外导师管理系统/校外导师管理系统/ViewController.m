@@ -132,6 +132,8 @@
         [self presentViewController:loginAlert animated:YES completion:nil];
         //注册界面
     } else if (sender.tag == 12) {
+        //添加监听
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(success) name:@"success" object:nil];
         RegistView *registView = [[RegistView alloc] init];
         registView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:registView animated:YES completion:nil];
@@ -143,6 +145,10 @@
     }
 }
 
+-(void)success {
+    [self addAlert:(NSMutableString *)@"注册成功" message:(NSMutableString *)@"现在可以登陆了"];
+}
+
 -(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
@@ -152,6 +158,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"success" object:nil];
 }
 
 @end

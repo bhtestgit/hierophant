@@ -107,9 +107,11 @@
             BOOL success = [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
              ];
             if (success) {
-                [self addAlert:(NSMutableString *)@"注册成功" message:nil];
                 //返回到登陆界面
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
+                }];
             } else {
                 //提示注册失败
                 [self addAlert:(NSMutableString *)@"注册失败" message:nil];
