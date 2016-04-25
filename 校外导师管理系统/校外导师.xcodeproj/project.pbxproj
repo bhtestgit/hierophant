@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		042469001CC9F47B00EE206C /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = 042468FF1CC9F47B00EE206C /* LoginController.m */; };
+		04382E7A1CCDE5E2005B191B /* RegistController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04382E791CCDE5E2005B191B /* RegistController.m */; };
 		0C098B141C7B1AA500ACBBB6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C098B131C7B1AA500ACBBB6 /* main.m */; };
 		0C098B171C7B1AA500ACBBB6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C098B161C7B1AA500ACBBB6 /* AppDelegate.m */; };
 		0C098B1A1C7B1AA500ACBBB6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C098B191C7B1AA500ACBBB6 /* ViewController.m */; };
@@ -49,6 +50,8 @@
 /* Begin PBXFileReference section */
 		042468FE1CC9F47B00EE206C /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginController.h; sourceTree = "<group>"; };
 		042468FF1CC9F47B00EE206C /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginController.m; sourceTree = "<group>"; };
+		04382E781CCDE5E2005B191B /* RegistController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegistController.h; sourceTree = "<group>"; };
+		04382E791CCDE5E2005B191B /* RegistController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegistController.m; sourceTree = "<group>"; };
 		0C098B0F1C7B1AA500ACBBB6 /* 校外导师.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "校外导师.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C098B131C7B1AA500ACBBB6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0C098B151C7B1AA500ACBBB6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -227,6 +230,8 @@
 				0CD562791C8C5635004CFEBD /* DataController.m */,
 				042468FE1CC9F47B00EE206C /* LoginController.h */,
 				042468FF1CC9F47B00EE206C /* LoginController.m */,
+				04382E781CCDE5E2005B191B /* RegistController.h */,
+				04382E791CCDE5E2005B191B /* RegistController.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -321,6 +326,7 @@
 				0C098B141C7B1AA500ACBBB6 /* main.m in Sources */,
 				0C141AFD1CB14341007E6F51 /* HieroViewController.m in Sources */,
 				0C141B061CB2A697007E6F51 /* DesignTitleController.m in Sources */,
+				04382E7A1CCDE5E2005B191B /* RegistController.m in Sources */,
 				0C141B091CB52899007E6F51 /* ContactWithStudent.m in Sources */,
 				0C863EAE1C8870B8004A2B48 /* Subject.m in Sources */,
 			);

@@ -7,7 +7,9 @@
 //
 
 #import "RegistView.h"
-#import "DataController.h"
+#import "LoginController.h"
+#import "HieroViewController.h"
+#import "RegistController.h"
 
 @interface RegistView ()<UITextFieldDelegate>{
 }
@@ -78,6 +80,7 @@
     _loginButton.tag = 11;
     _loginButton.frame = CGRectMake(MIDX-90, CGRectGetMaxY(_passwordLabel.frame)+40, 60, 37);
     [_loginButton setTitle:@"确定" forState:UIControlStateNormal];
+    _loginButton.backgroundColor = [UIColor orangeColor];
     _loginButton.layer.cornerRadius = 10;
     _isNill = YES;
     [_loginButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -98,22 +101,27 @@
 - (void)buttonPressed:(UIButton *)sender {
     if (sender.tag == 11) {
         if (_isNill) {
-            [self addAlert];
+            [self addAlert:(NSMutableString *)@"不能为空" message:(NSMutableString *)@"密码或名字不能为空"];
         } else {
-        //连接数据库
-        DataController *dataController = [[DataController alloc] init];
-        NSMutableString *name = (NSMutableString *)_countTextField.text;
-        NSMutableString *password = (NSMutableString *)_passwordTextField.text;
-        //判断用户类型
-        
+            RegistController *registController = [[RegistController alloc] init];
+            BOOL success = [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
+             ];
+            if (success) {
+                [self addAlert:(NSMutableString *)@"注册成功" message:nil];
+                //返回到登陆界面
+                [self dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                //提示注册失败
+                [self addAlert:(NSMutableString *)@"注册失败" message:nil];
+            }
         }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
--(void)addAlert {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"输入值不能为空" message:@"密码和账户都要设置" preferredStyle:UIAlertControllerStyleAlert];
+-(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }

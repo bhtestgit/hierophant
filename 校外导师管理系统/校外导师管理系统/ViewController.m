@@ -11,6 +11,7 @@
 #import "HierophantApply.h"
 #import "StudentViewController.h"
 #import "HieroViewController.h"
+#import "LoginController.h"
 
 @interface ViewController (){
     UIButton *_login;
@@ -96,16 +97,36 @@
             //释放观察者
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
         }]];
-
+        
+        __weak typeof(self)weakSelf = self;
         [loginAlert addAction:[UIAlertAction actionWithTitle:@"登陆" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            if ([loginAlert.textFields.firstObject.text isEqualToString:@""] || [loginAlert.textFields.lastObject.text isEqualToString:@""]) {
+                [weakSelf addAlert:(NSMutableString *)@"不能为空" message:(NSMutableString *)@"用户名和密码不能为空"];
+            } else {
             //登陆过程
-            //直接跳转测试
-            
-            _stuVC = [[StudentViewController alloc] init];
-//            [self dismissViewControllerAnimated:YES completion:nil];
-            [self presentViewController:_stuVC animated:YES completion:nil];
+            LoginController *loginController = [[LoginController alloc] init];
+            NSMutableString *name = (NSMutableString *)loginAlert.textFields.firstObject.text;
+            NSMutableString *password = (NSMutableString *)loginAlert.textFields.lastObject.text;
+            //判断用户类型
+            int loginType = [loginController login:name password:password];
+            if (loginType == 0) {
+                [weakSelf addAlert:(NSMutableString *)@"用户不存在" message:(NSMutableString *)@"请先注册"];
+            } if (loginType == 1) {
+                //教务
+            } if (loginType == 2) {
+                //老师
+                HieroViewController *hieroView = [[HieroViewController alloc] init];
+                hieroView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self presentViewController:hieroView animated:YES completion:nil];
+            } if (loginType == 3) {
+                //学生
+                StudentViewController *studentView = [[StudentViewController alloc] init];
+                studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self presentViewController:studentView animated:YES completion:nil];
+            }
             
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+            }
         }]];
         
         [self presentViewController:loginAlert animated:YES completion:nil];
@@ -120,7 +141,12 @@
         hierophant.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:hierophant animated:YES completion:nil];
     }
+}
 
+-(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning {

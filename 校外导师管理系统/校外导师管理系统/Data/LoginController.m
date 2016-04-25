@@ -22,8 +22,14 @@
     NSMutableArray *studentMsg = [dataController getStudentData:name];
     NSMutableArray *hieroMsg = [dataController getHierophantData:name];
     //判断是否获取数据
-    if ([studentMsg isEqualToArray:[NSMutableArray array]] || [hieroMsg isEqualToArray:[NSMutableArray array]]) {
-        return 0;
+    if (![studentMsg isEqualToArray:[NSMutableArray array]] || [name isEqualToString:[studentMsg firstObject]] || [password isEqualToString:[studentMsg objectAtIndex:1]]) {
+        //设置登陆信息
+        [[NSUserDefaults standardUserDefaults] setObject:[studentMsg firstObject] forKey:@"userName"];
+        return 3;
+    } else if(![hieroMsg isEqualToArray:[NSMutableArray array]] || [name isEqualToString:[hieroMsg firstObject]] || [password isEqualToString:[hieroMsg objectAtIndex:1]]) {
+        //设置登陆信息
+        [[NSUserDefaults standardUserDefaults] setObject:[hieroMsg firstObject] forKey:@"userName"];
+        return 2;
     }
     //判断名字密码
     return 0;
