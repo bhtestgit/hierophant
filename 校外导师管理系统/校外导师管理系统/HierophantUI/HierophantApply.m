@@ -18,11 +18,9 @@
 //创建姓名、性别、生日、职称标签及textField
 @property(nonatomic)UITextField* countF;
 @property(nonatomic)UITextField* passwordF;
-@property(nonatomic)UILabel* nameL;
 @property(nonatomic)UILabel* sexL;
 @property(nonatomic)UILabel* birthdayL;
 @property(nonatomic)UILabel* PFTL;
-@property(atomic)UITextField* nameF;
 @property(atomic)UITextField* sexF;
 @property(atomic)UITextField* birthdayF;
 @property(atomic)UITextField* PFTF;
@@ -78,7 +76,7 @@
     _countF.layer.cornerRadius = 10;
     _countF.layer.masksToBounds = YES;
     _countF.backgroundColor = CORNSILK;
-    _countF.placeholder = @"创建账户";
+    _countF.placeholder = @"姓名";
     _countF.delegate = self;
     [_mainView addSubview:_countL];
     [_mainView addSubview:_countF];
@@ -90,27 +88,16 @@
     _passwordF.layer.masksToBounds = YES;
     _passwordF.backgroundColor = CORNSILK;
     _passwordF.placeholder = @"创建账户密码";
+    _passwordF.secureTextEntry = YES;
     _passwordF.delegate = self;
     [_mainView addSubview:_passwordL];
     [_mainView addSubview:_passwordF];
     
     //创建姓名、性别、生日标签及textField
-    _nameL = [[UILabel alloc] initWithFrame:CGRectMake(60, CGRectGetMaxY(_passwordL.frame)+30, 40, 37)];
-    _nameL.text = @"姓名";
-    _nameL.textColor = [UIColor blackColor];
-    _nameF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_nameL.frame)+40, CGRectGetMinY(_nameL.frame), (WIDTH-CGRectGetMaxX(_nameL.frame))-130, 37)];
-    _nameF.backgroundColor = CORNSILK;
-    _nameF.textColor = REDDISHBLUE;
-    _nameF.layer.masksToBounds = YES;
-    _nameF.layer.cornerRadius = 10;
-    _nameF.delegate = self;
-    [_mainView addSubview:_nameL];
-    [_mainView addSubview:_nameF];
-    
-    _sexL = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(_nameL.frame), CGRectGetMaxY(_nameL.frame)+20, 40, 37)];
+    _sexL = [[UILabel alloc] initWithFrame:CGRectMake(60, CGRectGetMaxY(_passwordL.frame)+30, 40, 37)];
     _sexL.text = @"性别";
     _sexL.textColor = [UIColor blackColor];
-    _sexF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(_nameF.frame), CGRectGetMaxY(_nameF.frame)+20, CGRectGetMaxX(_nameF.bounds), CGRectGetMaxY(_nameF.bounds))];
+    _sexF = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_sexL.frame)+40, CGRectGetMinY(_sexL.frame), (WIDTH-CGRectGetMaxX(_sexL.frame))-130, 37)];
     _sexF.backgroundColor = CORNSILK;
     _sexF.textColor = REDDISHBLUE;
     _sexF.layer.masksToBounds = YES;
@@ -150,6 +137,7 @@
     _skillsL.text = @"技术专长";
     _skillsL.textColor = [UIColor blackColor];
     _skillsF = [[UITextField alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(_skillsL.frame)+10, WIDTH-60, 100)];
+    
     _skillsF.backgroundColor = CORNSILK;
     _skillsF.textColor = REDDISHBLUE;
     _skillsF.layer.masksToBounds = YES;
@@ -272,14 +260,38 @@
 
 -(void)buttonPressed:(UIButton* )sender{
     if (sender.tag == 11) {
-        //注册事件
-        //测试界面
-        _hieroView = [[HieroViewController alloc] init];
-        _hieroView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self presentViewController:_hieroView animated:YES completion:nil];
+        if (![self isPureInt:_phoneNF.text]) {
+            [self addAlertTitle:@"电话号码必须为数字" andDetail:nil];
+        } else if ([_countF.text isEqualToString:@""] || [_passwordF.text isEqualToString:@""] || [_sexF.text isEqualToString:@""] || [_birthdayF.text isEqualToString:@""] || [_PFTF.text isEqualToString:@""] || [_skillsF.text isEqualToString:@""] || [_timeOfPFTF.text isEqualToString:@""] || [_workUnitF.text isEqualToString:@""] || [_positionsF.text isEqualToString:@""] || [_phoneNF.text isEqualToString:@""] || [_emailF.text isEqualToString:@""] || [_experience.text isEqualToString:@""]) {
+            [self addAlertTitle:@"信息不完整" andDetail:@"请输入全部信息"];
+        }else {
+            //注册事件
+            RegistController *registController = [[RegistController alloc] init];
+            BOOL result = [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(int)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
+        
+            if (result) {
+               //返回到上一层
+                [self dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self addAlertTitle:@"注册失败" andDetail:nil];
+            }
+        }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
+}
+
+//判断是否为纯数字
+- (BOOL)isPureInt:(NSString *)string{
+    NSScanner* scan = [NSScanner scannerWithString:string];
+    int val;
+    return [scan scanInt:&val] && [scan isAtEnd];
+}
+
+//通知
+-(void)addAlertTitle:(NSString *)title andDetail:(NSString *)detail {
+    UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:detail preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -299,7 +311,7 @@
 //    
 //    return YES;
 //}
-//
+
 //-(void)textFieldDidEndEditing:(UITextField *)textField {
 //    [UIView beginAnimations:@"keyboardDown" context:nil];
 //    [UIView setAnimationDuration:0.3];

@@ -8,6 +8,7 @@
 
 #import "PIM.h"
 #import <Masonry.h>
+#import "ViewController.h"
 
 @implementation PIM
 
@@ -78,7 +79,8 @@
     logout.layer.borderWidth = 1.0;
     logout.layer.borderColor = [UIColor grayColor].CGColor;
     [logout setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [logout addTarget:self action:@selector(toLogout) forControlEvents:UIControlEventTouchUpInside];
+    [logout addTarget:self action:@selector(logoutAlert) forControlEvents:UIControlEventTouchUpInside];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toLogout:) name:@"logout" object:nil];
     [self.view addSubview:logout];
     
     [logout mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -88,15 +90,33 @@
     }];
 }
 
--(void)toLogout {
+-(void)logoutAlert {
     //通知是否退出
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否退出" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     [alertController addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        //退出
-        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"logout" object:self userInfo:[[NSDictionary alloc] initWithObjectsAndKeys:@"YES", @"isLogout", nil]];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alertController animated:YES completion:nil];
+}
+
+-(void)toLogout:(NSNotification *)sender {
+    if ([[sender.userInfo objectForKey:@"isLogout"] isEqualToString:@"YES"]) {
+        ViewController *mainView = [[ViewController alloc] init];
+        mainView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:mainView animated:YES completion:^{
+            //清空用户信息
+            NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+            NSLog(@"注销前用户信息：%@", name);
+            [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"userName"];
+            NSString *name1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
+            NSLog(@"注销后用户名：%@", name1);
+        }];
+    }
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"logout" object:nil];
 }
 
 @end

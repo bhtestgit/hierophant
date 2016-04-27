@@ -114,7 +114,7 @@
                 }];
             } else {
                 //提示注册失败
-                [self addAlert:(NSMutableString *)@"注册失败" message:nil];
+                [self addAlert:(NSMutableString *)@"用户已存在，注册失败" message:nil];
             }
         }
     } else {

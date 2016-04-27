@@ -12,4 +12,8 @@
 
 -(BOOL)registWithName:(NSMutableString *)name password:(NSMutableString *)password;
 
+/*create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone int, email text, experience text*/
+
+-(BOOL)registWithHieroName:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
+
 @end

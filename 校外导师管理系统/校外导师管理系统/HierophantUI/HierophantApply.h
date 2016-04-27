@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RegistController.h"
 
 @interface HierophantApply : UIViewController
 
