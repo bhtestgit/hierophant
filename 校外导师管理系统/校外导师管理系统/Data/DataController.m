@@ -218,7 +218,7 @@
     NSMutableArray *datas = [NSMutableArray array];
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    char *sql = "select * from hiero where name = ?";
+    char *sql = "select * from hierophant where name = ?";
     
     if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
 //        NSLog(@"编译失败");

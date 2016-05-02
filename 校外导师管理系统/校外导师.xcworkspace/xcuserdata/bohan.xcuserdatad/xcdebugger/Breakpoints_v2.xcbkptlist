@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Bucket
-   type = "1"
+   type = "0"
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "&#x6821;&#x5916;&#x5bfc;&#x5e08;&#x7ba1;&#x7406;&#x7cfb;&#x7edf;/HierophantUI/TitleViewController.m"
-            timestampString = "482856573.198735"
+            filePath = "&#x6821;&#x5916;&#x5bfc;&#x5e08;&#x7ba1;&#x7406;&#x7cfb;&#x7edf;/HierophantUI/HierophantApply.m"
+            timestampString = "483890066.92208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-reloadData"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "-buttonPressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

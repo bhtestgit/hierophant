@@ -26,7 +26,7 @@
 @property(atomic)UITextField* PFTF;
 //创建技术专长标签及textField(比较大)
 @property(nonatomic)UILabel* skillsL;
-@property(atomic)UITextField* skillsF;
+@property(atomic)UITextView* skillsF;
 //创建职称获得时间、工作单位、行政职务、联系电话、email标签及其textField
 @property(nonatomic)UILabel* timeOfPFTL;
 @property(nonatomic)UILabel* workUnitL;
@@ -40,7 +40,7 @@
 @property(atomic)UITextField* emailF;
 //创建教师职责、创建工作或学习经历
 @property(nonatomic)UITextView* duty;
-@property(atomic)UITextField* experience;
+@property(atomic)UITextView* experience;
 //确定按钮
 @property(nonatomic)UIButton* sure;
 @property(nonatomic)UIButton* cancle;
@@ -67,6 +67,7 @@
     //创建scrollView
     _mainView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, CGRectGetMaxY(self.view.bounds))];
     _mainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+    _mainView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     //账号密码
     UILabel* _countL = [[UILabel alloc] initWithFrame:CGRectMake(16, 54, 40, 37)];
@@ -136,13 +137,11 @@
     _skillsL.bounds = CGRectMake(0, 0, 80, 37);
     _skillsL.text = @"技术专长";
     _skillsL.textColor = [UIColor blackColor];
-    _skillsF = [[UITextField alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(_skillsL.frame)+10, WIDTH-60, 100)];
-    
+    _skillsF = [[UITextView alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(_skillsL.frame)+10, WIDTH-60, 100)];
     _skillsF.backgroundColor = CORNSILK;
     _skillsF.textColor = REDDISHBLUE;
     _skillsF.layer.masksToBounds = YES;
     _skillsF.layer.cornerRadius = 10;
-    _skillsF.delegate = self;
     [_mainView addSubview:_skillsL];
     [_mainView addSubview:_skillsF];
     
@@ -208,13 +207,12 @@
     [_mainView addSubview:_emailF];
     
     //创建工作或学习经历
-    _experience = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMinX(_emailL.frame), CGRectGetMaxY(_emailL.frame)+20, WIDTH-60, 100)];
-    _experience.placeholder = @"请输入工作或学习经历";
+    _experience = [[UITextView alloc] initWithFrame:CGRectMake(CGRectGetMinX(_emailL.frame), CGRectGetMaxY(_emailL.frame)+20, WIDTH-60, 100)];
+    _experience.text = @"请输入工作或学习经历";
     _experience.backgroundColor = [UIColor whiteColor];
     _experience.textColor = [UIColor redColor];
     _experience.layer.masksToBounds = YES;
     _experience.layer.cornerRadius = 10;
-    _experience.delegate = self;
     [_mainView addSubview:_experience];
     
     //创建教师职责

@@ -22,11 +22,15 @@
     NSMutableArray *studentMsg = [dataController getStudentData:name];
     NSMutableArray *hieroMsg = [dataController getHierophantData:name];
     //判断是否获取数据
-    if (![studentMsg isEqualToArray:[NSMutableArray array]] || [name isEqualToString:[studentMsg firstObject]] || [password isEqualToString:[studentMsg objectAtIndex:1]]) {
+    BOOL stuNotExist = [studentMsg isEqualToArray:[NSMutableArray array]];
+    BOOL stuCountRigt = [name isEqualToString:[studentMsg firstObject]] && [password isEqualToString:[studentMsg objectAtIndex:1]];
+    BOOL hieroNotExist = [hieroMsg isEqualToArray:[NSMutableArray array]];
+    BOOL hieroCountRight = [name isEqualToString:[hieroMsg firstObject]] && [password isEqualToString:[hieroMsg objectAtIndex:1]];
+    if (!stuNotExist && stuCountRigt) {
         //设置登陆信息
         [[NSUserDefaults standardUserDefaults] setObject:[studentMsg firstObject] forKey:@"userName"];
         return 3;
-    } else if(![hieroMsg isEqualToArray:[NSMutableArray array]] || [name isEqualToString:[hieroMsg firstObject]] || [password isEqualToString:[hieroMsg objectAtIndex:1]]) {
+    } else if(!hieroNotExist && hieroCountRight) {
         //设置登陆信息
         [[NSUserDefaults standardUserDefaults] setObject:[hieroMsg firstObject] forKey:@"userName"];
         return 2;
