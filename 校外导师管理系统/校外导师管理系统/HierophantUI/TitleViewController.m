@@ -36,14 +36,23 @@
     _title3.layer.masksToBounds = YES;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+    
+    [self reloadData];
 }
 - (IBAction)turnToDesignTitleView:(UIButton *)sender {
 }
 
-
+//通过数据库获取题目
 -(void)reloadData {
     //获取数据库
     DataController *dataController = [[DataController alloc] init];
-    [dataController getTitleByHiero:@""];
+    //获取老师名字
+    NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    //获取题目
+    NSMutableArray *titles = [dataController getTitleByHiero:name];
+    //判断题目
+    if ([titles count] == 0) {
+        //没有没有出题或者获取数据失败
+    }
 }
 @end

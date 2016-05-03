@@ -269,6 +269,8 @@
     NSMutableArray *datas = [NSMutableArray array];
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
+    int result = sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL);
+    //测试读取title
     
     if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
         //        NSLog(@"编译失败");
@@ -293,7 +295,7 @@
     NSMutableArray *datas = [NSMutableArray array];
     
     char *sql = "select * from title where hieroId = ?";
-    datas= [NSMutableArray arrayWithArray:[self getTitleBySQL:sql message:hieroId]];
+    datas = [NSMutableArray arrayWithArray:[self getTitleBySQL:sql message:hieroId]];
     return datas;
 }
 
