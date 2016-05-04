@@ -317,8 +317,8 @@
         }
     }
     //获取题目
-    char *sqlSub = "select name from title where hieroId = ?";
-    sqlite3_prepare_v2(_database, sqlSub, -1, &_statement, NULL);
+    char *sqlSub = "select * from title where hieroId = ?";
+    int i = sqlite3_prepare_v2(_database, sqlSub, -1, &_statement, NULL);
 //    //用数组的方式
 //    for (int i = 0; i<hieros.count; i++) {
 //        sqlite3_bind_int(_statement, 1, (int)[hieros objectAtIndex:i]);

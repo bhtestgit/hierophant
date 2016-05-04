@@ -52,7 +52,10 @@
     NSMutableArray *titles = [dataController getTitleByHiero:name];
     //判断题目
     if ([titles count] == 0) {
-        //没有没有出题或者获取数据失败
+        //没有出题或者获取数据失败
+        
+    } else {
+        //设置题目
     }
 }
 @end
