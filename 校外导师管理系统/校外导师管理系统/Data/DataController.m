@@ -8,6 +8,7 @@
 
 #import "DataController.h"
 #import <sqlite3.h>
+#import <FMDB.h>
 
 @interface DataController(){
     sqlite3 *_database;
