@@ -57,7 +57,7 @@
     NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
     //添加到数据库
     DataController *dataController = [[DataController alloc] init];
-//    BOOL rst1 = [dataController insertTitleTable:title1 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
+    BOOL rst1 = [dataController insertTitleTable:title1 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
 //    BOOL rst2 = [dataController insertTitleTable:title2 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
 //    BOOL rst3 = [dataController insertTitleTable:title3 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
     
@@ -69,8 +69,9 @@
         NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
         //获取题目
         NSMutableArray *titles = [dataController getTitleByHiero:name];
-        NSMutableDictionary *titless = [dataController getAllSubject];
-        int n = 1;
+        NSMutableArray *t = [dataController getAllSubject];
+
+        int i = 0;
     }
 }
 

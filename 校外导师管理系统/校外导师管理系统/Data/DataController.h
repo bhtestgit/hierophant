@@ -29,7 +29,7 @@
 -(NSMutableArray *)getTitleData :(NSMutableString *)titleId;
 -(NSMutableArray *)getTitleByHiero :(NSMutableString *)hieroId;
 //获取所有题目信息
--(NSMutableDictionary *)getAllSubject;
+-(NSMutableArray *)getAllSubject;
 //获取中间数据
 -(NSMutableArray *)getInterlayerData :(NSMutableString *)titleId;
 //更新学生数据

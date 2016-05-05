@@ -36,10 +36,12 @@
     _title3.layer.masksToBounds = YES;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
-    
-    [self reloadData];
 }
 - (IBAction)turnToDesignTitleView:(UIButton *)sender {
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [self reloadData];
 }
 
 //通过数据库获取题目
