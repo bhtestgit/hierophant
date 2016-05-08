@@ -11,9 +11,10 @@
 
 #define SCREANWIDTH CGRectGetMaxX(self.view.frame)
 @interface DesignTitleController(){
+    DataController *dataController;
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UILabel *firstTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *secondTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thirdTitleLabel;
@@ -44,6 +45,7 @@
     _confirm.layer.masksToBounds = YES;
     _isNill = YES;
     [_confirm addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self reloadData];
 }
 
 //确定按钮
@@ -52,26 +54,39 @@
         [self addAlert];
     } else {
     //获取数据
-    NSMutableString *title1 = (NSMutableString *)_firstTitleF.text;
-    NSMutableString *title2 = (NSMutableString *)_secondTitleF.text;
-    NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
-    //添加到数据库
-    DataController *dataController = [[DataController alloc] init];
-    BOOL rst1 = [dataController insertTitleTable:title1 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
-//    BOOL rst2 = [dataController insertTitleTable:title2 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
-//    BOOL rst3 = [dataController insertTitleTable:title3 hieroId:[NSMutableString string] studentId:[NSMutableString string] score:0];
-    
-//    BOOL rst4 = [dataController deleteTitle:title1];
-//    BOOL rst5 = [dataController deleteTitle:title2];
-//    BOOL rst6 = [dataController deleteTitle:title3];
-        
-    //测试数据
         NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
-        //获取题目
-        NSMutableArray *titles = [dataController getTitleByHiero:name];
-        NSMutableArray *t = [dataController getAllSubject];
+        NSMutableString *title1 = (NSMutableString *)_firstTitleF.text;
+        NSMutableString *title2 = (NSMutableString *)_secondTitleF.text;
+        NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
+        //添加到数据库
+        DataController *dataController = [[DataController alloc] init];
+        BOOL rst1 = ![_firstTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title1 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        BOOL rst2 = ![_secondTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title2 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        BOOL rst3 = ![_thirdTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title3 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        
+    }
+}
 
-        int i = 0;
+-(void)reloadData {
+    //获取数据库
+    dataController = [[DataController alloc] init];
+    //获取老师名字
+    NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    //获取题目
+    NSMutableArray *titles = [dataController getTitleByHiero:name];
+    //判断题目
+    if ([titles count] == 0) {
+        //没有出题或者获取数据失败
+    } else {
+        //设置题目
+        NSMutableArray *title = [NSMutableArray array];
+        for (int i = 0; i < [titles count]; i++) {
+            NSString *name = [[titles objectAtIndex:i] objectAtIndex:0];
+            [title addObject:name];
+        }
+        _firstTitleF.text = [titles count]>0 ? [title objectAtIndex:0]:@"";
+        _secondTitleF.text = [titles count]>1 ? [title objectAtIndex:1]:@"";
+        _thirdTitleF.text = [titles count]>2 ? [title objectAtIndex:2]:@"";
     }
 }
 

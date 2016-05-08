@@ -50,19 +50,12 @@
     
     _db = [FMDatabase databaseWithPath:dataFileName];
     return [_db open];
-    
-//    if (sqlite3_open([dataFileName UTF8String], &_database) == SQLITE_OK) {
-//        return YES;
-//    } else {
-//        return NO;
-//    }
 }
 
 //创建表
 -(BOOL)createTable{
     //打开数据库
-    BOOL r = [self openDataBase:[self getDataFilePath]];
-//    char * zErr;
+    [self openDataBase:[self getDataFilePath]];
     
     NSString *stuSql = @"create table if not exists student(name text primary key, password text)";
     
@@ -81,22 +74,6 @@
             }
         }
     }
-    
-    
-
-//    if (sqlite3_exec(_database, stuSql, NULL, NULL, &zErr) == SQLITE_OK) {
-//        if (sqlite3_exec(_database, hieroSql, NULL, NULL, &zErr) == SQLITE_OK) {
-//            if (sqlite3_exec(_database, titleSql, NULL, NULL, &zErr) == SQLITE_OK) {
-//                if (sqlite3_exec(_database, interlayerSql, NULL, NULL, &zErr) == SQLITE_OK) {
-//                    sqlite3_close(_database);
-//                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isCreatTable"];
-//                    return YES;
-//                }
-//            }
-//        }
-//    }
-//    sqlite3_close(_database);
-    
     [_db close];
     return NO;
 }
@@ -148,26 +125,6 @@
     BOOL result = [_db executeUpdate:sql, titleId, hieroId, student1ID, student2Id, student3Id];
     [_db close];
     return result;
-    
-    
-//    if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
-//        sqlite3_close(_database);
-//        return NO;
-//    }
-//    sqlite3_bind_text(_statement, 1, [titleId UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 2, [hieroId UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 3, [student1ID UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 4, [student2Id UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 5, [student3Id UTF8String], -1, SQLITE_TRANSIENT);
-//    
-//    int result = sqlite3_step(_statement);
-//    sqlite3_finalize(_statement);
-//    if (result != SQLITE_DONE) {
-//        sqlite3_close(_database);
-//        return NO;
-//    }
-//    sqlite3_close(_database);
-//    return YES;
 }
 
 //获取学生数据
@@ -187,6 +144,7 @@
     
     return datas;
 }
+
 //获取老师数据
 -(NSMutableArray *)getHierophantData:(NSMutableString *)hieroId {
     NSMutableArray *datas = [NSMutableArray array];
@@ -212,6 +170,7 @@
 
     return datas;
 }
+
 //获取题目数据
 -(NSMutableArray *)getTitleData:(NSMutableString *)titleId {
     NSMutableArray *datas = [NSMutableArray array];
@@ -229,35 +188,18 @@
     
     FMResultSet *result = [_db executeQuery:sql, message];
     
+    NSMutableArray *title = [NSMutableArray array];
     if ([result next]) {
-        [datas addObject:[result stringForColumnIndex:0]];
-        [datas addObject:[result stringForColumnIndex:1]];
-        [datas addObject:[result stringForColumnIndex:2]];
-        [datas addObject:[NSNumber numberWithInt:[result intForColumnIndex:3]]];
+        [title addObject:[result stringForColumnIndex:0]];
+        [title addObject:[result stringForColumnIndex:1]];
+        [title addObject:[result stringForColumnIndex:2]];
+        [title addObject:[NSNumber numberWithInt:[result intForColumnIndex:3]]];
+        [datas addObject:title];
     }
-    
-//    int result = sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL);
-//    //测试读取title
-//    
-//    if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
-//        //        NSLog(@"编译失败");
-//        return datas;
-//    }
-//    sqlite3_bind_text(_statement, 1, [message UTF8String], -1, SQLITE_TRANSIENT);
-//    while (sqlite3_step(_statement) == SQLITE_ROW) {
-//        char *tCName = (char *)sqlite3_column_text(_statement, 0);
-//        char *tHiero = (char *)sqlite3_column_text(_statement, 1);
-//        char *tStudent = (char *)sqlite3_column_text(_statement, 2);
-//        int score = sqlite3_column_int(_statement, 3);
-//        [datas addObject:[NSString stringWithUTF8String:tCName]];
-//        [datas addObject:[NSString stringWithUTF8String:tHiero]];
-//        [datas addObject:[NSString stringWithUTF8String:tStudent]];
-//        [datas addObject:[NSNumber numberWithInt:score]];
-//    }
-    
     return datas;
 }
 
+//通过老师获取题目
 -(NSMutableArray *)getTitleByHiero:(NSMutableString *)hieroId {
     NSMutableArray *datas = [NSMutableArray array];
     
@@ -268,7 +210,6 @@
 
 //获取所有题目信息
 -(NSMutableArray *)getAllSubject {
-//    NSMutableArray *datas = [NSMutableArray array];
     NSMutableArray *data = [NSMutableArray array];
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
@@ -299,24 +240,6 @@
         [datas addObject:[result stringForColumnIndex:3]];
         [datas addObject:[result stringForColumnIndex:4]];
     }
-    
-//    if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
-//        return datas;
-//    }
-//    sqlite3_bind_text(_statement, 1, [titleId UTF8String], -1, SQLITE_TRANSIENT);
-//    while (sqlite3_step(_statement) == SQLITE_ROW) {
-//        char *tID = (char *)sqlite3_column_text(_statement, 0);
-//        char *hID = (char *)sqlite3_column_text(_statement, 1);
-//        char *s1ID = (char *)sqlite3_column_text(_statement, 2);
-//        char *s2ID = (char *)sqlite3_column_text(_statement, 3);
-//        char *s3ID = (char *)sqlite3_column_text(_statement, 4);
-//        [datas addObject:[NSString stringWithUTF8String:tID]];
-//        [datas addObject:[NSString stringWithUTF8String:hID]];
-//        [datas addObject:[NSString stringWithUTF8String:s1ID]];
-//        [datas addObject:[NSString stringWithUTF8String:s2ID]];
-//        [datas addObject:[NSString stringWithUTF8String:s3ID]];
-//    }
-    
     return datas;
 }
 
@@ -341,6 +264,7 @@
     
     return result;
 }
+
 //更新题目数据
 -(BOOL)updateTitleData:(NSMutableString *)name hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
     //打开数据库
@@ -351,6 +275,7 @@
     
     return result;
 }
+
 //更新中间数据
 -(BOOL)updateInterlayerData:(NSMutableString *)titleId student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
     //打开数据库
@@ -361,25 +286,8 @@
     BOOL result = [_db executeUpdate:sql, student1Id, student2Id, student3Id, titleId];
     
     return result;
-//    if (sqlite3_prepare_v2(_database, sql, -1, &_statement, NULL) != SQLITE_OK) {
-//        sqlite3_close(_database);
-//        return NO;
-//    }
-//    sqlite3_bind_text(_statement, 1, [student1Id UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 2, [student2Id UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 3, [student3Id UTF8String], -1, SQLITE_TRANSIENT);
-//    sqlite3_bind_text(_statement, 3, [titleId UTF8String], -1, SQLITE_TRANSIENT);
-//    
-//    int result = sqlite3_step(_statement);
-//    sqlite3_finalize(_statement);
-//    if (result != SQLITE_DONE) {
-//        sqlite3_close(_database);
-//        return NO;
-//    }
-//    sqlite3_close(_database);
-//    
-//    return YES;
 }
+
 //删除题目
 -(BOOL)deleteTitle:(NSMutableString *)titleId{
     //打开数据库
