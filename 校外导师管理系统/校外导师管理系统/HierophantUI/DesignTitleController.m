@@ -23,10 +23,22 @@
 @property (weak, nonatomic) IBOutlet UITextField *thirdTitleF;
 @property (weak, nonatomic) IBOutlet UIButton *confirm;
 @property (nonatomic) BOOL isNill;
+@property (nonatomic) BOOL firstYet;
+@property (nonatomic) BOOL secondYet;
+@property (nonatomic) BOOL thirdYet;
 
 @end
 
 @implementation DesignTitleController
+
+-(instancetype)initWithType:(int)type {
+    self = [super init];
+    if (self) {
+        
+    }
+    
+    return self;
+}
 
 -(void)viewDidLoad {
     self.navigationItem.title = @"出题";
@@ -51,7 +63,7 @@
 //确定按钮
 -(void)buttonPressed:(UIButton *)sender {
     if (_isNill) {
-        [self addAlert];
+        [self addAlertWithTitle:@"每个题目不能为空白" andDetail:nil];
     } else {
     //获取数据
         NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
@@ -59,10 +71,18 @@
         NSMutableString *title2 = (NSMutableString *)_secondTitleF.text;
         NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
         //添加到数据库
-        DataController *dataController = [[DataController alloc] init];
-        BOOL rst1 = ![_firstTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title1 hieroId:name studentId:[NSMutableString string] score:0]:YES;
-        BOOL rst2 = ![_secondTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title2 hieroId:name studentId:[NSMutableString string] score:0]:YES;
-        BOOL rst3 = ![_thirdTitleF.text isEqualToString:@""]?[dataController insertTitleTable:title3 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        dataController = [[DataController alloc] init];
+        BOOL rslt1 = false;
+        BOOL rslt2 = false;
+        BOOL rslt3 = false;
+        rslt1 = _firstYet?[dataController insertTitleTable:title1 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        rslt2 = _secondYet?[dataController insertTitleTable:title2 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        rslt3 = _thirdYet?[dataController insertTitleTable:title3 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+        if (rslt1 && rslt2 && rslt3) {
+            [self addAlertWithTitle:@"出题成功" andDetail:nil];
+        } else {
+            [self addAlertWithTitle:@"出题失败" andDetail:nil];
+        }
         
     }
 }
@@ -74,25 +94,28 @@
     NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     //获取题目
     NSMutableArray *titles = [dataController getTitleByHiero:name];
+    NSMutableArray *title = [NSMutableArray array];
     //判断题目
     if ([titles count] == 0) {
         //没有出题或者获取数据失败
     } else {
         //设置题目
-        NSMutableArray *title = [NSMutableArray array];
         for (int i = 0; i < [titles count]; i++) {
             NSString *name = [[titles objectAtIndex:i] objectAtIndex:0];
             [title addObject:name];
         }
-        _firstTitleF.text = [titles count]>0 ? [title objectAtIndex:0]:@"";
-        _secondTitleF.text = [titles count]>1 ? [title objectAtIndex:1]:@"";
-        _thirdTitleF.text = [titles count]>2 ? [title objectAtIndex:2]:@"";
     }
+    _firstTitleF.text = [titles count]>0 ? [title objectAtIndex:0]:@"";
+    _secondTitleF.text = [titles count]>1 ? [title objectAtIndex:1]:@"";
+    _thirdTitleF.text = [titles count]>2 ? [title objectAtIndex:2]:@"";
+    _firstYet = [_firstTitleF.text isEqualToString:@""];
+    _secondYet = [_secondTitleF.text isEqualToString:@""];
+    _thirdYet = [_thirdTitleF.text isEqualToString:@""];
 }
 
 //通知
--(void)addAlert {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"输入值不能为空" message:@"必须设置每个题目" preferredStyle:UIAlertControllerStyleAlert];
+-(void)addAlertWithTitle:(NSString *)title andDetail:(NSString *)detail {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:detail preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }

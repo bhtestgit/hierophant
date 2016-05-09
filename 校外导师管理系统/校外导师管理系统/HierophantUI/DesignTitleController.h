@@ -10,4 +10,6 @@
 
 @interface DesignTitleController : UIViewController
 
+-(instancetype)initWithType:(int)type;
+
 @end

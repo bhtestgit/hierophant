@@ -188,8 +188,8 @@
     
     FMResultSet *result = [_db executeQuery:sql, message];
     
-    NSMutableArray *title = [NSMutableArray array];
-    if ([result next]) {
+    while([result next]) {
+        NSMutableArray *title = [NSMutableArray array];
         [title addObject:[result stringForColumnIndex:0]];
         [title addObject:[result stringForColumnIndex:1]];
         [title addObject:[result stringForColumnIndex:2]];

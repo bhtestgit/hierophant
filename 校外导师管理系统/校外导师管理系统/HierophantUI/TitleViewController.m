@@ -8,6 +8,7 @@
 
 #import "TitleViewController.h"
 #import "DataController.h"
+#import "DesignTitleController.h"
 
 @interface TitleViewController () {
     DataController *dataController;
@@ -18,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *title1;
 @property (weak, nonatomic) IBOutlet UILabel *title2;
 @property (weak, nonatomic) IBOutlet UILabel *title3;
+@property (weak, nonatomic) IBOutlet UIButton *updateButton;
 
 @end
 
@@ -29,6 +31,10 @@
     _designTitle.layer.masksToBounds = YES;
     _titleOfTitle.layer.cornerRadius = 5.0;
     _titleOfTitle.layer.masksToBounds = YES;
+    _updateButton.layer.cornerRadius = 5.0;
+    _updateButton.layer.masksToBounds = YES;
+    _updateButton.layer.cornerRadius = 5.0;
+    _updateButton.layer.masksToBounds = YES;
     _title1.layer.cornerRadius = 5.0;
     _title1.layer.masksToBounds = YES;
     _title2.layer.cornerRadius = 5.0;
@@ -38,10 +44,21 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
 }
+
+//更新界面
+- (IBAction)updateView:(UIButton *)sender {
+    //修改数据
+}
+
 - (IBAction)turnToDesignTitleView:(UIButton *)sender {
     //判断是否出题
     if (![_title1.text isEqualToString:@"第1题："]&& ![_title2.text isEqualToString:@"第2题："]&&![_title1.text isEqualToString:@"第3题："]) {
         [self addAlertWithTitle:@"你已经出题" andDetails:nil];
+    } else {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        DesignTitleController *nextView = [storyboard instantiateViewControllerWithIdentifier:@"DisignTitle"];
+        nextView.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:nextView animated:YES];
     }
 }
 
