@@ -14,13 +14,17 @@
     DataController *dataController;
 }
 
+@property (nonatomic)int type;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UILabel *firstTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *secondTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *thirdTitleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *firstTitleF;
+@property (weak, nonatomic) IBOutlet UITextField *firstDetailF;
 @property (weak, nonatomic) IBOutlet UITextField *secondTitleF;
+@property (weak, nonatomic) IBOutlet UITextField *secondDetailF;
 @property (weak, nonatomic) IBOutlet UITextField *thirdTitleF;
+@property (weak, nonatomic) IBOutlet UITextField *thirdDetailF;
 @property (weak, nonatomic) IBOutlet UIButton *confirm;
 @property (nonatomic) BOOL isNill;
 @property (nonatomic) BOOL firstYet;
@@ -31,17 +35,16 @@
 
 @implementation DesignTitleController
 
--(instancetype)initWithType:(int)type {
-    self = [super init];
-    if (self) {
-        
-    }
-    
-    return self;
+-(void)setType:(int)type {
+    _type = type;
 }
 
 -(void)viewDidLoad {
-    self.navigationItem.title = @"出题";
+    if (_type == 1) {
+        self.navigationItem.title = @"出题";
+    } else {
+        self.navigationItem.title = @"修改";
+    }
     _scrollView.contentSize = CGSizeMake(SCREANWIDTH, 700);
     _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
     _firstTitleLabel.layer.cornerRadius = 5.0;
@@ -68,23 +71,39 @@
     //获取数据
         NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
         NSMutableString *title1 = (NSMutableString *)_firstTitleF.text;
+        NSMutableString *detail1 = (NSMutableString *)_firstDetailF.text;
         NSMutableString *title2 = (NSMutableString *)_secondTitleF.text;
+        NSMutableString *detail2 = (NSMutableString *)_secondDetailF.text;
         NSMutableString *title3 = (NSMutableString *)_thirdTitleF.text;
+        NSMutableString *detail3 = (NSMutableString *)_thirdDetailF.text;
         //添加到数据库
         dataController = [[DataController alloc] init];
         BOOL rslt1 = false;
         BOOL rslt2 = false;
         BOOL rslt3 = false;
-        rslt1 = _firstYet?[dataController insertTitleTable:title1 hieroId:name studentId:[NSMutableString string] score:0]:YES;
-        rslt2 = _secondYet?[dataController insertTitleTable:title2 hieroId:name studentId:[NSMutableString string] score:0]:YES;
-        rslt3 = _thirdYet?[dataController insertTitleTable:title3 hieroId:name studentId:[NSMutableString string] score:0]:YES;
-        if (rslt1 && rslt2 && rslt3) {
-            [self addAlertWithTitle:@"出题成功" andDetail:nil];
+        NSString *successT;
+        NSString *falseT;
+        if (_type == 1) {
+            rslt1 = _firstYet?[dataController insertTitleTable:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+            rslt2 = _secondYet?[dataController insertTitleTable:title2 detail:detail2 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+            rslt3 = _thirdYet?[dataController insertTitleTable:title3 detail:detail3 hieroId:name studentId:[NSMutableString string] score:0]:YES;
+            successT = @"出题成功";
+            falseT = @"出题失败";
         } else {
-            [self addAlertWithTitle:@"出题失败" andDetail:nil];
+            rslt1 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+            rslt2 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+            rslt3 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+            successT = @"更新成功";
+            falseT = @"更新失败";
         }
         
+        if (rslt1 && rslt2 && rslt3) {
+            [self addAlertWithTitle:successT andDetail:nil];
+        } else {
+            [self addAlertWithTitle:falseT andDetail:nil];
+        }
     }
+    
 }
 
 -(void)reloadData {
@@ -102,12 +121,17 @@
         //设置题目
         for (int i = 0; i < [titles count]; i++) {
             NSString *name = [[titles objectAtIndex:i] objectAtIndex:0];
+            NSString *detail = [[titles objectAtIndex:i] objectAtIndex:1];
             [title addObject:name];
+            [titles addObject:detail];
         }
     }
     _firstTitleF.text = [titles count]>0 ? [title objectAtIndex:0]:@"";
-    _secondTitleF.text = [titles count]>1 ? [title objectAtIndex:1]:@"";
-    _thirdTitleF.text = [titles count]>2 ? [title objectAtIndex:2]:@"";
+    _firstDetailF.text = [titles count]>0 ? [title objectAtIndex:1]:@"";
+    _secondTitleF.text = [titles count]>1 ? [title objectAtIndex:2]:@"";
+    _secondDetailF.text = [titles count]>1 ? [title objectAtIndex:3]:@"";
+    _thirdTitleF.text = [titles count]>2 ? [title objectAtIndex:4]:@"";
+    _thirdDetailF.text = [titles count]>2 ? [title objectAtIndex:5]:@"";
     _firstYet = [_firstTitleF.text isEqualToString:@""];
     _secondYet = [_secondTitleF.text isEqualToString:@""];
     _thirdYet = [_thirdTitleF.text isEqualToString:@""];

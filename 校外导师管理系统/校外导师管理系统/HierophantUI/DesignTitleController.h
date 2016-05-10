@@ -10,6 +10,7 @@
 
 @interface DesignTitleController : UIViewController
 
--(instancetype)initWithType:(int)type;
+//根据1表示出题,2表示更新
+-(void)setType:(int)type;
 
 @end

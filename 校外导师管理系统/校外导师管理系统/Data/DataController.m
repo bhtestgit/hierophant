@@ -61,7 +61,7 @@
     
     NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone int, email text, experience text)";
     
-    NSString *titleSql = @"create table if not exists title(name text primary key, hieroId text, studentId text, score int)";
+    NSString *titleSql = @"create table if not exists title(name text primary key,detail text, hieroId text, studentId text, score int)";
     NSString *interlayerSql = @"create table if not exists interlayer(name text primary key, hieroId text, student1Id text, student2Id text, student3Id text)";
     
     if ([_db executeUpdate:stuSql] == YES) {
@@ -101,18 +101,18 @@
     //语句
     
     NSString *sql = @"insert into hierophant(name, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, phone, email, experience) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    BOOL result = [_db executeUpdate:sql, name, password, self, birthday, PFT, skills, timeOfPFT, workUnit, positions, [NSNumber numberWithInt: phone], email, experience];
+    BOOL result = [_db executeUpdate:sql, name, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, [NSNumber numberWithInt: phone], email, experience];
     
     return result;
 }
 
 //添加题目数据
--(BOOL)insertTitleTable:(NSMutableString *)name hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
+-(BOOL)insertTitleTable:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    NSString *sql = @"insert into title values(?, ?, ?, ?)";
+    NSString *sql = @"insert into title values(?, ?, ?, ?, ?)";
     
-    BOOL result = [_db executeUpdate:sql, name, hieroId, studentId, score];
+    BOOL result = [_db executeUpdate:sql, name, detail, hieroId, studentId, score];
     
     return result;
 }
@@ -193,7 +193,8 @@
         [title addObject:[result stringForColumnIndex:0]];
         [title addObject:[result stringForColumnIndex:1]];
         [title addObject:[result stringForColumnIndex:2]];
-        [title addObject:[NSNumber numberWithInt:[result intForColumnIndex:3]]];
+        [title addObject:[result stringForColumnIndex:3]];
+        [title addObject:[NSNumber numberWithInt:[result intForColumnIndex:4]]];
         [datas addObject:title];
     }
     return datas;
@@ -216,7 +217,7 @@
     NSString *sql = @"select name from title";
     FMResultSet *result = [_db executeQuery:sql];
     int count = [result columnCount];
-    if ([result next]) {
+    while([result next]) {
         for (int i = 0; i < count; i++) {
             [data addObject:[result stringForColumnIndex:i]];
         }
@@ -266,12 +267,12 @@
 }
 
 //更新题目数据
--(BOOL)updateTitleData:(NSMutableString *)name hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
+-(BOOL)updateTitleData:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    NSString *sql = @"update title set hieroId = ? and studentId = ? and score = ? where name = ?";
+    NSString *sql = @"update title set detail = ? and hieroId = ? and studentId = ? and score = ? where name = ?";
     
-    BOOL result = [_db executeUpdate:sql, hieroId, studentId,  [NSNumber numberWithInt:score], name];
+    BOOL result = [_db executeUpdate:sql, detail, hieroId, studentId,  [NSNumber numberWithInt:score], name];
     
     return result;
 }
