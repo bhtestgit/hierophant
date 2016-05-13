@@ -884,7 +884,13 @@
                         <outlet property="confirm1" destination="2Kf-WA-Tfx" id="mH3-mI-DIX"/>
                         <outlet property="confirm2" destination="X6y-mM-UAa" id="32o-28-m2R"/>
                         <outlet property="confirm3" destination="BB4-Dr-lLm" id="tuC-DI-neO"/>
+                        <outlet property="firstScore" destination="qT2-nX-1sW" id="rpL-rU-JfD"/>
+                        <outlet property="firstStudent" destination="OIj-O2-vmJ" id="IlS-jv-AGr"/>
                         <outlet property="scrollView" destination="c4x-7P-7SX" id="L1D-7q-hyg"/>
+                        <outlet property="secondScore" destination="N1P-m4-eJc" id="FGo-v7-zYE"/>
+                        <outlet property="secondStudent" destination="xfR-CM-lst" id="b4t-Rv-SnT"/>
+                        <outlet property="thirdScore" destination="uT9-zM-u13" id="N6a-kd-0cF"/>
+                        <outlet property="thirdStudent" destination="cLQ-i3-Sug" id="AUv-3a-lw7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TnE-BC-SAD" userLabel="First Responder" sceneMemberID="firstResponder"/>
