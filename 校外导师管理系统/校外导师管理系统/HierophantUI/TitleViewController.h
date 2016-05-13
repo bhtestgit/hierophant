@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DesignTitleController.h"
 
 @interface TitleViewController : UIViewController
-
 
 -(void)reloadData;
 @end

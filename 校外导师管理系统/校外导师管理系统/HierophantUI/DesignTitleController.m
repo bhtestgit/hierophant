@@ -98,6 +98,7 @@
         }
         
         if (rslt1 && rslt2 && rslt3) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"postedTitle" object:nil];
             [self addAlertWithTitle:successT andDetail:nil];
         } else {
             [self addAlertWithTitle:falseT andDetail:nil];
@@ -123,7 +124,7 @@
             NSString *name = [[titles objectAtIndex:i] objectAtIndex:0];
             NSString *detail = [[titles objectAtIndex:i] objectAtIndex:1];
             [title addObject:name];
-            [titles addObject:detail];
+            [title addObject:detail];
         }
     }
     _firstTitleF.text = [titles count]>0 ? [title objectAtIndex:0]:@"";

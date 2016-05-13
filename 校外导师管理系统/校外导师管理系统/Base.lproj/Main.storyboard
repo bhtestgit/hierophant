@@ -39,23 +39,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8g-v5-nqp">
-                                <rect key="frame" x="203" y="136" width="66" height="35"/>
-                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="37" id="KQ0-IH-fKd"/>
-                                    <constraint firstAttribute="width" constant="66" id="Zgx-20-gTh"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="cWc-0b-bGx"/>
-                                    <constraint firstAttribute="height" constant="35" id="zMU-ft-1Ga"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="出题">
-                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="turnToDesignTitleView:" destination="3aG-Sr-1b2" eventType="touchUpInside" id="M81-Hn-DvO"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已出题目" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUa-nW-hVn">
                                 <rect key="frame" x="260" y="223" width="80" height="37"/>
                                 <constraints>
@@ -105,21 +88,21 @@
                                 <nil key="highlightedColor"/>
                                 <size key="shadowOffset" width="0.0" height="0.0"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Nu-ed-fSU">
-                                <rect key="frame" x="327" y="136" width="66" height="35"/>
-                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8g-v5-nqp">
+                                <rect key="frame" x="267" y="144" width="66" height="35"/>
+                                <color key="backgroundColor" red="1" green="0.5" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="3Fl-6c-aAU"/>
-                                    <constraint firstAttribute="height" constant="37" id="R7o-o4-z0B"/>
-                                    <constraint firstAttribute="width" constant="66" id="V4h-Mk-m52"/>
-                                    <constraint firstAttribute="height" constant="35" id="h3j-sW-dOg"/>
+                                    <constraint firstAttribute="height" constant="37" id="KQ0-IH-fKd"/>
+                                    <constraint firstAttribute="width" constant="66" id="Zgx-20-gTh"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="cWc-0b-bGx"/>
+                                    <constraint firstAttribute="height" constant="35" id="zMU-ft-1Ga"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="修改">
+                                <state key="normal" title="出题">
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="updateView:" destination="3aG-Sr-1b2" eventType="touchUpInside" id="pzf-hx-Wko"/>
+                                    <action selector="turnToDesignTitleView:" destination="3aG-Sr-1b2" eventType="touchUpInside" id="M81-Hn-DvO"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -130,14 +113,12 @@
                             <constraint firstItem="pmf-gV-eal" firstAttribute="top" secondItem="dUa-nW-hVn" secondAttribute="bottom" constant="35" id="Fvd-GC-bmC"/>
                             <constraint firstItem="Nfw-Kb-uOR" firstAttribute="top" secondItem="pmf-gV-eal" secondAttribute="bottom" constant="20" id="I91-lF-aaR"/>
                             <constraint firstItem="dUa-nW-hVn" firstAttribute="top" secondItem="s8g-v5-nqp" secondAttribute="bottom" constant="61" id="PBo-Cq-TCe"/>
-                            <constraint firstItem="pmf-gV-eal" firstAttribute="leading" secondItem="s8g-v5-nqp" secondAttribute="trailing" constant="-90" id="UFG-mE-OMm"/>
                             <constraint firstItem="pmf-gV-eal" firstAttribute="centerX" secondItem="hb4-Uu-fnN" secondAttribute="centerX" id="Um1-Hu-1Lu"/>
                             <constraint firstItem="pmf-gV-eal" firstAttribute="centerX" secondItem="hb4-Uu-fnN" secondAttribute="centerX" id="VtY-Xo-Lce"/>
-                            <constraint firstItem="2Nu-ed-fSU" firstAttribute="centerY" secondItem="s8g-v5-nqp" secondAttribute="centerY" id="VyS-wu-6aj"/>
+                            <constraint firstItem="s8g-v5-nqp" firstAttribute="centerX" secondItem="hb4-Uu-fnN" secondAttribute="centerX" id="bhs-bS-Fyg"/>
                             <constraint firstItem="TK4-mg-8cZ" firstAttribute="centerX" secondItem="hb4-Uu-fnN" secondAttribute="centerX" id="p3d-cg-1w1"/>
                             <constraint firstItem="dUa-nW-hVn" firstAttribute="centerX" secondItem="hb4-Uu-fnN" secondAttribute="centerX" id="tCx-cC-7IG"/>
                             <constraint firstItem="s8g-v5-nqp" firstAttribute="top" secondItem="dVB-Rb-Fbt" secondAttribute="bottom" constant="63" id="tEB-Lz-gKq"/>
-                            <constraint firstItem="2Nu-ed-fSU" firstAttribute="leading" secondItem="pmf-gV-eal" secondAttribute="trailing" constant="-90" id="wVB-dr-MLV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="题目管理" id="faN-Hw-i0d"/>
@@ -147,7 +128,6 @@
                         <outlet property="title2" destination="Nfw-Kb-uOR" id="5B2-NC-6Ch"/>
                         <outlet property="title3" destination="TK4-mg-8cZ" id="S8Q-re-tnl"/>
                         <outlet property="titleOfTitle" destination="dUa-nW-hVn" id="fPT-42-hqY"/>
-                        <outlet property="updateButton" destination="2Nu-ed-fSU" id="QMX-2N-xEt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xlx-yL-dSI" userLabel="First Responder" sceneMemberID="firstResponder"/>

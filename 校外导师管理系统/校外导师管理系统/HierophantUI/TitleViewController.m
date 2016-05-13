@@ -12,14 +12,15 @@
 
 @interface TitleViewController () {
     DataController *dataController;
-    
+    DesignTitleController *updateView;
+    int type;
 }
+@property (nonatomic)DesignTitleController *nextView;
 @property (weak, nonatomic) IBOutlet UIButton *designTitle;
 @property (weak, nonatomic) IBOutlet UILabel *titleOfTitle;
 @property (weak, nonatomic) IBOutlet UILabel *title1;
 @property (weak, nonatomic) IBOutlet UILabel *title2;
 @property (weak, nonatomic) IBOutlet UILabel *title3;
-@property (weak, nonatomic) IBOutlet UIButton *updateButton;
 
 @end
 
@@ -27,50 +28,38 @@
 
 -(void)viewDidLoad {
     //设置圆角
+    NSString *title = [[NSUserDefaults standardUserDefaults] stringForKey:@"buttonName"];
+    [_designTitle setTitle:title forState:UIControlStateNormal];
     _designTitle.layer.cornerRadius = 5.0;
     _designTitle.layer.masksToBounds = YES;
     _titleOfTitle.layer.cornerRadius = 5.0;
     _titleOfTitle.layer.masksToBounds = YES;
-    _updateButton.layer.cornerRadius = 5.0;
-    _updateButton.layer.masksToBounds = YES;
-    _updateButton.layer.cornerRadius = 5.0;
-    _updateButton.layer.masksToBounds = YES;
     _title1.layer.cornerRadius = 5.0;
     _title1.layer.masksToBounds = YES;
     _title2.layer.cornerRadius = 5.0;
     _title2.layer.masksToBounds = YES;
     _title3.layer.cornerRadius = 5.0;
     _title3.layer.masksToBounds = YES;
+    type = 1;
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonTitle) name:@"postedTitle" object:nil];
 }
 
-//更新界面
-- (IBAction)updateView:(UIButton *)sender {
-    if ([_title1.text isEqualToString:@"第1题："]&&[_title2.text isEqualToString:@"第2题："]&&[_title3.text isEqualToString:@"第3题："]) {
-        [self addAlertWithTitle:@"请先出题" andDetails:nil];
-    } else {
-        //跳转界面
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        DesignTitleController *nextView = [storyboard instantiateViewControllerWithIdentifier:@"DisignTitle"];
-        [nextView setType:2];
-        nextView.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:nextView animated:YES];
-    }
+-(void)changeButtonTitle {
+    type = 2;
+    [_designTitle setTitle:@"更新" forState:UIControlStateNormal];
+    [[NSUserDefaults standardUserDefaults] setObject:@"更新" forKey:@"buttonName"];
 }
 
 //出题界面
 - (IBAction)turnToDesignTitleView:(UIButton *)sender {
     //判断是否出题
-    if (![_title1.text isEqualToString:@"第1题："]&&![_title2.text isEqualToString:@"第2题："]&&![_title3.text isEqualToString:@"第3题："]) {
-        [self addAlertWithTitle:@"你已经出题" andDetails:nil];
-    } else {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        DesignTitleController *nextView = [storyboard instantiateViewControllerWithIdentifier:@"DisignTitle"];
-        [nextView setType:1];
-        nextView.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:nextView animated:YES];
-    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    _nextView = [storyboard instantiateViewControllerWithIdentifier:@"DisignTitle"];
+    [_nextView setType:type];
+    _nextView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:_nextView animated:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -110,5 +99,8 @@
     [self presentViewController:aler animated:YES completion:nil];
 }
 
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"postedTitle" object:nil];
+}
 
 @end

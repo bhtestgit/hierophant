@@ -16,7 +16,7 @@
 //添加学生数据
 -(BOOL)insertStudentTable:(NSMutableString *)name password:(NSMutableString *)password;
 //添加老师数据
--(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
+-(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //添加题目数据
 -(BOOL)insertTitleTable:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
 //添加中间层数据
@@ -35,7 +35,7 @@
 //更新学生数据
 -(BOOL)updateStudentData:(NSMutableString *)name password:(NSMutableString *)password;
 //更新老师数据
--(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
+-(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //更新题目数据
 -(BOOL)updateTitleData:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
 //更新中间数据

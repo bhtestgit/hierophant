@@ -23,6 +23,8 @@
     } else {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstLaunched"];
     }
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"buttonName":@"出题"}];
+    
     //初始化主界面
     ViewController *view = [[ViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

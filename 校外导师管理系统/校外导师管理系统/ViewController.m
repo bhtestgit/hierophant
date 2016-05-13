@@ -110,19 +110,19 @@
             //判断用户类型
             int loginType = [loginController login:name password:password];
             if (loginType == 0) {
-                [weakSelf addAlert:(NSMutableString *)@"用户不存在" message:(NSMutableString *)@"请先注册"];
+                [weakSelf addAlert:(NSMutableString *)@"登录失败" message:nil];
             } if (loginType == 1) {
                 //教务
             } if (loginType == 2) {
                 //老师
-                HieroViewController *hieroView = [[HieroViewController alloc] init];
-                hieroView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self presentViewController:hieroView animated:YES completion:nil];
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                HieroViewController *hieroView = [storyboard instantiateViewControllerWithIdentifier:@"HieroTabBar"];
+                [self.view.window.rootViewController presentViewController:hieroView animated:YES completion:nil];
             } if (loginType == 3) {
                 //学生
                 StudentViewController *studentView = [[StudentViewController alloc] init];
                 studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self presentViewController:studentView animated:YES completion:nil];
+                [self.view.window.rootViewController presentViewController:studentView animated:YES completion:nil];
             }
             
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];

@@ -35,6 +35,9 @@
     _confirm2.layer.masksToBounds = YES;
     _confirm3.layer.cornerRadius = 5.0;
     _confirm3.layer.masksToBounds = YES;
+    
+    
+    [self reloadData];
 }
 
 -(void)reloadData {

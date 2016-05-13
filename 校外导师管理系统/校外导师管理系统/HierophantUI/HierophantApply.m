@@ -265,7 +265,7 @@
         }else {
             //注册事件
             RegistController *registController = [[RegistController alloc] init];
-            BOOL result = [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(int)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
+            BOOL result = [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(NSMutableString *)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
         
             if (result) {
                //返回到上一层

@@ -59,7 +59,7 @@
     
     NSString *stuSql = @"create table if not exists student(name text primary key, password text)";
     
-    NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone int, email text, experience text)";
+    NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone text, email text, experience text)";
     
     NSString *titleSql = @"create table if not exists title(name text primary key,detail text, hieroId text, studentId text, score int)";
     NSString *interlayerSql = @"create table if not exists interlayer(name text primary key, hieroId text, student1Id text, student2Id text, student3Id text)";
@@ -95,13 +95,13 @@
 }
 
 //添加老师数据
--(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience{
+-(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
     //语句
     
     NSString *sql = @"insert into hierophant(name, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, phone, email, experience) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    BOOL result = [_db executeUpdate:sql, name, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, [NSNumber numberWithInt: phone], email, experience];
+    BOOL result = [_db executeUpdate:sql, name, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, phone, email, experience];
     
     return result;
 }
@@ -256,12 +256,12 @@
     return result;
 }
 //更新导师数据
--(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(int)phone email:(NSMutableString *)email experience:(NSMutableString *)experience{
+-(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
     //语句
     NSString *sql = @"update hierophant set password = ? and sex = ?  and birthday = ? and PFT = ? and skills = ? and timeOfPFT = ? and workUnit = ? and positions = ? and phone = ? and email = ? and experience = ? where name = ?";
-    BOOL result = [_db executeUpdate:sql, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, [NSNumber numberWithInt:phone], email, experience, name];
+    BOOL result = [_db executeUpdate:sql, password, sex, birthday, PFT, skills, timeOfPFT, workUnit, positions, phone, email, experience, name];
     
     return result;
 }
