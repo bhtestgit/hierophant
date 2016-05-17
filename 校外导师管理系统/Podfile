@@ -1,4 +1,5 @@
 target '校外导师' do
   pod "Masonry"
   pod "FMDB"
+  pod "AFNetworking"
 end
