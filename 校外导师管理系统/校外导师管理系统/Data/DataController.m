@@ -62,7 +62,7 @@
     NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone text, email text, experience text)";
     
     NSString *titleSql = @"create table if not exists title(name text primary key,detail text, hieroId text, studentId text, score int)";
-    NSString *interlayerSql = @"create table if not exists interlayer(name text primary key, hieroId text, student1Id text, student2Id text, student3Id text)";
+    NSString *interlayerSql = @"create table if not exists interlayer(name text primary key, detail text, hieroId text, student1Id text, student2Id text, student3Id text)";
     
     if ([_db executeUpdate:stuSql] == YES) {
         if ([_db executeUpdate:hieroSql] == YES) {
@@ -118,11 +118,11 @@
 }
 
 //添加中间数据
--(BOOL)insertInterlayerTable:(NSMutableString *)titleId hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
+-(BOOL)insertInterlayerTable:(NSMutableString *)titleId detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
     [self openDataBase:[self getDataFilePath]];
-    NSString *sql = @"insert into interlayer(id, hieroId, student1Id, student2Id, student3Id) values(?, ?, ?, ?, ?)";
+    NSString *sql = @"insert into interlayer(name, detail, hieroId, student1Id, student2Id, student3Id) values(?, ?, ?, ?, ?, ?)";
     
-    BOOL result = [_db executeUpdate:sql, titleId, hieroId, student1ID, student2Id, student3Id];
+    BOOL result = [_db executeUpdate:sql, titleId, detail, hieroId, student1ID, student2Id, student3Id];
     [_db close];
     return result;
 }
@@ -240,6 +240,7 @@
         [datas addObject:[result stringForColumnIndex:2]];
         [datas addObject:[result stringForColumnIndex:3]];
         [datas addObject:[result stringForColumnIndex:4]];
+        [datas addObject:[result stringForColumnIndex:5]];
     }
     return datas;
 }
@@ -267,24 +268,24 @@
 }
 
 //更新题目数据
--(BOOL)updateTitleData:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
+-(BOOL)updateTitleData:(NSMutableString *)name newName:(NSMutableString *)newName detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    NSString *sql = @"update title set detail = ? and hieroId = ? and studentId = ? and score = ? where name = ?";
+    NSString *sql = @"update title set name = ?, detail = ? and hieroId = ? and studentId = ? and score = ? where name = ?";
     
-    BOOL result = [_db executeUpdate:sql, detail, hieroId, studentId,  [NSNumber numberWithInt:score], name];
+    BOOL result = [_db executeUpdate:sql, newName, detail, hieroId, studentId,  [NSNumber numberWithInt:score], name];
     
     return result;
 }
 
 //更新中间数据
--(BOOL)updateInterlayerData:(NSMutableString *)titleId student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
+-(BOOL)updateInterlayerData:(NSMutableString *)titleId newName:(NSMutableString *)newName detail:(NSMutableString *)detail student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id{
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
-    NSString *sql = @"update interlayer set student1Id = ? and student2Id = ? and student3Id = ? where name = ?";
+    NSString *sql = @"update interlayer set name = ? and detail = ? and student1Id = ? and student2Id = ? and student3Id = ? where name = ?";
     
     
-    BOOL result = [_db executeUpdate:sql, student1Id, student2Id, student3Id, titleId];
+    BOOL result = [_db executeUpdate:sql, newName, detail, student1Id, student2Id, student3Id, titleId];
     
     return result;
 }

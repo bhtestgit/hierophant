@@ -117,12 +117,12 @@
                 //老师
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                 HieroViewController *hieroView = [storyboard instantiateViewControllerWithIdentifier:@"HieroTabBar"];
-                [self.view.window.rootViewController presentViewController:hieroView animated:YES completion:nil];
+                [self presentViewController:hieroView animated:YES completion:nil];
             } if (loginType == 3) {
                 //学生
                 StudentViewController *studentView = [[StudentViewController alloc] init];
                 studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.view.window.rootViewController presentViewController:studentView animated:YES completion:nil];
+                [self presentViewController:studentView animated:YES completion:nil];
             }
             
             [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];

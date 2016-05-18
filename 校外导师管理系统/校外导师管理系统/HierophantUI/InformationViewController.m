@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *position;
 @property (weak, nonatomic) IBOutlet UITextField *phone;
 @property (weak, nonatomic) IBOutlet UITextField *email;
+@property (nonatomic) UILabel *experience;
+@property (nonatomic) UITextField *experienceF;
 
 @property (nonatomic) DataController *dataController;
 @end
@@ -33,68 +35,91 @@
 
 -(void)viewDidLoad{
     _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
-    _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 700);
+    _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 800);
     _change.layer.cornerRadius = 5.0;
     _change.layer.masksToBounds = YES;
     
+    _experience = [[UILabel alloc] init];
+    _experience.text = @"工作经验";
+    _experience.bounds = CGRectMake(0, 0, 90, 37);
+    _experienceF = [[UITextField alloc] init];
+//    _experienceF.bounds = CGRectMake(0, 0, 100, 60);
+    _experienceF.backgroundColor = [UIColor whiteColor];
+    _experienceF.layer.cornerRadius = 5.0;
+    _experienceF.layer.masksToBounds = YES;
+    [self.view addSubview:_experience];
+    [self.view addSubview:_experienceF];
+    
     //添加约束
     [_account mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_password mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_sex mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_birthday mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_pft mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_skills mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_timeOfPft mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_workUnit mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_position mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_phone mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_email mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
     }];
     
     [_account mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.offset(-20);
+        make.right.offset(-10);
+    }];
+    
+    [_experience mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_email.mas_bottom).offset(20);
+        make.centerX.offset(0);
+    }];
+    
+    [_experienceF mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.offset(10);
+        make.top.equalTo(_experience.mas_bottom).offset(10);
+        make.right.offset(-10);
+        make.height.equalTo(@60);
     }];
     
     [_change mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_email.mas_bottom).offset(20);
+        make.top.equalTo(_experienceF.mas_bottom).offset(20);
     }];
     
     [self loadData];
 }
 
 -(void)viewDidLayoutSubviews {
-    _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 700);
+    _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 800);
 }
 
 -(void)loadData {
@@ -115,6 +140,7 @@
     _position.text = [informations objectAtIndex:8];
     _phone.text = [(NSNumber *)[informations objectAtIndex:9] stringValue];
     _email.text = [informations objectAtIndex:10];
+    _experienceF.text = [informations objectAtIndex:11];
 }
 
 @end

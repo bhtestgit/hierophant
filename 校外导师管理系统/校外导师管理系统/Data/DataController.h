@@ -20,7 +20,7 @@
 //添加题目数据
 -(BOOL)insertTitleTable:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
 //添加中间层数据
--(BOOL)insertInterlayerTable:(NSMutableString *)titleId hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
+-(BOOL)insertInterlayerTable:(NSMutableString *)titleId detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId student1Id:(NSMutableString *)student1ID student2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
 //获取学生数据
 -(NSMutableArray *)getStudentData :(NSMutableString *)stuId;
 //获取老师数据
@@ -37,9 +37,9 @@
 //更新老师数据
 -(BOOL)updateHieroData:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //更新题目数据
--(BOOL)updateTitleData:(NSMutableString *)name detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
+-(BOOL)updateTitleData:(NSMutableString *)name newName:(NSMutableString *)newName detail:(NSMutableString *)detail hieroId:(NSMutableString *)hieroId studentId:(NSMutableString *)studentId score:(int)score;
 //更新中间数据
--(BOOL)updateInterlayerData:(NSMutableString *)titleId student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
+-(BOOL)updateInterlayerData:(NSMutableString *)titleId newName:(NSMutableString *)newName detail:(NSMutableString *)detail student1Id:(NSMutableString *)student1Id studnet2Id:(NSMutableString *)student2Id student3Id:(NSMutableString *)student3Id;
 //删除题目
 -(BOOL)deleteTitle :(NSMutableString *)titleId;
 @end

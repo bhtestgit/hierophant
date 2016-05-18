@@ -90,9 +90,9 @@
             successT = @"出题成功";
             falseT = @"出题失败";
         } else {
-            rslt1 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
-            rslt2 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
-            rslt3 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+//            rslt1 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+//            rslt2 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
+//            rslt3 = [dataController updateTitleData:title1 detail:detail1 hieroId:name studentId:[NSMutableString string] score:0];
             successT = @"更新成功";
             falseT = @"更新失败";
         }
