@@ -33,7 +33,8 @@
 
 //初始化界面
 - (void)initializeAppearance {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"注册界面"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"注册界面"]];
+    self.view.backgroundColor = [UIColor whiteColor];
     //登陆图片
     UIImageView *_imageView = [[UIImageView alloc] init];
     _imageView.center = CGPointMake(CGRectGetMidX(self.view.frame), 125);

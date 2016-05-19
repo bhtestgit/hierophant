@@ -21,7 +21,7 @@
 -(void)initializeAppearance{
     [super initializeAppearance];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
     
     //姓名
     UILabel* _name = [[UILabel alloc] initWithFrame:CGRectMake(16, 100, 40, 37)];

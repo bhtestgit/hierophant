@@ -34,7 +34,7 @@
 @implementation InformationViewController
 
 -(void)viewDidLoad{
-    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
+//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
     _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 800);
     _change.layer.cornerRadius = 5.0;
     _change.layer.masksToBounds = YES;

@@ -23,7 +23,7 @@
 @implementation ContactWithStudent
 
 -(void)viewDidLoad {
-    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"交流界面"]];
+//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"交流界面"]];
     _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 600);
     
     _stu1L.layer.cornerRadius = 5.0;

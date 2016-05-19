@@ -42,7 +42,8 @@
     _title3.layer.masksToBounds = YES;
     type = 1;
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+    self.view.backgroundColor = [UIColor whiteColor];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeButtonTitle) name:@"postedTitle" object:nil];
 }
 

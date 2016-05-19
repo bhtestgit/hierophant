@@ -66,7 +66,7 @@
     self.view.backgroundColor = SKYBULUE;
     //创建scrollView
     _mainView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH, CGRectGetMaxY(self.view.bounds))];
-    _mainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
+//    _mainView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
     _mainView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
     //账号密码

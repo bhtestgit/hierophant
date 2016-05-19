@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <JSONModel.h>
 
-@interface Student : NSObject
+@interface Student : JSONModel
 @property (nonatomic)NSString* name;
 @property (nonatomic)NSString* password;
 @end

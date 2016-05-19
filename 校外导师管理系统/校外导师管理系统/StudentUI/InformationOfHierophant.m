@@ -17,7 +17,7 @@
 -(void)initializeAppearance{
     [super initializeAppearance];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"交流界面"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"交流界面"]];
 }
 
 @end

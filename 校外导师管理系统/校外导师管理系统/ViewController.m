@@ -12,11 +12,16 @@
 #import "StudentViewController.h"
 #import "HieroViewController.h"
 #import "LoginController.h"
+#import <AFNetworking.h>
+#import "Student.h"
+#import "ConnectURL.h"
 
 @interface ViewController (){
     UIButton *_login;
     UIButton *_regist;
     UIButton *_employ;
+    NSMutableString *_name;
+    NSMutableString *_password;
 }
 
 @property(nonatomic)StudentViewController *stuVC;
@@ -103,29 +108,29 @@
             if ([loginAlert.textFields.firstObject.text isEqualToString:@""] || [loginAlert.textFields.lastObject.text isEqualToString:@""]) {
                 [weakSelf addAlert:(NSMutableString *)@"不能为空" message:(NSMutableString *)@"用户名和密码不能为空"];
             } else {
-            //登陆过程
-            LoginController *loginController = [[LoginController alloc] init];
-            NSMutableString *name = (NSMutableString *)loginAlert.textFields.firstObject.text;
-            NSMutableString *password = (NSMutableString *)loginAlert.textFields.lastObject.text;
-            //判断用户类型
-            int loginType = [loginController login:name password:password];
-            if (loginType == 0) {
-                [weakSelf addAlert:(NSMutableString *)@"登录失败" message:nil];
-            } if (loginType == 1) {
-                //教务
-            } if (loginType == 2) {
-                //老师
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                HieroViewController *hieroView = [storyboard instantiateViewControllerWithIdentifier:@"HieroTabBar"];
-                [self presentViewController:hieroView animated:YES completion:nil];
-            } if (loginType == 3) {
-                //学生
-                StudentViewController *studentView = [[StudentViewController alloc] init];
-                studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self presentViewController:studentView animated:YES completion:nil];
-            }
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+                //登陆过程
+                _name = (NSMutableString *)loginAlert.textFields.firstObject.text;
+                _password = (NSMutableString *)loginAlert.textFields.lastObject.text;
+//              [weakSelf toLogin];
+                
+                //本地登录
+                LoginController *loginController = [[LoginController alloc] init];
+                int r = [loginController login:_name password:_password];
+                if (r == 0) {
+                    [self addAlert:(NSMutableString *)@"登录失败" message:nil];
+                } if (r == 1) {
+                    //教务
+                } if (r == 2) {
+                    //老师
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    HieroViewController *hieroView = [storyboard instantiateViewControllerWithIdentifier:@"HieroTabBar"];
+                    [self presentViewController:hieroView animated:YES completion:nil];
+                } if (r == 3) {
+                    //学生
+                    StudentViewController *studentView = [[StudentViewController alloc] init];
+                    studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                    [self presentViewController:studentView animated:YES completion:nil];
+                }
             }
         }]];
         
@@ -143,6 +148,57 @@
         hierophant.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:hierophant animated:YES completion:nil];
     }
+}
+
+-(void)toLogin {
+    __block int r = 0;
+    // 启动系统风火轮
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    //初始化manager
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    NSString *url = [ConnectURL shareURL];
+    //初始化对象
+    Student *stu = [[Student alloc] init];
+    stu.name = _name;
+    stu.password = _password;
+    //将对象转换为json
+    NSDictionary *dic = stu.toDictionary;
+    //发送post请求
+    [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        // 隐藏系统风火轮
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        if (responseObject) {
+            //登录结果
+            r = (int)[[responseObject objectForKey:@"result"] integerValue];
+            if (r == 0) {
+                [self addAlert:(NSMutableString *)@"登录失败" message:nil];
+            } if (r == 1) {
+                //教务
+            } if (r == 2) {
+                //老师
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                HieroViewController *hieroView = [storyboard instantiateViewControllerWithIdentifier:@"HieroTabBar"];
+                [self presentViewController:hieroView animated:YES completion:nil];
+            } if (r == 3) {
+                //学生
+                StudentViewController *studentView = [[StudentViewController alloc] init];
+                studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self presentViewController:studentView animated:YES completion:nil];
+            }
+        }
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        // 隐藏系统风火轮
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"获取失败");
+    }];
+//    return r;
+    //判断用户类型
+//    int loginType = [loginController login:name password:password];
+    
 }
 
 -(void)success {

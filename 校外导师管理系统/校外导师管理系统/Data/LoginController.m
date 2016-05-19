@@ -8,6 +8,11 @@
 
 #import "LoginController.h"
 #import "DataController.h"
+#import "ConnectURL.h"
+#import <AFNetworking.h>
+#import "Student.h"
+#import "Hierophent.h"
+#import "ConnectURL.h"
 
 @implementation LoginController
 

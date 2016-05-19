@@ -38,7 +38,7 @@
         UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 28, SCREAN_WIDTH, SCREAN_HIGHT) style:UITableViewStyleGrouped];
         _table.dataSource = self;
         _table.delegate = self;
-        _table.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
+//        _table.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
         
         [self.view addSubview:_table];
     } else {

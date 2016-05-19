@@ -27,7 +27,7 @@
 @implementation GradeViewController
 
 -(void)viewDidLoad {
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"题目信息"]];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"题目信息"]];
     _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 700);
     _confirm1.layer.cornerRadius = 5.0;
     _confirm1.layer.masksToBounds = YES;

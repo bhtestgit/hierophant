@@ -27,7 +27,7 @@
     //添加滚动视图
     UIScrollView* _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREAN_WIDTH, SCREAN_HIGHT)];
     _scrollView.contentSize = CGSizeMake(SCREAN_WIDTH, 700);
-    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"题目信息"]];
+//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"题目信息"]];
     [self.view addSubview:_scrollView];
     
     //选择题目标签

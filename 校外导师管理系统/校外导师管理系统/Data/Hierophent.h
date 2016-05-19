@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface Hierophent : NSObject
+#import <JSONModel.h>
+@interface Hierophent : JSONModel
 @property (nonatomic)NSString* name;
 @property (nonatomic)NSString* password;
 @property (nonatomic)NSString* sex;

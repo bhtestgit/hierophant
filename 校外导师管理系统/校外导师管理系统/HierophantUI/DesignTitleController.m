@@ -46,7 +46,7 @@
         self.navigationItem.title = @"修改";
     }
     _scrollView.contentSize = CGSizeMake(SCREANWIDTH, 700);
-    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
+//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
     _firstTitleLabel.layer.cornerRadius = 5.0;
     _firstTitleLabel.layer.masksToBounds = YES;
     _secondTitleLabel.layer.cornerRadius = 5.0;

@@ -59,7 +59,7 @@
     
     NSString *stuSql = @"create table if not exists student(name text primary key, password text)";
     
-    NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone text, email text, experience text)";
+    NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, pft text, skills text, timeOfPft text, workUnit text, positions text, phone text, email text, experience text)";
     
     NSString *titleSql = @"create table if not exists title(name text primary key,detail text, hieroId text, studentId text, score int)";
     NSString *interlayerSql = @"create table if not exists interlayer(name text primary key, detail text, hieroId text, student1Id text, student2Id text, student3Id text)";

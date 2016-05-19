@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
-@interface InterlayerTitle : NSObject
+#import <JSONModel.h>
+@interface InterlayerTitle : JSONModel
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *detail;
 @property (nonatomic) NSString *hieroId;
