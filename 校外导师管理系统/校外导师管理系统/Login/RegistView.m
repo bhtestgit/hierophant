@@ -104,22 +104,29 @@
         if (_isNill) {
             [self addAlert:(NSMutableString *)@"不能为空" message:(NSMutableString *)@"密码或名字不能为空"];
         } else {
+            //添加监听
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toStuView:) name:@"registStu" object:nil];
             RegistController *registController = [[RegistController alloc] init];
-            BOOL success = [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
+            [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
              ];
-            if (success) {
-                //返回到登陆界面
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
-                [self dismissViewControllerAnimated:YES completion:^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
-                }];
-            } else {
-                //提示注册失败
-                [self addAlert:(NSMutableString *)@"用户已存在，注册失败" message:nil];
-            }
         }
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)toStuView:(NSNotification *)notic{
+    NSMutableArray *array = [notic object];
+    BOOL s = [array objectAtIndex:0];
+    
+    if (s == NO) {
+        //提示注册失败
+        [self addAlert:(NSMutableString *)@"用户已存在，注册失败" message:nil];
+    } else {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
+        [self dismissViewControllerAnimated:YES completion:^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
+        }];
     }
 }
 
@@ -165,6 +172,10 @@
         
     }
     return YES;
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registStu" object:nil];
 }
 
 @end

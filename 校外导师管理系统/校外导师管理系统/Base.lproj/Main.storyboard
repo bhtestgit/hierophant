@@ -543,9 +543,6 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <connections>
-                                            <segue destination="P60-8f-RhZ" kind="show" id="gOu-x4-hQv"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LV1-sm-v26">
                                         <rect key="frame" x="420" y="279" width="60" height="37"/>
@@ -557,9 +554,6 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <connections>
-                                            <segue destination="P60-8f-RhZ" kind="show" id="462-xl-tKP"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qVU-FG-6M2" userLabel="Contact1">
                                         <rect key="frame" x="420" y="101" width="60" height="37"/>
@@ -571,9 +565,6 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
-                                        <connections>
-                                            <segue destination="P60-8f-RhZ" kind="show" id="zXZ-9h-n4j"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -1175,7 +1166,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v0G-cG-vGX">
-                                <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v0G-cG-vGX" id="IFX-FS-Efx">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
@@ -1256,7 +1247,4 @@
         <image name="icon_person" width="30" height="30"/>
         <image name="icon_subject" width="30" height="30"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="zXZ-9h-n4j"/>
-    </inferredMetricsTieBreakers>
 </document>

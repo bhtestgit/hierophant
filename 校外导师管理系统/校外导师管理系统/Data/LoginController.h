@@ -10,6 +10,6 @@
 
 @interface LoginController : NSObject
 
--(int)login:(NSMutableString *)name password:(NSMutableString *)password;
+-(void)login:(NSMutableString *)name password:(NSMutableString *)password;
 
 @end

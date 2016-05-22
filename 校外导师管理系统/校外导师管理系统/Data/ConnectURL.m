@@ -12,14 +12,14 @@ static NSMutableString *url = nil;
 
 +(NSString *)shareURL {
     if (!url) {
-        url = [NSMutableString stringWithFormat:@"http://192.168.1.104:8080/Myservlet/LonginServlet"];
+        url = [NSMutableString stringWithFormat:@"http://192.168.1.104:8080/Myservlet/"];
     }
     
     return (NSString *)url;
 }
 
-+(void)setUrl:(NSMutableString *)newUrl {
-    url = newUrl;
++(void)appendUrl:(NSString *)aUrl {
+    url = [NSMutableString stringWithFormat:@"http://192.168.1.104:8080/Myservlet/%@",aUrl];
 }
 
 @end

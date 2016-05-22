@@ -8,24 +8,110 @@
 
 #import "RegistController.h"
 #import "DataController.h"
+#import <AFNetworking.h>
+#import "ConnectURL.h"
+#import "Student.h"
+#import "Hierophent.h"
 
-@implementation RegistController
-
-//注册
--(BOOL)registWithName:(NSMutableString *)name password:(NSMutableString *)password {
-    //打开数据库
-    DataController *dataController = [[DataController alloc] init];
-    //保存数据
-    BOOL result = [dataController insertStudentTable:name password:password];
-    
-    return result;
+@implementation RegistController {
+    NSString *_name;
+    NSString *_password;
+    //注册结果
+    NSMutableArray *_result;
 }
 
--(BOOL)registWithHieroName:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience {
-    DataController *dataController = [[DataController alloc] init];
+//注册
+-(void)registWithName:(NSMutableString *)name password:(NSMutableString *)password {
+    _name = name;
+    _password = password;
+    [self registStu];
+}
+
+-(void)registStu {
+    //连接服务器
+    __block int r = 0;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"RegisterServlet"];
+    NSString *url = [ConnectURL shareURL];
+    //设置对象
+    Student *stu = [[Student alloc] init];
+    stu.name = _name;
+    stu.password = _password;
+    NSDictionary *dic = stu.toDictionary;
+    [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSMutableArray *result = [NSMutableArray array];
+        if (responseObject) {
+            r = (int)[[responseObject objectForKey:@"result"] integerValue];
+        }
+        if (r == 0) {
+            [result insertObject:@NO atIndex:0];
+        } else {
+            //注册成功
+            DataController *dataController = [[DataController alloc] init];
+            [dataController insertStudentTable:(NSMutableString *)_name password:(NSMutableString *)_password];
+            [result insertObject:@YES atIndex:0];
+        }
+        //发出通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"registStu" object:result];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"获取失败");
+    }];
+}
+
+-(void)registWithHieroName:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience {
     
-    BOOL result = [dataController insertHierophantTable:name password:password sex:sex birthday:birthday PFT:PFT skills:skills timeOfPFT:timeOfPFT workUnit:workUnit positions:positions phone:phone email:email experience:experience];
-    return result;
+    //连接服务器
+    __block int r = 0;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"HieroRegistServlet"];
+    NSString *url = [ConnectURL shareURL];
+    //创建对象
+    Hierophent *hiero = [[Hierophent alloc] init];
+    hiero.name = name;
+    hiero.password = password;
+    hiero.sex = sex;
+    hiero.birthday = birthday;
+    hiero.pft = PFT;
+    hiero.skills = skills;
+    hiero.timeOfPft = timeOfPFT;
+    hiero.workUnit = workUnit;
+    hiero.positions = positions;
+    hiero.phone = phone;
+    hiero.email = email;
+    hiero.experience = experience;
+    NSDictionary *dic = [hiero toDictionary];
+    [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSMutableArray *result = [NSMutableArray array];
+        if (responseObject) {
+            r = (int)[[responseObject objectForKey:@"result"] integerValue];
+        }
+        if (r == 0) {
+            [result insertObject:@NO atIndex:0];
+        } else {
+            //注册成功
+            DataController *dataController = [[DataController alloc] init];
+            [dataController insertHierophantTable:name password:password sex:sex birthday:birthday PFT:PFT skills:skills timeOfPFT:timeOfPFT workUnit:workUnit positions:positions phone:phone email:email experience:experience];
+            [result insertObject:@YES atIndex:0];
+        }
+        //发出通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"registHiero" object:_result];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }];
+    
+    
+//    return result;
     
 }
 

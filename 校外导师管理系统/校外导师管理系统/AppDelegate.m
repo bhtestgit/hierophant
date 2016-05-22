@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "DataController.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface AppDelegate ()
 
@@ -31,6 +32,8 @@
     self.window.rootViewController = view;
     [self.window makeKeyAndVisible];
     
+    //融云
+    [[RCIM sharedRCIM] initWithAppKey:@"lmxuhwagxqiqd"];
     return YES;
 }
 

@@ -3,4 +3,5 @@ target '校外导师' do
   pod "FMDB"
   pod "AFNetworking"
   pod "JSONModel"
+  pod "RongCloudIMKit"
 end

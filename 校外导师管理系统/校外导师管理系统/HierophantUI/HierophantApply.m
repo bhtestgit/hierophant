@@ -263,17 +263,22 @@
         } else if ([_countF.text isEqualToString:@""] || [_passwordF.text isEqualToString:@""] || [_sexF.text isEqualToString:@""] || [_birthdayF.text isEqualToString:@""] || [_PFTF.text isEqualToString:@""] || [_skillsF.text isEqualToString:@""] || [_timeOfPFTF.text isEqualToString:@""] || [_workUnitF.text isEqualToString:@""] || [_positionsF.text isEqualToString:@""] || [_phoneNF.text isEqualToString:@""] || [_emailF.text isEqualToString:@""] || [_experience.text isEqualToString:@""]) {
             [self addAlertTitle:@"信息不完整" andDetail:@"请输入全部信息"];
         }else {
+            //添加监听
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registResult:) name:@"registHiero" object:nil];
             //注册事件
             RegistController *registController = [[RegistController alloc] init];
-            BOOL result = [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(NSMutableString *)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
-        
-            if (result) {
-               //返回到上一层
-                [self dismissViewControllerAnimated:YES completion:nil];
-            } else {
-                [self addAlertTitle:@"注册失败" andDetail:nil];
-            }
+            [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(NSMutableString *)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
         }
+    } else {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+-(void)registResult:(NSNotification *)notic {
+    NSMutableArray *array = notic.object;
+    BOOL s = [array objectAtIndex:0];
+    if (s == 0) {
+        [self addAlertTitle:@"注册失败" andDetail:nil];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -295,6 +300,10 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registHiero" object:nil];
 }
 
 //键盘上浮

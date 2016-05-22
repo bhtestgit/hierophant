@@ -11,6 +11,6 @@
 @interface ConnectURL : NSObject
 +(NSString *)shareURL;
 
-+(void)setUrl:(NSMutableString *)newUrl;
++(void)appendUrl:(NSString *)auUrl;
 
 @end
