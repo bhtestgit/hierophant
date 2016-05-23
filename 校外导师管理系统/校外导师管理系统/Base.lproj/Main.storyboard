@@ -543,6 +543,9 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="connectS3:" destination="y1z-79-JqS" eventType="touchUpInside" id="eik-sk-Lu6"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LV1-sm-v26">
                                         <rect key="frame" x="420" y="279" width="60" height="37"/>
@@ -554,6 +557,9 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="connectS2:" destination="y1z-79-JqS" eventType="touchUpInside" id="aoW-Pk-c2w"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qVU-FG-6M2" userLabel="Contact1">
                                         <rect key="frame" x="420" y="101" width="60" height="37"/>
@@ -565,6 +571,9 @@
                                         <state key="normal" title="联系">
                                             <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </state>
+                                        <connections>
+                                            <action selector="connectS1:" destination="y1z-79-JqS" eventType="touchUpInside" id="lBg-dU-T0B"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>

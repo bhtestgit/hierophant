@@ -4,4 +4,5 @@ target '校外导师' do
   pod "AFNetworking"
   pod "JSONModel"
   pod "RongCloudIMKit"
+  pod "SVProgressHUD" 
 end

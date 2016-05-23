@@ -12,6 +12,7 @@
 #import "ConnectURL.h"
 #import "Student.h"
 #import "Hierophent.h"
+#import <SVProgressHUD.h>
 
 @implementation RegistController {
     NSString *_name;
@@ -43,6 +44,7 @@
     [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [SVProgressHUD dismiss];
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSMutableArray *result = [NSMutableArray array];
         if (responseObject) {
@@ -92,6 +94,7 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [SVProgressHUD dismiss];
         NSMutableArray *result = [NSMutableArray array];
         if (responseObject) {
             r = (int)[[responseObject objectForKey:@"result"] integerValue];
@@ -105,9 +108,10 @@
             [result insertObject:@YES atIndex:0];
         }
         //发出通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"registHiero" object:_result];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"registHiero" object:result];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [SVProgressHUD dismiss];
     }];
     
     

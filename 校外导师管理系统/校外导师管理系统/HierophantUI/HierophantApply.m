@@ -8,6 +8,7 @@
 
 #import "HierophantApply.h"
 #import "HieroViewController.h"
+#import <SVProgressHUD.h>
 
 @interface HierophantApply()<UITextFieldDelegate>
 
@@ -267,6 +268,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(registResult:) name:@"registHiero" object:nil];
             //注册事件
             RegistController *registController = [[RegistController alloc] init];
+            [SVProgressHUD show];
             [registController registWithHieroName:(NSMutableString *)_countF.text password:(NSMutableString *)_passwordF.text sex:(NSMutableString *)_sexF.text birthday:(NSMutableString *)_birthdayF.text PFT:(NSMutableString *)_PFTF.text skills:(NSMutableString *)_skillsF.text timeOfPFT:(NSMutableString *)_timeOfPFTF.text workUnit:(NSMutableString *)_workUnitF.text positions:(NSMutableString *)_positionsF.text phone:(NSMutableString *)_phoneNF.text email:(NSMutableString *)_emailF.text experience:(NSMutableString *)_experience.text];
         }
     } else {
@@ -281,7 +283,9 @@
         [self addAlertTitle:@"注册失败" andDetail:nil];
     } else {
         [self dismissViewControllerAnimated:YES completion:nil];
+        [self addAlertTitle:@"申请成功" andDetail:nil];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registHiero" object:nil];
 }
 
 //判断是否为纯数字
@@ -295,6 +299,7 @@
 -(void)addAlertTitle:(NSString *)title andDetail:(NSString *)detail {
     UIAlertController * alert = [UIAlertController alertControllerWithTitle:title message:detail preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -303,7 +308,7 @@
 }
 
 -(void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registHiero" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registHiero" object:nil];
 }
 
 //键盘上浮

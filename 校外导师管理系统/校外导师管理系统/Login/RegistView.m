@@ -10,6 +10,7 @@
 #import "LoginController.h"
 #import "HieroViewController.h"
 #import "RegistController.h"
+#import <SVProgressHUD.h>
 
 @interface RegistView ()<UITextFieldDelegate>{
 }
@@ -107,6 +108,7 @@
             //添加监听
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toStuView:) name:@"registStu" object:nil];
             RegistController *registController = [[RegistController alloc] init];
+            [SVProgressHUD show];
             [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
              ];
         }
@@ -128,6 +130,8 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
         }];
     }
+    //删除监听
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"registStu" object:nil];
 }
 
 -(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {

@@ -20,6 +20,7 @@ PODS:
   - JSONModel (1.2.0)
   - Masonry (1.0.0)
   - RongCloudIMKit (2.5.2)
+  - SVProgressHUD (2.0.3)
 
 DEPENDENCIES:
   - AFNetworking
@@ -27,6 +28,7 @@ DEPENDENCIES:
   - JSONModel
   - Masonry
   - RongCloudIMKit
+  - SVProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
@@ -34,5 +36,6 @@ SPEC CHECKSUMS:
   JSONModel: 12523685c4b623553ccf844bbbf7007624317b2c
   Masonry: b529bb169217897b6354d4b56b1fada6d475b13d
   RongCloudIMKit: cce0a68e8e5d0baaecb99ec5685048ca8800a27d
+  SVProgressHUD: b0830714205bea1317ea1a2ebc71e5633af334d4
 
 COCOAPODS: 0.39.0

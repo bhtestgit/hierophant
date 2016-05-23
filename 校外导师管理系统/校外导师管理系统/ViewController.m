@@ -15,6 +15,7 @@
 #import <AFNetworking.h>
 #import "Student.h"
 #import "ConnectURL.h"
+#import <SVProgressHUD.h>
 
 @interface ViewController (){
     UIButton *_login;
@@ -99,8 +100,6 @@
             textField.secureTextEntry = YES;
         }];
         [loginAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            //释放观察者
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
         }]];
         
         __weak typeof(self)weakSelf = self;
@@ -119,8 +118,8 @@
         ]];
         
         [self presentViewController:loginAlert animated:YES completion:nil];
-        //注册界面
     } else if (sender.tag == 12) {
+        //注册界面
         //添加监听
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(success) name:@"success" object:nil];
         RegistView *registView = [[RegistView alloc] init];
@@ -154,10 +153,12 @@
         studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:studentView animated:YES completion:nil];
     }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"isLogin" object:nil];
 }
 
 -(void)success {
     [self addAlert:(NSMutableString *)@"注册成功" message:(NSMutableString *)@"现在可以登陆了"];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
 }
 
 -(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {
@@ -172,8 +173,8 @@
 }
 
 -(void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"success" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"isLogin" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"success" object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"isLogin" object:nil];
 }
 
 @end
