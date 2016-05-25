@@ -158,7 +158,7 @@
 
 -(void)success {
     [self addAlert:(NSMutableString *)@"注册成功" message:(NSMutableString *)@"现在可以登陆了"];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"success" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"success" object:nil];
 }
 
 -(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {

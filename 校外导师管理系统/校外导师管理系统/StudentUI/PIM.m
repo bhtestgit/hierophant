@@ -106,11 +106,7 @@
         mainView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:mainView animated:YES completion:^{
             //清空用户信息
-            NSString *name = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-            NSLog(@"注销前用户信息：%@", name);
             [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"userName"];
-            NSString *name1 = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-            NSLog(@"注销后用户名：%@", name1);
         }];
     }
 }

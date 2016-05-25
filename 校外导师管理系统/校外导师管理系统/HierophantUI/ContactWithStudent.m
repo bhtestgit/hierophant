@@ -8,7 +8,10 @@
 
 #import "ContactWithStudent.h"
 #import <RongIMKit/RongIMKit.h>
+#import "GetToken.h"
+#import <Masonry.h>
 @interface ContactWithStudent() {
+    UIButton *connectWithDean;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UILabel *stu1L;
@@ -17,7 +20,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *contact1;
 @property (weak, nonatomic) IBOutlet UIButton *contact2;
 @property (weak, nonatomic) IBOutlet UIButton *contact3;
-
+@property (weak, nonatomic) IBOutlet UILabel *s1ID;
+@property (weak, nonatomic) IBOutlet UILabel *s2ID;
+@property (weak, nonatomic) IBOutlet UILabel *s3ID;
 
 @end
 
@@ -39,19 +44,42 @@
     _contact2.layer.masksToBounds = YES;
     _contact3.layer.cornerRadius = 5.0;
     _contact3.layer.masksToBounds = YES;
+    //教务按钮
+    connectWithDean = [[UIButton alloc] init];
+    [connectWithDean setTitle:@"联系教务" forState:UIControlStateNormal];
+    connectWithDean.layer.cornerRadius = 5.0;
+    connectWithDean.layer.masksToBounds = YES;
+    connectWithDean.backgroundColor = [UIColor orangeColor];
+    [connectWithDean addTarget:self action:@selector(connectDean:) forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:connectWithDean];
+    
+    [connectWithDean mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_s3ID.mas_bottom).offset(80);
+        make.centerX.offset(0);
+    }];
+    
+    //连接融云connectViewRongyun
+    NSString *token = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    if (token) {
+        [[GetToken getToken] connectViewRongyun];
+    }
 }
 
 - (IBAction)connectS1:(UIButton *)sender {
-    NSString *sid = _stu1L.text;
+    NSString *sid = _s1ID.text;
     [self initChatViewWithSid:sid];
 }
 - (IBAction)connectS2:(UIButton *)sender {
-    NSString *sid = _stu2L.text;
+    NSString *sid = _s2ID.text;
     [self initChatViewWithSid:sid];
 }
 - (IBAction)connectS3:(UIButton *)sender {
-    NSString *sid = _stu3L.text;
+    NSString *sid = _s3ID.text;
     [self initChatViewWithSid:sid];
+}
+- (void)connectDean:(UIButton *)sender {
+    NSString *dID = @"deanOfHierophant";
+    [self initChatViewWithSid:dID];
 }
 
 - (void)initChatViewWithSid:(NSString *)sid {
@@ -64,7 +92,7 @@
     //设置聊天会话界面要显示的标题
     chat.title = [NSString stringWithFormat:@"正在和%@交流", sid];
     //显示聊天会话界面
-    
+    chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
 

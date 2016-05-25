@@ -14,7 +14,7 @@
 -(instancetype)init;
 
 //添加学生数据
--(BOOL)insertStudentTable:(NSMutableString *)name password:(NSMutableString *)password;
+-(BOOL)insertStudentTable:(NSMutableString *)name number:(NSMutableString *)number password:(NSMutableString *)password;
 //添加老师数据
 -(BOOL)insertHierophantTable:(NSMutableString *)name password:(NSMutableString *)password sex:(NSMutableString *)sex birthday:(NSMutableString *)birthday PFT:(NSMutableString *)PFT skills:(NSMutableString *)skills timeOfPFT:(NSMutableString *)timeOfPFT workUnit:(NSMutableString *)workUnit positions:(NSMutableString *)positions phone:(NSMutableString *)phone email:(NSMutableString *)email experience:(NSMutableString *)experience;
 //添加题目数据

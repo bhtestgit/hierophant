@@ -16,6 +16,7 @@
 }
 
 @property(nonatomic)UITextField* countTextField;
+@property(nonatomic)UITextField* numberTextField;
 @property(nonatomic)UITextField* passwordTextField;
 @property(nonatomic)BOOL isNill;
 @end
@@ -48,12 +49,17 @@
     UILabel *_countLable = [[UILabel alloc] initWithFrame:CGRectMake(30, MIDY, 40, 37)];
     _countLable.text = @"账户";
     _countLable.textColor = [UIColor greenColor];
-    
-    UILabel *_passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, MIDY + 80, 40, 37)];
+    //学号
+    UILabel *_numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, MIDY + 60, 40, 37)];
+    _numberLabel.text = @"学号";
+    _numberLabel.textColor = [UIColor greenColor];
+    //密码
+    UILabel *_passwordLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, MIDY + 120, 40, 37)];
     _passwordLabel.text = @"密码";
     _passwordLabel.textColor = [UIColor greenColor];
     
     [self.view addSubview:_countLable];
+    [self.view addSubview:_numberLabel];
     [self.view addSubview:_passwordLabel];
     
     //账户、密码输入框
@@ -62,9 +68,18 @@
     _countTextField.bounds = CGRectMake(0, 0, SCREEN_W *0.62, 40);
     _countTextField.center = CGPointMake(MIDX+20, _countLable.center.y);
     _countTextField.borderStyle = UITextBorderStyleRoundedRect;  //圆角
-    _countTextField.placeholder = @"账户";
+    _countTextField.placeholder = @"之后不能修改";
     [_countTextField addTarget:self action:@selector(textOnEdit) forControlEvents:UIControlEventEditingChanged];
-    
+    //学号
+    _numberTextField = [[UITextField alloc] init];
+    _numberTextField.delegate = self;
+    _numberTextField.bounds = CGRectMake(0, 0, SCREEN_W *0.62, 40);
+    _numberTextField.center = CGPointMake(MIDX+20, _numberLabel.center.y);
+    _numberTextField.borderStyle = UITextBorderStyleRoundedRect;  //圆角
+    _numberTextField.placeholder = @"之后不能修改";
+    _numberTextField.keyboardType = UIKeyboardTypeNumberPad;
+    [_numberTextField addTarget:self action:@selector(textOnEdit) forControlEvents:UIControlEventEditingChanged];
+    //密码
     _passwordTextField = [[UITextField alloc] init];
     _passwordTextField.delegate = self;
     _passwordTextField.center = CGPointMake(MIDX+20, _passwordLabel.center.y);
@@ -75,6 +90,7 @@
     [_passwordTextField addTarget:self action:@selector(textOnEdit) forControlEvents:UIControlEventEditingChanged];
     
     [self.view addSubview:_countTextField];
+    [self.view addSubview:_numberTextField];
     [self.view addSubview:_passwordTextField];
     
     //确定按钮
@@ -109,7 +125,7 @@
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(toStuView:) name:@"registStu" object:nil];
             RegistController *registController = [[RegistController alloc] init];
             [SVProgressHUD show];
-            [registController registWithName:(NSMutableString *)_countTextField.text password:(NSMutableString *)_passwordTextField.text
+            [registController registWithName:(NSMutableString *)_countTextField.text number:(NSMutableString *)_numberTextField.text password:(NSMutableString *)_passwordTextField.text
              ];
         }
     } else {
@@ -131,7 +147,7 @@
         }];
     }
     //删除监听
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"registStu" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"registStu" object:nil];
 }
 
 -(void)addAlert:(NSMutableString *)title message:(NSMutableString *)message {
@@ -141,7 +157,7 @@
 }
 //监听
 -(void)textOnEdit {
-    _isNill = [_countTextField.text isEqualToString:[NSString string]] || [_passwordTextField.text isEqualToString:[NSString string]];
+    _isNill = [_countTextField.text isEqualToString:[NSString string]] || [_passwordTextField.text isEqualToString:[NSString string]]|| [_numberTextField.text isEqualToString:[NSString string]];
 }
 
 //回收键盘
@@ -160,6 +176,7 @@
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [_countTextField resignFirstResponder];
+    [_numberTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
 }
 

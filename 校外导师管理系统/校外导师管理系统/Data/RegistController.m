@@ -16,14 +16,16 @@
 
 @implementation RegistController {
     NSString *_name;
+    NSString *_number;
     NSString *_password;
     //注册结果
     NSMutableArray *_result;
 }
 
 //注册
--(void)registWithName:(NSMutableString *)name password:(NSMutableString *)password {
+-(void)registWithName:(NSMutableString *)name number:(NSMutableString *)number password:(NSMutableString *)password {
     _name = name;
+    _number = number;
     _password = password;
     [self registStu];
 }
@@ -39,6 +41,7 @@
     //设置对象
     Student *stu = [[Student alloc] init];
     stu.name = _name;
+    stu.number = _number;
     stu.password = _password;
     NSDictionary *dic = stu.toDictionary;
     [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -55,7 +58,7 @@
         } else {
             //注册成功
             DataController *dataController = [[DataController alloc] init];
-            [dataController insertStudentTable:(NSMutableString *)_name password:(NSMutableString *)_password];
+            [dataController insertStudentTable:(NSMutableString *)stu.name number:(NSMutableString *)stu.number password:(NSMutableString *)stu.password];
             [result insertObject:@YES atIndex:0];
         }
         //发出通知

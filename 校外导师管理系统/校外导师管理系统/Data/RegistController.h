@@ -10,7 +10,7 @@
 
 @interface RegistController : NSObject
 
--(void)registWithName:(NSMutableString *)name password:(NSMutableString *)password;
+-(void)registWithName:(NSMutableString *)name number:(NSMutableString *)number password:(NSMutableString *)password;
 
 /*create table if not exists hierophant(name text primary key, password text, sex text, birthday text, PFT text, skills text, timeOfPFT text, workUnit text, positions text, phone int, email text, experience text*/
 

@@ -57,7 +57,7 @@
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
     
-    NSString *stuSql = @"create table if not exists student(name text primary key, password text)";
+    NSString *stuSql = @"create table if not exists student(name text primary key,  number text, password text)";
     
     NSString *hieroSql = @"create table if not exists hierophant(name text primary key, password text, sex text, birthday text, pft text, skills text, timeOfPft text, workUnit text, positions text, phone text, email text, experience text)";
     
@@ -79,13 +79,13 @@
 }
 
 //添加学生数据
--(BOOL)insertStudentTable:(NSMutableString *)name password:(NSMutableString *)password{
+-(BOOL)insertStudentTable:(NSMutableString *)name number:(NSMutableString *)number password:(NSMutableString *)password {
     //打开数据库
     [self openDataBase:[self getDataFilePath]];
     //语句
-    NSString *sql = @"insert into student(name, password) values(?, ?)";
+    NSString *sql = @"insert into student(name, number, password) values(?, ?, ?)";
     
-    if ([_db executeUpdate:sql,name, password]) {
+    if ([_db executeUpdate:sql, name, number, password]) {
         [_db close];
         return YES;
     }
@@ -137,8 +137,10 @@
     FMResultSet *result = [_db executeQuery:sql, stuId];
     if ([result next]) {
         NSString *name = [result stringForColumnIndex:0];
-        NSString *password = [result stringForColumnIndex:1];
+        NSString *number = [result stringForColumnIndex:1];
+        NSString *password = [result stringForColumnIndex:2];
         [datas addObject:name];
+        [datas addObject:number];
         [datas addObject:password];
     }
     

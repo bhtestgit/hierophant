@@ -9,8 +9,10 @@
 #import "InformationViewController.h"
 #import "DataController.h"
 #import <Masonry.h>
+#import "ViewController.h"
 
 @interface InformationViewController() {
+    UIButton *quiteB;
 }
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *change;
@@ -43,10 +45,18 @@
     _experience.text = @"工作经验";
     _experience.bounds = CGRectMake(0, 0, 90, 37);
     _experienceF = [[UITextField alloc] init];
-//    _experienceF.bounds = CGRectMake(0, 0, 100, 60);
     _experienceF.backgroundColor = [UIColor whiteColor];
     _experienceF.layer.cornerRadius = 5.0;
     _experienceF.layer.masksToBounds = YES;
+    
+    quiteB = [[UIButton alloc] init];
+    [quiteB setTitle:@"退出登录" forState:UIControlStateNormal];
+    quiteB.layer.cornerRadius = 5.0;
+    quiteB.layer.masksToBounds = YES;
+    quiteB.backgroundColor = [UIColor greenColor];
+    [quiteB addTarget:self action:@selector(quit) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:quiteB];
+    
     [self.view addSubview:_experience];
     [self.view addSubview:_experienceF];
     
@@ -113,9 +123,15 @@
     
     [_change mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_experienceF.mas_bottom).offset(20);
+        make.centerX.offset(-60);
     }];
     
-    [self loadData];
+    [quiteB mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(_change);
+        make.centerX.offset(60);
+    }];
+    
+//    [self loadData];
 }
 
 -(void)viewDidLayoutSubviews {
@@ -141,6 +157,20 @@
     _phone.text = [(NSNumber *)[informations objectAtIndex:9] stringValue];
     _email.text = [informations objectAtIndex:10];
     _experienceF.text = [informations objectAtIndex:11];
+}
+
+-(void)quit {
+    //通知是否退出
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否退出" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //退出
+        [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"userName"];
+        ViewController *mainView = [[ViewController alloc] init];
+        mainView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self presentViewController:mainView animated:YES completion:nil];
+    }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

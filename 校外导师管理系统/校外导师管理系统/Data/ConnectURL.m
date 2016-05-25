@@ -19,7 +19,7 @@ static NSMutableString *url = nil;
 }
 
 +(void)appendUrl:(NSString *)aUrl {
-    url = [NSMutableString stringWithFormat:@"http://192.168.1.104:8080/Myservlet/%@",aUrl];
+    url = [NSMutableString stringWithFormat:@"http://192.168.1.104:8080/Myservlet/%@", aUrl];
 }
 
 @end
