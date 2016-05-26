@@ -27,6 +27,11 @@
 		0C141B0C1CB528D3007E6F51 /* GradeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C141B0B1CB528D3007E6F51 /* GradeViewController.m */; };
 		0C141B0F1CB52905007E6F51 /* InformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C141B0E1CB52905007E6F51 /* InformationViewController.m */; };
 		0C141B121CBA7B73007E6F51 /* ExchangeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C141B111CBA7B73007E6F51 /* ExchangeTableViewController.m */; };
+		0C2659BC1CF69ACD008A5470 /* DeanStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C2659BB1CF69ACD008A5470 /* DeanStoryboard.storyboard */; };
+		0C2659BF1CF69E2F008A5470 /* ManageHieroTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659BE1CF69E2F008A5470 /* ManageHieroTableViewController.m */; };
+		0C2659C21CF69E5E008A5470 /* ManageTitleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C11CF69E5E008A5470 /* ManageTitleTableViewController.m */; };
+		0C2659C51CF69EB4008A5470 /* CommunicateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C41CF69EB4008A5470 /* CommunicateTableViewController.m */; };
+		0C2659C81CF6AB56008A5470 /* HierophentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C71CF6AB56008A5470 /* HierophentManager.m */; };
 		0C309EF71CF3F0050078F28F /* GetToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EF61CF3F0050078F28F /* GetToken.m */; };
 		0C309EFD1CF44E840078F28F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EFC1CF44E840078F28F /* Reachability.m */; };
 		0C309F001CF460DB0078F28F /* GetTitlesByHieroId.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EFF1CF460DB0078F28F /* GetTitlesByHieroId.m */; };
@@ -96,6 +101,15 @@
 		0C141B0E1CB52905007E6F51 /* InformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationViewController.m; sourceTree = "<group>"; };
 		0C141B101CBA7B73007E6F51 /* ExchangeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExchangeTableViewController.h; sourceTree = "<group>"; };
 		0C141B111CBA7B73007E6F51 /* ExchangeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExchangeTableViewController.m; sourceTree = "<group>"; };
+		0C2659BB1CF69ACD008A5470 /* DeanStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = DeanStoryboard.storyboard; path = StudentUI/DeanStoryboard.storyboard; sourceTree = "<group>"; };
+		0C2659BD1CF69E2F008A5470 /* ManageHieroTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManageHieroTableViewController.h; path = "校外导师管理系统/StudentUI/ManageHieroTableViewController.h"; sourceTree = SOURCE_ROOT; };
+		0C2659BE1CF69E2F008A5470 /* ManageHieroTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManageHieroTableViewController.m; path = "校外导师管理系统/StudentUI/ManageHieroTableViewController.m"; sourceTree = SOURCE_ROOT; };
+		0C2659C01CF69E5E008A5470 /* ManageTitleTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ManageTitleTableViewController.h; path = "校外导师管理系统/StudentUI/ManageTitleTableViewController.h"; sourceTree = SOURCE_ROOT; };
+		0C2659C11CF69E5E008A5470 /* ManageTitleTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ManageTitleTableViewController.m; path = "校外导师管理系统/StudentUI/ManageTitleTableViewController.m"; sourceTree = SOURCE_ROOT; };
+		0C2659C31CF69EB4008A5470 /* CommunicateTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunicateTableViewController.h; path = "校外导师管理系统/StudentUI/CommunicateTableViewController.h"; sourceTree = SOURCE_ROOT; };
+		0C2659C41CF69EB4008A5470 /* CommunicateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunicateTableViewController.m; path = "校外导师管理系统/StudentUI/CommunicateTableViewController.m"; sourceTree = SOURCE_ROOT; };
+		0C2659C61CF6AB56008A5470 /* HierophentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HierophentManager.h; sourceTree = "<group>"; };
+		0C2659C71CF6AB56008A5470 /* HierophentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierophentManager.m; sourceTree = "<group>"; };
 		0C309EF51CF3F0050078F28F /* GetToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetToken.h; sourceTree = "<group>"; };
 		0C309EF61CF3F0050078F28F /* GetToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetToken.m; sourceTree = "<group>"; };
 		0C309EFB1CF44E840078F28F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -173,6 +187,7 @@
 				0C098B161C7B1AA500ACBBB6 /* AppDelegate.m */,
 				0C098B181C7B1AA500ACBBB6 /* ViewController.h */,
 				0C098B191C7B1AA500ACBBB6 /* ViewController.m */,
+				0C2659BB1CF69ACD008A5470 /* DeanStoryboard.storyboard */,
 				0C098B1B1C7B1AA500ACBBB6 /* Main.storyboard */,
 				0C098B1E1C7B1AA500ACBBB6 /* Assets.xcassets */,
 				0C098B201C7B1AA500ACBBB6 /* LaunchScreen.storyboard */,
@@ -203,6 +218,12 @@
 		0C098B2A1C7B1C2300ACBBB6 /* DeanUI */ = {
 			isa = PBXGroup;
 			children = (
+				0C2659BD1CF69E2F008A5470 /* ManageHieroTableViewController.h */,
+				0C2659BE1CF69E2F008A5470 /* ManageHieroTableViewController.m */,
+				0C2659C01CF69E5E008A5470 /* ManageTitleTableViewController.h */,
+				0C2659C11CF69E5E008A5470 /* ManageTitleTableViewController.m */,
+				0C2659C31CF69EB4008A5470 /* CommunicateTableViewController.h */,
+				0C2659C41CF69EB4008A5470 /* CommunicateTableViewController.m */,
 			);
 			path = DeanUI;
 			sourceTree = "<group>";
@@ -284,6 +305,8 @@
 				0C309EFF1CF460DB0078F28F /* GetTitlesByHieroId.m */,
 				0C309F011CF46AD90078F28F /* InsertTitleController.h */,
 				0C309F021CF46AD90078F28F /* InsertTitleController.m */,
+				0C2659C61CF6AB56008A5470 /* HierophentManager.h */,
+				0C2659C71CF6AB56008A5470 /* HierophentManager.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -369,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C098B221C7B1AA500ACBBB6 /* LaunchScreen.storyboard in Resources */,
+				0C2659BC1CF69ACD008A5470 /* DeanStoryboard.storyboard in Resources */,
 				0C098B1F1C7B1AA500ACBBB6 /* Assets.xcassets in Resources */,
 				0C098B1D1C7B1AA500ACBBB6 /* Main.storyboard in Resources */,
 			);
@@ -446,8 +470,10 @@
 			files = (
 				0C863EB41C8872AA004A2B48 /* PIM.m in Sources */,
 				0C141B0C1CB528D3007E6F51 /* GradeViewController.m in Sources */,
+				0C2659BF1CF69E2F008A5470 /* ManageHieroTableViewController.m in Sources */,
 				0C098B1A1C7B1AA500ACBBB6 /* ViewController.m in Sources */,
 				0C863EB11C88722C004A2B48 /* InformationOfHierophant.m in Sources */,
+				0C2659C51CF69EB4008A5470 /* CommunicateTableViewController.m in Sources */,
 				0CE6511B1C86E8C100FF0645 /* BaseViewController.m in Sources */,
 				04BBEAB61CEC502E00673CD8 /* InterlayerTitle.m in Sources */,
 				042469001CC9F47B00EE206C /* LoginController.m in Sources */,
@@ -469,11 +495,13 @@
 				0CE6511E1C86F0DE00FF0645 /* StudentViewController.m in Sources */,
 				0C098B141C7B1AA500ACBBB6 /* main.m in Sources */,
 				0CCC5A6F1CED583C00FAA7BB /* ConnectURL.m in Sources */,
+				0C2659C21CF69E5E008A5470 /* ManageTitleTableViewController.m in Sources */,
 				0C141AFD1CB14341007E6F51 /* HieroViewController.m in Sources */,
 				0C141B061CB2A697007E6F51 /* DesignTitleController.m in Sources */,
 				04382E7A1CCDE5E2005B191B /* RegistController.m in Sources */,
 				0C141B091CB52899007E6F51 /* ContactWithStudent.m in Sources */,
 				0C863EAE1C8870B8004A2B48 /* Subject.m in Sources */,
+				0C2659C81CF6AB56008A5470 /* HierophentManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

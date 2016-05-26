@@ -105,7 +105,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"insertResult" object:nil];
 }
 
-//判断出题结果
+//判断更新结果
 -(void)updateResult:(NSNotification *)notice {
     NSInteger r = [[notice.object objectForKey:@"result"] integerValue];
     if (r == 0) {
@@ -119,6 +119,21 @@
     //撤销监听
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateResult" object:nil];
 }
+
+//判断删除结果
+-(void)deleteResult:(NSNotification *)notice {
+    NSInteger r = [[notice.object objectForKey:@"result"] integerValue];
+    if (r == 0) {
+        //出题失败
+        [self addAlertWithTitle:@"服务器删除失败" andDetail:nil];
+    } else {
+        //刷新
+        [self reloadData];
+    }
+    //撤销监听
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"deleteResult" object:nil];
+}
+
 
 //设置本地数据
 -(void)insertLocalTitle {
@@ -296,16 +311,19 @@
 }
 
 //定义编辑样式
-//- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return UITableViewCellEditingStyleDelete;
-//}
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleDelete;
+}
 
 //进入编辑模式，按下出现的编辑按钮后
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    [tableView setEditing:NO animated:YES];
-//}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    //获取删除的名字
+    NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+    InsertTitleController *deleteController = [[InsertTitleController alloc] init];
+    //删除
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteResult:) name:@"deleteResult" object:nil];
+    [deleteController deleteTitleInServletWithTitle:name];
+}
 
 //通知
 -(void)addAlertWithTitle:(NSString *)titleA andDetail:(NSString *)detailA {

@@ -15,4 +15,6 @@
 
 -(void)updateTitleInServletWithOldTitle:(NSString *)oldTitle andNewTitle:(NSString *)newTitle andNewDetail:(NSString *)newDetail;
 
+-(void)deleteTitleInServletWithTitle:(NSString *)title;
+
 @end

@@ -67,6 +67,8 @@
                 [result insertObject:[NSNumber numberWithInt:3] atIndex:0];
                 [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"userName"];
                 [[GetToken getToken] getTokenWithUid:name];
+            } else if (r == 4) {
+                [result insertObject:[NSNumber numberWithInt:4] atIndex:0];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:@"isLogin" object:result];
         }

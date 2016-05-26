@@ -10,4 +10,6 @@
 
 @interface InformationViewController : UIViewController
 
+-(void)setButtonByManagerWithName:(NSString *)hieroId;
+
 @end

@@ -141,7 +141,9 @@
     if (s == 0) {
         [self addAlert:(NSMutableString *)@"登录失败" message:nil];
     } else if (s == 1) {
-        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"DeanStoryboard" bundle:nil];
+        UIViewController *deanView = [storyboard instantiateViewControllerWithIdentifier:@"DeanTabbar"];
+        [self presentViewController:deanView animated:YES completion:nil];
     } else if (s == 2) {
         //老师
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -152,6 +154,9 @@
         StudentViewController *studentView = [[StudentViewController alloc] init];
         studentView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:studentView animated:YES completion:nil];
+    } else if (s == 4) {
+        //通知等待审核
+        [self addAlert:(NSMutableString *)@"审核" message:(NSMutableString *)@"请在教务审核之后登录"];
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"isLogin" object:nil];
 }
