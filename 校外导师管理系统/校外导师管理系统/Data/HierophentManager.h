@@ -13,6 +13,8 @@
 //得到所有申请者
 +(void)getAllInterHiero;
 
++(void)getAllHiero;
+
 +(void)getInterHieroByName:(NSString *)name withUrl:(NSString *)url;
 
 +(void)agreeHieroApplyWithName:(NSString *)name;

@@ -9,32 +9,36 @@
 #import "PIM.h"
 #import <Masonry.h>
 #import "ViewController.h"
+#import "StudentManager.h"
+#import "Student.h"
+#import "GetToken.h"
+#import <RongIMKit/RongIMKit.h>
 
-@implementation PIM
+@implementation PIM {
+    UILabel* _nameD;
+    UILabel* _stuIdD;
+}
 
 -(void)viewDidLoad{
     [super viewDidLoad];
     
     [self initializeAppearance];
+    //连接融云connectViewRongyun
+    NSString *token = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    if (token) {
+        [[GetToken getToken] connectViewRongyun];
+    }
 }
 
 -(void)initializeAppearance{
     [super initializeAppearance];
     
-//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"个人信息"]];
-    
     //姓名
     UILabel* _name = [[UILabel alloc] initWithFrame:CGRectMake(16, 100, 40, 37)];
-//    _name.backgroundColor = [UIColor orangeColor];
-    _name.layer.cornerRadius = 5.0;
-    _name.layer.masksToBounds = YES;
-    _name.layer.borderWidth = 1.0;
-    _name.layer.borderColor = [UIColor grayColor].CGColor;
     _name.text = @"姓名";
     _name.textAlignment = NSTextAlignmentCenter;
-//    _name.textColor = [UIColor whiteColor];
     [self.view addSubview:_name];
-    UILabel* _nameD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_name.frame)+30, CGRectGetMinY(_name.frame), 200, 37)];
+    _nameD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_name.frame)+30, CGRectGetMinY(_name.frame), 200, 37)];
     _nameD.backgroundColor = [UIColor colorWithRed:235/255.0 green:236/255.0 blue:237/255.0 alpha:1];
     _nameD.layer.cornerRadius = 5.0;
     _nameD.layer.masksToBounds = YES;
@@ -43,22 +47,15 @@
     [self.view addSubview:_nameD];
     //学号
     UILabel* _stuId = [[UILabel alloc] initWithFrame:CGRectMake(16, CGRectGetMaxY(_name.frame)+20, 40, 37)];
-//    _stuId.backgroundColor = [UIColor orangeColor];
-    _stuId.layer.cornerRadius = 5.0;
-    _stuId.layer.masksToBounds = YES;
-    _stuId.layer.borderWidth = 1.0;
-    _stuId.layer.borderColor = [UIColor grayColor].CGColor;
     _stuId.text = @"学号";
     _stuId.textAlignment = NSTextAlignmentCenter;
-//    _stuId.textColor = [UIColor whiteColor];
     [self.view addSubview:_stuId];
-    UILabel* _stuIdD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_stuId.frame)+30, CGRectGetMinY(_stuId.frame), 200, 37)];
+    _stuIdD = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(_stuId.frame)+30, CGRectGetMinY(_stuId.frame), 200, 37)];
     _stuIdD.backgroundColor = [UIColor colorWithRed:235/255.0 green:236/255.0 blue:237/255.0 alpha:1];
     _stuIdD.layer.cornerRadius = 5.0;
     _stuIdD.layer.masksToBounds = YES;
     _stuIdD.layer.borderWidth = 1.0;
     _stuIdD.layer.borderColor = [UIColor grayColor].CGColor;
-    _stuIdD.text = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     [self.view addSubview:_stuIdD];
     
     UIButton* _comfirm = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.view.frame)/2-100, CGRectGetMaxY(self.view.frame)-120, 80, 37)];
@@ -67,8 +64,9 @@
     _comfirm.layer.masksToBounds = YES;
     _comfirm.layer.borderWidth = 1.0;
     _comfirm.layer.borderColor = [UIColor grayColor].CGColor;
-    [_comfirm setTitle:@"修改信息" forState:UIControlStateNormal];
+    [_comfirm setTitle:@"修改密码" forState:UIControlStateNormal];
     [_comfirm setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_comfirm addTarget:self action:@selector(changePassword) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_comfirm];
     
     UIButton *logout = [[UIButton alloc] init];
@@ -90,6 +88,26 @@
     }];
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [self reload];
+}
+
+-(void)reload {
+    //获取数据
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotMessage:) name:@"gotMessage" object:nil];
+    [StudentManager getStuByName:name];
+}
+
+-(void)gotMessage:(NSNotification *)notice {
+    //设置数据
+    Student *stu = [[Student alloc] initWithDictionary:notice.object error:nil];
+    _nameD.text = stu.name;
+    _stuIdD.text = stu.number;
+    //移除监听
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotMessage" object:nil];
+}
+
 -(void)logoutAlert {
     //通知是否退出
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"是否退出" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -107,8 +125,13 @@
         [self presentViewController:mainView animated:YES completion:^{
             //清空用户信息
             [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"userName"];
+            [[RCIM sharedRCIM] disconnect:YES];
         }];
     }
+}
+
+-(void)changePassword {
+    //修改密码
 }
 
 -(void)dealloc {

@@ -7,8 +7,12 @@
 //
 
 #import "CommunicateTableViewController.h"
+#import "HierophentManager.h"
+#import <RongIMKit/RongIMKit.h>
 
-@interface CommunicateTableViewController ()
+@interface CommunicateTableViewController ()<UITableViewDelegate, UITableViewDataSource> {
+    NSMutableArray *names;  //所有名字
+}
 
 @end
 
@@ -17,11 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    names = [NSMutableArray array];
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -29,27 +33,83 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillAppear:(BOOL)animated {
+    [self reload];
+}
+
+//判断是否直接联系
+-(void)viewDidAppear:(BOOL)animated {
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"connetHiero"];
+    if (![name isEqualToString:@""] && name) {
+        [self startCommunicateWithTargetId:name];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [[NSUserDefaults standardUserDefaults] setObject:@"" forKey:@"connetHiero"];
+}
+
+-(void)reload {
+    //添加监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setHieroName:) name:@"gotNames" object:nil];
+    [HierophentManager getAllHiero];
+}
+
+-(void)setHieroName:(NSNotification *)notice {
+    NSDictionary *allName = notice.object;
+    names = [allName objectForKey:@"names"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotNames" object:nil];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return @"点击老师名字进行联系";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return names.count;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    // Configure the cell...
-    
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    cell.textLabel.text = [names objectAtIndex:indexPath.row];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
     return cell;
 }
-*/
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //获取老师名字
+    NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+    //建立聊天页面
+    [self startCommunicateWithTargetId:name];
+}
+
+-(void)startCommunicateWithTargetId:(NSString *)name {
+    //新建一个聊天会话View Controller对象
+    RCConversationViewController *chat = [[RCConversationViewController alloc]init];
+    //设置会话的类型，如单聊、讨论组、群聊、聊天室、客服、公众服务会话等
+    chat.conversationType = ConversationType_PRIVATE;
+    //设置会话的目标会话ID。（单聊、客服、公众服务会话为对方的ID，讨论组、群聊、聊天室为会话的ID）
+    chat.targetId = name;
+    //设置聊天会话界面要显示的标题
+    chat.title = [NSString stringWithFormat:@"正在和%@交流", name];
+    //显示聊天会话界面
+    chat.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:chat animated:YES];
+}
 
 /*
 // Override to support conditional editing of the table view.

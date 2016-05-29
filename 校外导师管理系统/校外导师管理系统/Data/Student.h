@@ -13,4 +13,5 @@
 @property (nonatomic)NSString* name;
 @property (nonatomic)NSString* number;
 @property (nonatomic)NSString* password;
+@property (nonatomic)NSString* isSelected;
 @end

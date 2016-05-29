@@ -1,91 +1,115 @@
 //
-//  HierophentManager.m
+//  TitleManager.m
 //  校外导师
 //
-//  Created by 柏涵 on 16/5/26.
+//  Created by 柏涵 on 16/5/27.
 //  Copyright © 2016年 柏涵. All rights reserved.
 //
 
-#import "HierophentManager.h"
+#import "TitleManager.h"
 #import <AFNetworking.h>
 #import "ConnectURL.h"
 
-@implementation HierophentManager
+@implementation TitleManager
 
-+(void)getAllInterHiero {
++(void)getAllTitle {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //获取url
-    [ConnectURL appendUrl:@"GetAllInterHiero"];
+    [ConnectURL appendUrl:@"GetAllTitlesServlet"];
     NSString *url = [ConnectURL shareURL];
     [manager POST:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         //发送通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotHieros" object:responseObject];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotTitles" object:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSLog(@"连接服务器失败");
     }];
 }
 
-+(void)getAllHiero {
++(void)getAllTitleAndHiero {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //获取url
-    [ConnectURL appendUrl:@"GetAllHiero"];
+    [ConnectURL appendUrl:@"GetAllTitleAndHieroServlet"];
     NSString *url = [ConnectURL shareURL];
     [manager POST:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         //发送通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotNames" object:responseObject];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotTitlesAndHieros" object:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSLog(@"连接服务器失败");
     }];
 }
 
-+(void)getInterHieroByName:(NSString *)name withUrl:(NSString *)url{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", nil];
-    [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        //发送通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotOneHiero" object:responseObject];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-        NSLog(@"连接服务器失败");
-    }];
-}
-
-+(void)agreeHieroApplyWithName:(NSString *)name {
++(void)confirmTitleWithName:(NSString *)name{
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //获取url
-    [ConnectURL appendUrl:@"ConfirmHierophant"];
-    NSString *url = [ConnectURL shareURL];
+    [ConnectURL appendUrl:@"ConfirmTitleServlet"];
+    //设置数据
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", nil];
+    NSString *url = [ConnectURL shareURL];
     [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-            //发送通知
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"agreeResult" object:responseObject];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"confirmTitle" object:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSLog(@"连接服务器失败");
     }];
 }
 
-+(void)refuseHieroApplyWithName:(NSString *)name {
++(void)selectTitleWithName:(NSString *)name andTitle:(NSString *)title {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     //获取url
-    [ConnectURL appendUrl:@"DeleteInterHieroServlet"];
+    [ConnectURL appendUrl:@"ChooseTitleServlet"];
+    //设置数据
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", title, @"title" ,nil];
     NSString *url = [ConnectURL shareURL];
-    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", nil];
     [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         //发送通知
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refuseResult" object:responseObject];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"chooseTitle" object:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"连接服务器失败");
+    }];
+}
+
++(void)getAllChosenTitleByStu:(NSString *)name {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"GetChosenByStuServlet"];
+    //设置数据
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", nil];
+    NSString *url = [ConnectURL shareURL];
+    [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"gotAllChoisen" object:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"连接服务器失败");
+    }];
+}
+
++(void)deleteChosenTitleWithTitle:(NSString *)title andName:(NSString *)name {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"DeleteNameFromChosen"];
+    //设置数据
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", title, @"title", nil];
+    NSString *url = [ConnectURL shareURL];
+    [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"deleteChosen" object:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
         NSLog(@"连接服务器失败");

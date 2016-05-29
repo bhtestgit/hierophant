@@ -13,6 +13,7 @@
 #import "HierophentManager.h"
 #import "Hierophent.h"
 #import "ConnectURL.h"
+#import <RongIMKit/RongIMKit.h>
 
 @interface InformationViewController()<UITextViewDelegate> {
     UIButton *quiteB;
@@ -257,6 +258,7 @@
     [alertController addAction:[UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         //退出
         [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"userName"];
+        [[RCIM sharedRCIM] disconnect:YES];
         ViewController *mainView = [[ViewController alloc] init];
         mainView.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:mainView animated:YES completion:nil];

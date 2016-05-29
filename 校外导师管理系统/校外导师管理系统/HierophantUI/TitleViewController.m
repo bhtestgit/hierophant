@@ -12,6 +12,7 @@
 #import "Reachability.h"
 #import "GetTitlesByHieroId.h"
 #import <Masonry.h>
+#import "GetToken.h"
 
 @interface TitleViewController ()<UITableViewDelegate, UITableViewDataSource> {
     DataController *dataController;
@@ -43,6 +44,12 @@
     [_titleTableView setTableFooterView:[[UIView alloc] init]];
 //    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"导师申请"]];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    //连接融云connectViewRongyun
+    NSString *token = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    if (token) {
+        [[GetToken getToken] connectViewRongyun];
+    }
 }
 
 //出题界面

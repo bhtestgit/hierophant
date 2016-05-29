@@ -32,6 +32,7 @@
 		0C2659C21CF69E5E008A5470 /* ManageTitleTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C11CF69E5E008A5470 /* ManageTitleTableViewController.m */; };
 		0C2659C51CF69EB4008A5470 /* CommunicateTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C41CF69EB4008A5470 /* CommunicateTableViewController.m */; };
 		0C2659C81CF6AB56008A5470 /* HierophentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659C71CF6AB56008A5470 /* HierophentManager.m */; };
+		0C2659CB1CF86C64008A5470 /* TitleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C2659CA1CF86C64008A5470 /* TitleManager.m */; };
 		0C309EF71CF3F0050078F28F /* GetToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EF61CF3F0050078F28F /* GetToken.m */; };
 		0C309EFD1CF44E840078F28F /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EFC1CF44E840078F28F /* Reachability.m */; };
 		0C309F001CF460DB0078F28F /* GetTitlesByHieroId.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C309EFF1CF460DB0078F28F /* GetTitlesByHieroId.m */; };
@@ -40,6 +41,9 @@
 		0C863EAE1C8870B8004A2B48 /* Subject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C863EAD1C8870B8004A2B48 /* Subject.m */; };
 		0C863EB11C88722C004A2B48 /* InformationOfHierophant.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C863EB01C88722C004A2B48 /* InformationOfHierophant.m */; };
 		0C863EB41C8872AA004A2B48 /* PIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C863EB31C8872AA004A2B48 /* PIM.m */; };
+		0C9E69EC1CF9751100901EC8 /* StudentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9E69EB1CF9751100901EC8 /* StudentManager.m */; };
+		0C9E69EF1CFAC0A400901EC8 /* SelectedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9E69EE1CFAC0A400901EC8 /* SelectedView.m */; };
+		0C9E69F21CFAF9FE00901EC8 /* ChooseStuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9E69F11CFAF9FE00901EC8 /* ChooseStuController.m */; };
 		0CCC5A6F1CED583C00FAA7BB /* ConnectURL.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC5A6E1CED583C00FAA7BB /* ConnectURL.m */; };
 		0CD5627A1C8C5635004CFEBD /* DataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD562791C8C5635004CFEBD /* DataController.m */; };
 		0CE651181C86A25D00FF0645 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE651171C86A25D00FF0645 /* libsqlite3.0.tbd */; };
@@ -110,6 +114,8 @@
 		0C2659C41CF69EB4008A5470 /* CommunicateTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunicateTableViewController.m; path = "校外导师管理系统/StudentUI/CommunicateTableViewController.m"; sourceTree = SOURCE_ROOT; };
 		0C2659C61CF6AB56008A5470 /* HierophentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HierophentManager.h; sourceTree = "<group>"; };
 		0C2659C71CF6AB56008A5470 /* HierophentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HierophentManager.m; sourceTree = "<group>"; };
+		0C2659C91CF86C64008A5470 /* TitleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleManager.h; sourceTree = "<group>"; };
+		0C2659CA1CF86C64008A5470 /* TitleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleManager.m; sourceTree = "<group>"; };
 		0C309EF51CF3F0050078F28F /* GetToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetToken.h; sourceTree = "<group>"; };
 		0C309EF61CF3F0050078F28F /* GetToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetToken.m; sourceTree = "<group>"; };
 		0C309EFB1CF44E840078F28F /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -126,6 +132,12 @@
 		0C863EB01C88722C004A2B48 /* InformationOfHierophant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InformationOfHierophant.m; sourceTree = "<group>"; };
 		0C863EB21C8872AA004A2B48 /* PIM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PIM.h; sourceTree = "<group>"; };
 		0C863EB31C8872AA004A2B48 /* PIM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PIM.m; sourceTree = "<group>"; };
+		0C9E69EA1CF9751100901EC8 /* StudentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentManager.h; sourceTree = "<group>"; };
+		0C9E69EB1CF9751100901EC8 /* StudentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentManager.m; sourceTree = "<group>"; };
+		0C9E69ED1CFAC0A400901EC8 /* SelectedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectedView.h; sourceTree = "<group>"; };
+		0C9E69EE1CFAC0A400901EC8 /* SelectedView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectedView.m; sourceTree = "<group>"; };
+		0C9E69F01CFAF9FE00901EC8 /* ChooseStuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseStuController.h; sourceTree = "<group>"; };
+		0C9E69F11CFAF9FE00901EC8 /* ChooseStuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseStuController.m; sourceTree = "<group>"; };
 		0CCC5A6D1CED583C00FAA7BB /* ConnectURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectURL.h; sourceTree = "<group>"; };
 		0CCC5A6E1CED583C00FAA7BB /* ConnectURL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectURL.m; sourceTree = "<group>"; };
 		0CD562781C8C5635004CFEBD /* DataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataController.h; sourceTree = "<group>"; };
@@ -251,6 +263,8 @@
 				0C863EB01C88722C004A2B48 /* InformationOfHierophant.m */,
 				0C863EB21C8872AA004A2B48 /* PIM.h */,
 				0C863EB31C8872AA004A2B48 /* PIM.m */,
+				0C9E69ED1CFAC0A400901EC8 /* SelectedView.h */,
+				0C9E69EE1CFAC0A400901EC8 /* SelectedView.m */,
 			);
 			path = StudentUI;
 			sourceTree = "<group>";
@@ -274,6 +288,8 @@
 				0C141B0E1CB52905007E6F51 /* InformationViewController.m */,
 				0C141B101CBA7B73007E6F51 /* ExchangeTableViewController.h */,
 				0C141B111CBA7B73007E6F51 /* ExchangeTableViewController.m */,
+				0C9E69F01CFAF9FE00901EC8 /* ChooseStuController.h */,
+				0C9E69F11CFAF9FE00901EC8 /* ChooseStuController.m */,
 			);
 			path = HierophantUI;
 			sourceTree = "<group>";
@@ -307,6 +323,10 @@
 				0C309F021CF46AD90078F28F /* InsertTitleController.m */,
 				0C2659C61CF6AB56008A5470 /* HierophentManager.h */,
 				0C2659C71CF6AB56008A5470 /* HierophentManager.m */,
+				0C2659C91CF86C64008A5470 /* TitleManager.h */,
+				0C2659CA1CF86C64008A5470 /* TitleManager.m */,
+				0C9E69EA1CF9751100901EC8 /* StudentManager.h */,
+				0C9E69EB1CF9751100901EC8 /* StudentManager.m */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -470,6 +490,7 @@
 			files = (
 				0C863EB41C8872AA004A2B48 /* PIM.m in Sources */,
 				0C141B0C1CB528D3007E6F51 /* GradeViewController.m in Sources */,
+				0C9E69EF1CFAC0A400901EC8 /* SelectedView.m in Sources */,
 				0C2659BF1CF69E2F008A5470 /* ManageHieroTableViewController.m in Sources */,
 				0C098B1A1C7B1AA500ACBBB6 /* ViewController.m in Sources */,
 				0C863EB11C88722C004A2B48 /* InformationOfHierophant.m in Sources */,
@@ -481,6 +502,7 @@
 				0CD5627A1C8C5635004CFEBD /* DataController.m in Sources */,
 				0C141B121CBA7B73007E6F51 /* ExchangeTableViewController.m in Sources */,
 				0C309EFD1CF44E840078F28F /* Reachability.m in Sources */,
+				0C9E69EC1CF9751100901EC8 /* StudentManager.m in Sources */,
 				04BBEAB01CEC4FF400673CD8 /* Hierophent.m in Sources */,
 				0C863EAB1C886FBA004A2B48 /* Choose.m in Sources */,
 				0C098B171C7B1AA500ACBBB6 /* AppDelegate.m in Sources */,
@@ -489,10 +511,12 @@
 				04BBEAB31CEC500200673CD8 /* Title.m in Sources */,
 				04BBEAAD1CEC4FE100673CD8 /* Student.m in Sources */,
 				0C141B0F1CB52905007E6F51 /* InformationViewController.m in Sources */,
+				0C9E69F21CFAF9FE00901EC8 /* ChooseStuController.m in Sources */,
 				0C141AF71CB12D59007E6F51 /* TitleViewController.m in Sources */,
 				0C309EF71CF3F0050078F28F /* GetToken.m in Sources */,
 				0C098B311C7B5B9000ACBBB6 /* RegistView.m in Sources */,
 				0CE6511E1C86F0DE00FF0645 /* StudentViewController.m in Sources */,
+				0C2659CB1CF86C64008A5470 /* TitleManager.m in Sources */,
 				0C098B141C7B1AA500ACBBB6 /* main.m in Sources */,
 				0CCC5A6F1CED583C00FAA7BB /* ConnectURL.m in Sources */,
 				0C2659C21CF69E5E008A5470 /* ManageTitleTableViewController.m in Sources */,

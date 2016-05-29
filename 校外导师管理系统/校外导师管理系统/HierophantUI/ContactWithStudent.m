@@ -8,42 +8,27 @@
 
 #import "ContactWithStudent.h"
 #import <RongIMKit/RongIMKit.h>
-#import "GetToken.h"
 #import <Masonry.h>
-@interface ContactWithStudent() {
+#import "StudentManager.h"
+#import "ChooseStuController.h"
+@interface ContactWithStudent()<UITableViewDelegate, UITableViewDataSource> {
     UIButton *connectWithDean;
+    UIView *bottomView;
+    NSMutableArray *names;
 }
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UILabel *stu1L;
-@property (weak, nonatomic) IBOutlet UILabel *stu2L;
-@property (weak, nonatomic) IBOutlet UILabel *stu3L;
-@property (weak, nonatomic) IBOutlet UIButton *contact1;
-@property (weak, nonatomic) IBOutlet UIButton *contact2;
-@property (weak, nonatomic) IBOutlet UIButton *contact3;
-@property (weak, nonatomic) IBOutlet UILabel *s1ID;
-@property (weak, nonatomic) IBOutlet UILabel *s2ID;
-@property (weak, nonatomic) IBOutlet UILabel *s3ID;
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @end
 
 @implementation ContactWithStudent
 
 -(void)viewDidLoad {
-//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"交流界面"]];
-    _scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 600);
+    names = [NSMutableArray array];
     
-    _stu1L.layer.cornerRadius = 5.0;
-    _stu1L.layer.masksToBounds = YES;
-    _stu2L.layer.cornerRadius = 5.0;
-    _stu2L.layer.masksToBounds = YES;
-    _stu3L.layer.cornerRadius = 5.0;
-    _stu3L.layer.masksToBounds = YES;
-    _contact1.layer.cornerRadius = 5.0;
-    _contact1.layer.masksToBounds = YES;
-    _contact2.layer.cornerRadius = 5.0;
-    _contact2.layer.masksToBounds = YES;
-    _contact3.layer.cornerRadius = 5.0;
-    _contact3.layer.masksToBounds = YES;
+    _tableview.delegate = self;
+    _tableview.dataSource = self;
+    bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 60)];
+    
     //教务按钮
     connectWithDean = [[UIButton alloc] init];
     [connectWithDean setTitle:@"联系教务" forState:UIControlStateNormal];
@@ -51,34 +36,17 @@
     connectWithDean.layer.masksToBounds = YES;
     connectWithDean.backgroundColor = [UIColor orangeColor];
     [connectWithDean addTarget:self action:@selector(connectDean:) forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:connectWithDean];
+    
+    [_tableview addSubview:connectWithDean];
+    [_tableview setTableFooterView:bottomView];
     
     [connectWithDean mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_s3ID.mas_bottom).offset(80);
-        make.centerX.offset(0);
+        make.center.offset(0);
     }];
-    
-    //连接融云connectViewRongyun
-    NSString *token = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
-    if (token) {
-        [[GetToken getToken] connectViewRongyun];
-    }
 }
 
-- (IBAction)connectS1:(UIButton *)sender {
-    NSString *sid = _s1ID.text;
-    [self initChatViewWithSid:sid];
-}
-- (IBAction)connectS2:(UIButton *)sender {
-    NSString *sid = _s2ID.text;
-    [self initChatViewWithSid:sid];
-}
-- (IBAction)connectS3:(UIButton *)sender {
-    NSString *sid = _s3ID.text;
-    [self initChatViewWithSid:sid];
-}
 - (void)connectDean:(UIButton *)sender {
-    NSString *dID = @"deanOfHierophant";
+    NSString *dID = @"HierophantManager";
     [self initChatViewWithSid:dID];
 }
 
@@ -90,14 +58,114 @@
     //设置会话的目标会话ID。（单聊、客服、公众服务会话为对方的ID，讨论组、群聊、聊天室为会话的ID）
     chat.targetId = sid;
     //设置聊天会话界面要显示的标题
-    chat.title = [NSString stringWithFormat:@"正在和%@交流", sid];
+    if ([sid isEqualToString:@"HierophantManager"]) {
+        chat.title = @"正在和教务交流";
+    } else {
+        chat.title = [NSString stringWithFormat:@"正在和%@交流", sid];
+    }
     //显示聊天会话界面
     chat.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:chat animated:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    //判断学生是否有学生
+    [self load];
+}
+
+-(void)load {
+    //获取导师名字
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    //获取学生数据
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmData:) name:@"gotStuAndTitle" object:nil];
+    [StudentManager getStuAndTitleByHiero:name];
+}
+
+-(void)confirmData:(NSNotification *)notice {
+    //获取全部数据
+    NSArray *data = [notice.object objectForKey:@"result"];
+    //筛选出有学生名字的数据
+    names = [NSMutableArray array];
+    for (NSArray *oneData in data) {
+        NSString *stu = [oneData objectAtIndex:0];
+        if (![stu isEqualToString:@""]) {
+            //设置数据
+            [names addObject:oneData];
+        }
+    }
+    //刷新表格
+    [_tableview reloadData];
+    //移除监听
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotStuAndTitle" object:nil];
+}
+
+#pragma mark - Table view data source
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return @"联系学生";
+    } else {
+        return @"选择学生";
+    }
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        if (names.count == 0) {
+            return 1;
+        } else {
+            return names.count;
+        }
+    } else {
+        return 1;
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 1) {
+        return 60.0;
+    } else {
+        return 44;
+    }
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+    if (indexPath.section == 0) {
+        if (names.count == 0) {
+            cell.textLabel.text = @"没有辅导学生";
+        } else {
+            cell.textLabel.text = [[names objectAtIndex:indexPath.row] objectAtIndex:0];
+            cell.detailTextLabel.text = [[names objectAtIndex:indexPath.row] objectAtIndex:1];
+        }
+    } else {
+        cell.textLabel.text = @"点击选择学生";
+    }
+    
+    return cell;
+}
+
+//点击
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0 && names.count != 0) {
+        //获取名字
+        NSString *name = [[names objectAtIndex:indexPath.row] objectAtIndex:0];
+        //跳转聊天界面
+        [self initChatViewWithSid:name];
+    } else if (indexPath.section == 1) {
+        //跳转选择学生界面
+        ChooseStuController *chooseView = [[ChooseStuController alloc] init];
+        chooseView.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:chooseView animated:YES];
+    }
+    
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 
 @end

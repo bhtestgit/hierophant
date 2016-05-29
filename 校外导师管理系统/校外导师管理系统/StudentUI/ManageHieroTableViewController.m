@@ -9,9 +9,11 @@
 #import "ManageHieroTableViewController.h"
 #import "HierophentManager.h"
 #import "InformationViewController.h"
+#import "GetToken.h"
 
 @interface ManageHieroTableViewController ()<UITableViewDelegate, UITableViewDataSource> {
     NSMutableArray *names;  //所有名字
+    NSMutableArray *hieroNames; //所有确定导师
     InformationViewController *subview;
 }
 
@@ -25,7 +27,15 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     names = [NSMutableArray array];
+    hieroNames = [NSMutableArray array];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    //连接融云connectViewRongyun
+    NSString *token = [[NSUserDefaults standardUserDefaults] stringForKey:@"token"];
+    if (token) {
+        [[GetToken getToken] connectViewRongyun];
+    }
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -35,15 +45,30 @@
 //加载数据
 -(void)reload {
     //添加监听
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setHieroName:) name:@"gotHieros" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setInterHieroName:) name:@"gotHieros" object:nil];
     [HierophentManager getAllInterHiero];
+    //添加监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setHieroName:) name:@"gotNames" object:nil];
+    [HierophentManager getAllHiero];
+}
+
+-(void)setInterHieroName:(NSNotification *)notice {
+    NSDictionary *allName = notice.object;
+    names = [allName objectForKey:@"names"];
+    //刷新
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self.tableView reloadData];
+//    });
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotHieros" object:nil];
 }
 
 -(void)setHieroName:(NSNotification *)notice {
     NSDictionary *allName = notice.object;
-    names = [allName objectForKey:@"names"];
-    [self.tableView reloadData];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotHieros" object:nil];
+    hieroNames = [allName objectForKey:@"names"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotNames" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,11 +79,27 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return @"应聘者";
+            break;
+            
+        default:
+            return @"导师";
+            break;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return names.count;
+    if (section == 0) {
+        return names.count;
+    } else {
+        return hieroNames.count;
+    }
 }
 
 
@@ -69,21 +110,32 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.text = [names objectAtIndex:indexPath.row];
+    switch (indexPath.section) {
+        case 0:
+            cell.textLabel.text = [names objectAtIndex:indexPath.row];
+            break;
+            
+        default:
+            cell.textLabel.text = [hieroNames objectAtIndex:indexPath.row];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            break;
+    }
     
     return cell;
 }
 
 //点击cell
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //跳转到详情界面
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
-    NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-    [subview setButtonByManagerWithName:name];
-    subview.hidesBottomBarWhenPushed = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configResult:) name:@"configResult" object:nil];
-    [self.navigationController pushViewController:subview animated:YES];
+    if (indexPath.section == 0) {
+        //跳转到详情界面
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
+        NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+        [subview setButtonByManagerWithName:name];
+        subview.hidesBottomBarWhenPushed = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configResult:) name:@"configResult" object:nil];
+        [self.navigationController pushViewController:subview animated:YES];
+    }
 }
 
 -(void)configResult:(NSNotification *)notice {

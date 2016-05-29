@@ -8,7 +8,6 @@
         <!--导师申请-->
         <scene sceneID="0U5-c9-RPM">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hDA-vH-fKo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController storyboardIdentifier="hieroManager" title="导师申请" id="Kl4-TL-B9u" customClass="ManageHieroTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="mmd-I4-3I9">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -30,10 +29,8 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="申请审核" id="bEI-MF-k1W"/>
-                    <connections>
-                        <outlet property="tableView" destination="mmd-I4-3I9" id="7L3-KT-SfH"/>
-                    </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hDA-vH-fKo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1644" y="-456"/>
         </scene>

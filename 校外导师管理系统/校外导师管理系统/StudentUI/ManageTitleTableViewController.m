@@ -7,8 +7,12 @@
 //
 
 #import "ManageTitleTableViewController.h"
+#import "TitleManager.h"
 
-@interface ManageTitleTableViewController ()
+@interface ManageTitleTableViewController ()<UITableViewDelegate,UITableViewDataSource> {
+    NSMutableArray *interTitles; //缓存题目
+    NSMutableArray *titles; //正式题目
+}
 
 @end
 
@@ -17,39 +21,130 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    interTitles = [NSMutableArray array];
+    titles = [NSMutableArray array];
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+-(void)viewWillAppear:(BOOL)animated {
+    [self reload];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    interTitles = [NSMutableArray array];
+    titles = [NSMutableArray array];
+}
+
+//加载数据
+-(void)reload {
+    //添加监听
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCellData:) name:@"gotTitles" object:nil];
+    [TitleManager getAllTitle];
+}
+
+-(void)setCellData:(NSNotification *)notice {
+    NSDictionary *allTitles = [notice object];
+    interTitles = [allTitles objectForKey:@"interlayerTitles"];
+    titles = [allTitles objectForKey:@"titles"];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotTitles" object:nil];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 2;
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return @"未审核";
+            break;
+            
+        default:
+            return @"已通过";
+            break;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    switch (section) {
+        case 0:
+            return interTitles.count;
+            break;
+            
+        default:
+            return titles.count;
+            break;
+    }
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    }
+        switch (indexPath.section) {
+            case 0:
+                cell.textLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:0];
+                cell.detailTextLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:1];
+                break;
+                
+            default:
+                cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:0];
+                cell.detailTextLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:1];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                break;
+        }
     
     return cell;
 }
-*/
+
+//点击
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == 0) {
+        //创建通知
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否通过" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"通过" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //获取题目名字
+            NSString *title = [[interTitles objectAtIndex:indexPath.section] objectAtIndex:0];
+            //连接服务器
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmTitle" object:nil];
+            [TitleManager confirmTitleWithName:title];
+            
+        }]];
+        __weak typeof(self) weakSelf = self;
+        [alert addAction:[UIAlertAction actionWithTitle:@"联系导师" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            //获取导师名字
+            NSString *name = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:2];
+            //跳转联系导师界面
+            [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"connetHiero"];
+            weakSelf.tabBarController.selectedIndex = 3;
+            
+        }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+-(void)confirmResult:(NSNotification *)notice {
+     NSInteger r = [[notice.object objectForKey:@"result"] integerValue];
+    if (r == 0) {
+        //出题失败
+        [self addAlertWithTitle:@"服务器出题失败" andDetail:nil];
+    } else {
+        [self addAlertWithTitle:@"出题发布成功" andDetail:nil];
+        //刷新
+        [self reload];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"confirmTitle" object:nil];
+}
 
 /*
 // Override to support conditional editing of the table view.
@@ -94,5 +189,12 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+//通知
+-(void)addAlertWithTitle:(NSString *)titleA andDetail:(NSString *)detailA {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleA message:detailA preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 @end

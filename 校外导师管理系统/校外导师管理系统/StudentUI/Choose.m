@@ -8,16 +8,16 @@
 
 #import "Choose.h"
 #import "DataController.h"
-#define SCREAN_WIDTH CGRectGetMaxX(self.view.frame)
-#define SCREAN_HIGHT CGRectGetMaxY(self.view.frame)
+#import "TitleManager.h"
+#import <Masonry.h>
+#import "SelectedView.h"
 
 @interface Choose()<UITableViewDelegate, UITableViewDataSource>{
+    NSMutableArray *datas; //总数据
+    UITableView *mainView;
 }
 
-//题目数据
-@property(nonatomic)NSMutableDictionary *datas;
-@property(nonatomic)NSMutableArray *dataArray;
-@property(nonatomic)UIView* headerView;
+@property (nonatomic)UIButton *showTitles;
 
 @end
 
@@ -26,103 +26,145 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     
-    [self initializeAppearance];
+    mainView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height-120)];
+    mainView.delegate = self;
+    mainView.dataSource = self;
+    [self.view addSubview:mainView];
+    
+    _showTitles = [[UIButton alloc] init];
+    _showTitles.backgroundColor = [UIColor orangeColor];
+    _showTitles.layer.cornerRadius = 25.0;
+    _showTitles.layer.masksToBounds = YES;
+    [_showTitles setTitle:@"查看所选题目" forState:UIControlStateNormal];
+    [_showTitles addTarget:self action:@selector(showSelected) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_showTitles];
+    
+    [_showTitles mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake([UIScreen mainScreen].bounds.size.width-20, 50));
+        make.centerX.offset(0);
+        make.bottom.offset(-60);
+    }];
+    
+    datas = [NSMutableArray array];
 }
 
--(void)initializeAppearance{
-    [super initializeAppearance];
-    //判断导师是否发布题目
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isReleaseSubject"]) {
-        //tableView
-//        [self initDataSource];
-        UITableView *_table = [[UITableView alloc] initWithFrame:CGRectMake(0, 28, SCREAN_WIDTH, SCREAN_HIGHT) style:UITableViewStyleGrouped];
-        _table.dataSource = self;
-        _table.delegate = self;
-//        _table.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"选择题目"]];
-        
-        [self.view addSubview:_table];
-    } else {
-        //提示没有发布表
-        UILabel *hint = [[UILabel alloc] init];
-        hint.center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-        hint.bounds = CGRectMake(0, 0, 160, 37);
-        hint.layer.cornerRadius = 10;
-        hint.layer.masksToBounds = YES;
-        hint.backgroundColor = [UIColor yellowColor];
-        hint.textColor = [UIColor redColor];
-        hint.text = @"导师没有发布题目!";
-        [self.view addSubview:hint];
+//跳转显示所有界面
+-(void)showSelected {
+    UIStoryboard *main =[UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    SelectedView *selectedView = [main instantiateViewControllerWithIdentifier:@"showSelected"];
+    selectedView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:selectedView animated:YES];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [self reload];
+}
+
+-(void)viewDidDisappear:(BOOL)animated {
+    datas = [NSMutableArray array];
+}
+
+-(void)reload {
+    //获取数据
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTitleAndHiero:) name:@"gotTitlesAndHieros" object:nil];
+    [TitleManager getAllTitleAndHiero];
+}
+
+-(void)setTitleAndHiero:(NSNotification *)notice {
+    //判断是否被选
+    NSArray *r = [notice object];
+    for (int i = 0; i<r.count; i++) {
+        NSMutableArray *titleMessage = [NSMutableArray array];
+        for (NSMutableDictionary *oneData in [r objectAtIndex:i]) {
+            NSInteger isSelected = [[oneData objectForKey:@"selected"] integerValue];
+            if (isSelected == 0) {
+                [titleMessage addObject:oneData];
+            }
+        }
+        if (![titleMessage isEqualToArray:[NSArray array]]) {
+            [datas addObject:titleMessage];
+        }
     }
     
-
-}
-//初始化数据
--(void)initDataSource{
-    //创建数据管理对象
-    DataController *dataController = [[DataController alloc] init];
-    //获取数据
-    _datas = [NSMutableDictionary dictionaryWithDictionary:[dataController getAllSubject]];
-    
-    _dataArray = (NSMutableArray *)[[_datas allKeys] sortedArrayUsingSelector:@selector(compare:)];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotTitlesAndHieros" object:nil];
+    [mainView reloadData];
 }
 
 //分区数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    //为导师数量
-    if (_datas.count != 0) {
-        return _datas.count;
-    } else {
-        return 1;
-    }
+    return datas.count;
 }
 
 //每个分区的行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    //获取section的个数
-    int numberOfCell = 1;
-    //导师的题目数量
-    NSMutableString *title = [_dataArray objectAtIndex:section];
-    
-    if ([_datas objectForKey:title]!=NULL) {
-        return [[_datas objectForKey:title] count];
-    }
-    else {
-        return numberOfCell;
-    }
+    return [[datas objectAtIndex:section] count];
 }
 
-//标题
--(NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
-    if (_dataArray!=NULL) {
-        return _dataArray;
-    }
-    else{
-        return NULL;
-    }
+//设置高度
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 50.0;
 }
-//页脚
--(NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section{
-    NSMutableString *title = [_dataArray objectAtIndex:section];
-    return [NSString stringWithFormat:@"有%lu个题目",[[_datas objectForKey:title] count]];
+
+//标题：导师名字
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *hieroName = [[[datas objectAtIndex:section] objectAtIndex:0] objectForKey:@"hieroId"];
+    return [NSString stringWithFormat:@"导师：%@",hieroName];
 }
+
 //每个分区数据
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *indentifier = @"cells";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:indentifier];
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:indentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     //设置cell的内容
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
-    cell.textLabel.text = @"题目";
-    cell.detailTextLabel.text=@"详细数据";
+    NSString *title = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
+    NSString *detail = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"detail"];
+    
+    cell.textLabel.text = title;
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@",detail];
     
     return cell;
 }
 
 //选择课程
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    //获取题目名字和自己名字
+    NSString *title = [[tableView cellForRowAtIndexPath:indexPath] textLabel].text;
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    UIAlertController *chooceAlert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [chooceAlert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //发送数据
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseTitle:) name:@"chooseTitle" object:nil];
+        [TitleManager selectTitleWithName:name andTitle:title];
+        [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+    }]];
+    [chooceAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:chooceAlert animated:YES completion:nil];
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 
+-(void)chooseTitle:(NSNotification *)notice {
+    NSInteger result = [[notice.object objectForKey:@"result"] integerValue];
+    if (result == 0) {
+        [self addAlertWithTitle:@"选题失败" andDetails:@"题目已经被选"];
+    } else if (result == 1){
+        [self addAlertWithTitle:@"选题成功" andDetails:nil];
+    } else if (result == 2){
+        [self addAlertWithTitle:@"你已经选择" andDetails:@"已经选择改题"];
+    } else {
+        [self addAlertWithTitle:@"你已经选满" andDetails:@"选满3个题目"];
+    }
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"chooseTitle" object:nil];
+}
+
+
+-(void)addAlertWithTitle:(NSString *)title andDetails:(NSString *)detail {
+    UIAlertController *aler = [UIAlertController alertControllerWithTitle:title message:detail preferredStyle:UIAlertControllerStyleAlert];
+    [aler addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:aler animated:YES completion:nil];
+}
 @end
