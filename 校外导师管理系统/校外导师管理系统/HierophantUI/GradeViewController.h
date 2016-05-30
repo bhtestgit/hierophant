@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GradeViewController : UIViewController
+@interface GradeViewController : UITableViewController
 
 @end
