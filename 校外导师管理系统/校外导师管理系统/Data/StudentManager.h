@@ -16,4 +16,6 @@
 
 +(void)getAllInterlayerStuWithHieroId:(NSString *)name;
 
++(void)confirmStudentWithTitle:(NSString *)title andName:(NSString *)name;
+
 @end

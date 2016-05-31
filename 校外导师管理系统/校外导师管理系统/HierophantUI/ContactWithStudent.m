@@ -82,16 +82,8 @@
 
 -(void)confirmData:(NSNotification *)notice {
     //获取全部数据
-    NSArray *data = [notice.object objectForKey:@"result"];
+    names = [notice.object objectForKey:@"result"];
     //筛选出有学生名字的数据
-    names = [NSMutableArray array];
-    for (NSArray *oneData in data) {
-        NSString *stu = [oneData objectAtIndex:0];
-        if (![stu isEqualToString:@""]) {
-            //设置数据
-            [names addObject:oneData];
-        }
-    }
     //刷新表格
     [_tableview reloadData];
     //移除监听
@@ -142,7 +134,8 @@
             cell.textLabel.text = @"没有辅导学生";
         } else {
             cell.textLabel.text = [[names objectAtIndex:indexPath.row] objectAtIndex:0];
-            cell.detailTextLabel.text = [[names objectAtIndex:indexPath.row] objectAtIndex:1];
+            NSString *title = [[names objectAtIndex:indexPath.row] objectAtIndex:1];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"所选题目：%@", title];
         }
     } else {
         cell.textLabel.text = @"点击选择学生";

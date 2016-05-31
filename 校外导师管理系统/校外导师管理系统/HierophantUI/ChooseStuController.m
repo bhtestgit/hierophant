@@ -57,6 +57,10 @@
     return [NSString stringWithFormat:@"题目：%@", titleName];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 50;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -70,6 +74,44 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"学号：%@", number];
     
     return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //弹出窗口
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //获取学生姓名
+        NSMutableString *name = [NSMutableString stringWithString:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        [name deleteCharactersInRange:NSMakeRange(0, 3)];
+        //获取题目
+        NSString *title = [[[students objectAtIndex:indexPath.section] objectAtIndex:0] objectAtIndex:0];
+        //连接服务器
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmStudent" object:nil];
+        [StudentManager confirmStudentWithTitle:title andName:name];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"思考一下" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+}
+
+-(void)confirmResult:(NSNotification *)notice {
+    NSDictionary *result = [notice object];
+    NSInteger s = [[result objectForKey:@"result"] integerValue];
+    if (s == 1) {
+        [self addAlertWithTitle:@"选择成功" andDetail:nil];
+    } else {
+        [self addAlertWithTitle:@"服务器错误" andDetail:nil];
+    }
+    
+    [self reload];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"confirmStudent" object:nil];
+}
+
+//通知
+-(void)addAlertWithTitle:(NSString *)titleA andDetail:(NSString *)detailA {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleA message:detailA preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 /*
