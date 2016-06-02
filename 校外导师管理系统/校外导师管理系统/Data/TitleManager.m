@@ -116,4 +116,22 @@
     }];
 }
 
++(void)confirmScoreWithTitle:(NSString *)title andScore:(NSString *)score {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"ConfirmScoreServlet"];
+    //设置数据
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:score, @"score", title, @"title", nil];
+    NSString *url = [ConnectURL shareURL];
+    [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"scoreResult" object:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"连接服务器失败");
+    }];
+}
+
 @end
