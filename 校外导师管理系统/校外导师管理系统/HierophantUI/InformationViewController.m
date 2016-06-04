@@ -14,6 +14,7 @@
 #import "Hierophent.h"
 #import "ConnectURL.h"
 #import <RongIMKit/RongIMKit.h>
+#import "HierophantManager.h"
 
 @interface InformationViewController()<UITextViewDelegate> {
     UIButton *quiteB;
@@ -46,6 +47,7 @@
     _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 800);
     _change.layer.cornerRadius = 5.0;
     _change.layer.masksToBounds = YES;
+    [_change addTarget:self action:@selector(changeInfo) forControlEvents:UIControlEventTouchUpInside];
     
     _experience = [[UILabel alloc] init];
     _experience.text = @"工作经验";
@@ -170,14 +172,44 @@
     [self loadData];
 }
 
+//修改个人信息
+-(void)changeInfo {
+    //设置信息
+    Hierophent *h = [[Hierophent alloc] init];
+    h.name  = _account.text;
+    h.password = _password.text;
+    h.sex = _sex.text;
+    h.birthday = _birthday.text;
+    h.pft = _pft.text;
+    h.skills = _skills.text;
+    h.timeOfPft = _timeOfPft.text;
+    h.workUnit = _workUnit.text;
+    h.positions = _position.text;
+    h.phone = _phone.text;
+    h.email = _email.text;
+    h.experience = _experienceF.text;
+    //连接服务器
+    NSDictionary *data = h.toDictionary;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateResult:) name:@"updateResult" object:nil];
+    [HierophantManager updateHierophantWithData:data];
+}
+
+-(void)updateResult:(NSNotification *)notice {
+    NSInteger result = [[notice.object objectForKey:@"result"] integerValue];
+    if (result == 0) {
+        [self addAlertWithTitle:@"更新失败" andDetail:nil];
+    } else {
+        [self addAlertWithTitle:@"更新成功" andDetail:nil];
+    }
+    [self loadData];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"updateResult" object:nil];
+}
+
 -(void)viewDidLayoutSubviews {
     _scrollView.contentSize = CGSizeMake([[UIScreen mainScreen] bounds].size.width, 840);
 }
 
 -(void)loadData {
-    //获取数据
-//    _dataController = [[DataController alloc] init];
-//    NSMutableArray *informations = [NSMutableArray array];
     NSMutableString *name = (NSMutableString *)[[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     NSString *url;
     if ([name isEqualToString:@"HierophantManager"]) {
@@ -193,22 +225,40 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateInfo:) name:@"gotOneHiero" object:nil];
     
     [HierophentManager getInterHieroByName:name withUrl:url];
-//    informations = [_dataController getHierophantData:(NSMutableString *)name];
-//    _account.text = [informations objectAtIndex:0];
-//    _password.text = [informations objectAtIndex:1];
-//    _sex.text = [informations objectAtIndex:2];
-//    _birthday.text = [informations objectAtIndex:3];
-//    _pft.text = [informations objectAtIndex:4];
-//    _skills.text = [informations objectAtIndex:5];
-//    _timeOfPft.text = [informations objectAtIndex:6];
-//    _workUnit.text = [informations objectAtIndex:7];
-//    _position.text = [informations objectAtIndex:8];
-//    _phone.text = [(NSNumber *)[informations objectAtIndex:9] stringValue];
-//    _email.text = [informations objectAtIndex:10];
-//    _experienceF.text = [informations objectAtIndex:11];
 }
 
 -(void)updateInfo:(NSNotification *)notice {
+    NSDictionary *dic = notice.object;
+    if ([dic isEqualToDictionary:[NSDictionary dictionary]]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotOneHiero" object:nil];
+        //获取导师信息
+        [ConnectURL appendUrl:@"GetHieroByNameServlet"];
+        NSString *url = [ConnectURL shareURL];
+        NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"hieroId"];
+        //获取数据
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAgain:) name:@"gotOneHiero" object:nil];
+        
+        [HierophentManager getInterHieroByName:name withUrl:url];
+    } else {
+        Hierophent *hiero = [[Hierophent alloc] initWithDictionary:dic error:nil];
+        //设置信息
+        _account.text = hiero.name;
+        _password.text = hiero.password;
+        _sex.text = hiero.sex;
+        _birthday.text = hiero.birthday;
+        _pft.text = hiero.pft;
+        _skills.text = hiero.skills;
+        _timeOfPft.text = hiero.timeOfPft;
+        _workUnit.text = hiero.workUnit;
+        _position.text = hiero.positions;
+        _phone.text = hiero.phone;
+        _email.text = hiero.email;
+        _experienceF.text = hiero.experience;
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotOneHiero" object:nil];
+    }
+}
+
+-(void)updateAgain:(NSNotification *)notice {
     NSDictionary *dic = notice.object;
     Hierophent *hiero = [[Hierophent alloc] initWithDictionary:dic error:nil];
     //设置信息
@@ -224,6 +274,10 @@
     _phone.text = hiero.phone;
     _email.text = hiero.email;
     _experienceF.text = hiero.experience;
+    //隐藏按钮
+    agreeB.hidden = YES;
+    refuseB.hidden = YES;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotOneHiero" object:nil];
 }
 
 //管理员查看时
@@ -337,6 +391,13 @@
     [UIView setAnimationDuration:0.1];
     self.view.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [UIView commitAnimations];
+}
+
+//通知
+-(void)addAlertWithTitle:(NSString *)titleA andDetail:(NSString *)detailA {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleA message:detailA preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end

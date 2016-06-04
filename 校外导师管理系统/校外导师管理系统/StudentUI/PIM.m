@@ -132,6 +132,43 @@
 
 -(void)changePassword {
     //修改密码
+    __block NSString *password;
+    NSString *name = _nameD.text;
+    __weak typeof(self)weakSelf = self;
+    //弹出框
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否更改密码" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"输入新密码";
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (alert.textFields.firstObject.text != [NSString string]) {
+            password = alert.textFields.firstObject.text;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateResult:) name:@"UpdateResult" object:nil];
+            [StudentManager updateStuWithName:name andPassword:password];
+        } else {
+            [weakSelf addAlertWithTitle:@"不能为空" andDetail:nil];
+        }
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+    
+}
+
+-(void)updateResult:(NSNotification *)notice {
+    NSInteger s = [[notice.object objectForKey:@"result"] integerValue];
+    if (s == 0) {
+        [self addAlertWithTitle:@"更新失败" andDetail:nil];
+    } else {
+        [self addAlertWithTitle:@"更改成功" andDetail:nil];
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UpdateResult" object:nil];
+}
+
+//通知
+-(void)addAlertWithTitle:(NSString *)titleA andDetail:(NSString *)detailA {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:titleA message:detailA preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)dealloc {

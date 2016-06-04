@@ -56,9 +56,9 @@
     NSDictionary *allName = notice.object;
     names = [allName objectForKey:@"names"];
     //刷新
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        [self.tableView reloadData];
-//    });
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotHieros" object:nil];
 }
 

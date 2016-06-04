@@ -154,8 +154,10 @@
         [self addAlertWithTitle:@"选题成功" andDetails:nil];
     } else if (result == 2){
         [self addAlertWithTitle:@"你已经选择" andDetails:@"已经选择改题"];
-    } else {
+    } else if (result == 3) {
         [self addAlertWithTitle:@"你已经选满" andDetails:@"选满3个题目"];
+    }else {
+        [self addAlertWithTitle:@"你已经选题" andDetails:@"不需要选题"];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"chooseTitle" object:nil];

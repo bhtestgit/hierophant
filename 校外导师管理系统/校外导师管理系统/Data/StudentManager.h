@@ -18,4 +18,8 @@
 
 +(void)confirmStudentWithTitle:(NSString *)title andName:(NSString *)name;
 
++(void)updateStuWithName:(NSString *)name andPassword:(NSString *)password;
+
+
++(void)getAllStudentInTitle;
 @end

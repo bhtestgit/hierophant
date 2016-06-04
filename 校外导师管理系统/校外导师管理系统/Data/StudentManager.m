@@ -84,4 +84,40 @@
     }];
 }
 
++(void)updateStuWithName:(NSString *)name andPassword:(NSString *)password {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"UpdateStuServlet"];
+    NSString *url = [ConnectURL shareURL];
+    //设置数据
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:name, @"name", password ,@"password", nil];
+    [manager POST:url parameters:dic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateResult" object:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"连接服务器失败");
+    }];
+    
+}
+
++(void)getAllStudentInTitle {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    //获取url
+    [ConnectURL appendUrl:@"GetAllStuInTitle"];
+    NSString *url = [ConnectURL shareURL];
+    //设置数据
+    [manager GET:url parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        //发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"getAllStuInTitle" object:responseObject];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        NSLog(@"连接服务器失败");
+    }];
+}
+
 @end

@@ -23,4 +23,6 @@
 +(void)deleteChosenTitleWithTitle:(NSString *)title andName:(NSString *)name;
 +(void)confirmScoreWithTitle:(NSString *)title andScore:(NSString *)score;
 
++(void)getTitleByStu:(NSString *)name;
+
 @end

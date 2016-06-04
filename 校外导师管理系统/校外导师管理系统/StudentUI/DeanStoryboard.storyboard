@@ -83,7 +83,7 @@
         <!--信息查看-->
         <scene sceneID="P3d-Tf-MJJ">
             <objects>
-                <tableViewController title="信息查看" id="lSm-WX-q6f" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="infoVC" title="信息查看" id="lSm-WX-q6f" customClass="InfoTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="c1U-er-NXx">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

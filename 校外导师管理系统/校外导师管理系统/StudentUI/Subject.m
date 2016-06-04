@@ -7,12 +7,26 @@
 //
 
 #import "Subject.h"
+#import <Masonry.h>
+#import "TitleManager.h"
+#import "Title.h"
+
 #define SCREAN_WIDTH CGRectGetMaxX(self.view.frame)
 #define SCREAN_HIGHT CGRectGetMaxY(self.view.frame)
 #define CHOCOLATE_COLOR [UIColor colorWithRed:210/255.0 green:105/255.0 blue:30/255.0 alpha:1]
 #define CANARY_COLOR [UIColor colorWithRed:245/255.0 green:222/255.0 blue:179/255.0 alpha:1]
 #define GRASSGREEN_COLOR [UIColor colorWithRed:124/255.0 green:252/255.0 blue:0 alpha:1]
+@interface Subject()
+@property (nonatomic)UILabel *titleL;
+@property (nonatomic)UILabel *titleName;
 
+@property (nonatomic)UILabel *detail;
+@property (nonatomic)UITextView *detailName;
+
+@property (nonatomic)UILabel *scoreL;
+@property (nonatomic)UILabel *score;
+
+@end
 @implementation Subject
 
 -(void)viewDidLoad{
@@ -24,95 +38,103 @@
 -(void)initializeAppearance{
     [super initializeAppearance];
     
-    //添加滚动视图
-    UIScrollView* _scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREAN_WIDTH, SCREAN_HIGHT)];
-    _scrollView.contentSize = CGSizeMake(SCREAN_WIDTH, 700);
-//    _scrollView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"题目信息"]];
-    [self.view addSubview:_scrollView];
+    _titleL = [[UILabel alloc] init];
+    _titleL.text = @"题目名";
     
-    //选择题目标签
-    UILabel* _selectedtitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-40, 90, 80, 37)];
-    _selectedtitleLabel.backgroundColor = [UIColor colorWithRed:250/255.0 green:128/255.0 blue:114/255.0 alpha:1];
-    _selectedtitleLabel.text = @"本轮已选";
-    _selectedtitleLabel.textAlignment = NSTextAlignmentCenter;
-    _selectedtitleLabel.textColor = [UIColor whiteColor];
-    _selectedtitleLabel.layer.cornerRadius = 5.0;
-    _selectedtitleLabel.layer.masksToBounds = YES;
-    _selectedtitleLabel.layer.borderWidth = 1.0;
-    _selectedtitleLabel.layer.borderColor = [UIColor grayColor].CGColor;
-    [_scrollView addSubview:_selectedtitleLabel];
-    //第一题
-    UILabel* _firstTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-100, CGRectGetMaxY(_selectedtitleLabel.frame)+20, 200, 37)];
-    _firstTitle.backgroundColor = CANARY_COLOR;
-    _firstTitle.layer.cornerRadius = 5.0;
-    _firstTitle.layer.masksToBounds = YES;
-    _firstTitle.layer.borderWidth = 1.0;
-    _firstTitle.layer.borderColor = [UIColor orangeColor].CGColor;
-    _firstTitle.text = @"第一题";
-    _firstTitle.textColor = CHOCOLATE_COLOR;
-    [_scrollView addSubview:_firstTitle];
-    //第二题
-    UILabel* _secondTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-100, CGRectGetMaxY(_firstTitle.frame)+20, 200, 37)];
-    _secondTitle.backgroundColor = CANARY_COLOR;
-    _secondTitle.layer.cornerRadius = 5.0;
-    _secondTitle.layer.masksToBounds = YES;
-    _secondTitle.layer.borderWidth = 1.0;
-    _secondTitle.layer.borderColor = [UIColor orangeColor].CGColor;
-    _secondTitle.text = @"第二题";
-    _secondTitle.textColor = CHOCOLATE_COLOR;
-    [_scrollView addSubview:_secondTitle];
-    //第三题
-    UILabel* _lastTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-100, CGRectGetMaxY(_secondTitle.frame)+20, 200, 37)];
-    _lastTitle.backgroundColor = CANARY_COLOR;
-    _lastTitle.layer.cornerRadius = 5.0;
-    _lastTitle.layer.masksToBounds = YES;
-    _lastTitle.layer.borderWidth = 1.0;
-    _lastTitle.layer.borderColor = [UIColor orangeColor].CGColor;
-    _lastTitle.text = @"第三题";
-    _lastTitle.textColor = CHOCOLATE_COLOR;
-    [_scrollView addSubview:_lastTitle];
+    _titleName = [[UILabel alloc] init];
+    _titleName.backgroundColor = [UIColor lightGrayColor];
+    _titleName.textAlignment = NSTextAlignmentCenter;
     
-    //选择成功标签
-    UILabel* _determinedTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-40, CGRectGetMaxY(_lastTitle.frame)+40, 80, 37)];
-    _determinedTitle.backgroundColor = [UIColor colorWithRed:250/255.0 green:128/255.0 blue:114/255.0 alpha:1];
-    _determinedTitle.text = @"最终题目";
-    _determinedTitle.textAlignment = NSTextAlignmentCenter;
-    _determinedTitle.textColor = GRASSGREEN_COLOR;
-    _determinedTitle.layer.cornerRadius = 5.0;
-    _determinedTitle.layer.masksToBounds = YES;
-    _determinedTitle.layer.borderWidth = 1.0;
-    _determinedTitle.layer.borderColor = [UIColor grayColor].CGColor;
-    [_scrollView addSubview:_determinedTitle];
-    UILabel* _finalTitle = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-100, CGRectGetMaxY(_determinedTitle.frame)+20, 200, 37)];
-    _finalTitle.backgroundColor = CANARY_COLOR;
-    _finalTitle.layer.cornerRadius = 5.0;
-    _finalTitle.layer.masksToBounds = YES;
-    _finalTitle.layer.borderWidth = 1.0;
-    _finalTitle.layer.borderColor = [UIColor orangeColor].CGColor;
-    _finalTitle.text = @"最终题目";
-    _finalTitle.textColor = CHOCOLATE_COLOR;
-    [_scrollView addSubview:_finalTitle];
+    _detail = [[UILabel alloc] init];
+    _detail.text = @"题目描述";
+    _detailName = [[UITextView alloc] init];
+    _detailName.backgroundColor = [UIColor lightGrayColor];
+    _detailName.hidden = YES;
+    _detailName.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     
-    //导师信息标签
-    UILabel* _hieroLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREAN_WIDTH/2-40, CGRectGetMaxY(_finalTitle.frame)+40, 80, 37)];
-    _hieroLabel.backgroundColor = [UIColor orangeColor];
-    _hieroLabel.text = @"导师信息";
-    _hieroLabel.textAlignment = NSTextAlignmentCenter;
-    _hieroLabel.textColor = [UIColor redColor];
-    _hieroLabel.layer.cornerRadius = 5.0;
-    _hieroLabel.layer.masksToBounds = YES;
-    _hieroLabel.layer.borderWidth = 1.0;
-    _hieroLabel.layer.borderColor = [UIColor greenColor].CGColor;
-    [_scrollView addSubview:_hieroLabel];
-    //导师视图
-    UITextView* _hieroMsgView = [[UITextView alloc] initWithFrame:CGRectMake(16, CGRectGetMaxY(_hieroLabel.frame)+20, SCREAN_WIDTH-32, 100)];
-    _hieroMsgView.text = [NSString stringWithFormat:@"导师信息：\n姓名\n...\n...\n..."];
-    _hieroMsgView.editable = NO;
-    _hieroMsgView.layer.cornerRadius = 5.0;
-    _hieroMsgView.layer.masksToBounds = YES;
-    _hieroMsgView.layer.borderWidth = 1.0;
-    _hieroMsgView.layer.borderColor = CHOCOLATE_COLOR.CGColor;
-    [_scrollView addSubview:_hieroMsgView];
+    _scoreL = [[UILabel alloc] init];
+    _scoreL.text = @"成绩";
+    _scoreL.hidden = YES;
+    _score = [[UILabel alloc] init];
+    _score.hidden = YES;
+    _score.backgroundColor = [UIColor lightGrayColor];
+    _score.textAlignment = NSTextAlignmentCenter;
+    
+    [self.view addSubview:_titleL];
+    [self.view addSubview:_titleName];
+    [self.view addSubview:_detail];
+    [self.view addSubview:_detailName];
+    [self.view addSubview:_scoreL];
+    [self.view addSubview:_score];
+    
+    [_titleL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.offset(0);
+        make.top.offset(100);
+    }];
+    
+    [_titleName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_titleL.mas_bottom).offset(10);
+        make.left.offset(20);
+        make.right.offset(-20);
+        make.height.equalTo(@40);
+    }];
+    
+    [_detail mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_titleName.mas_bottom).offset(20);
+        make.centerX.offset(0);
+    }];
+    
+    [_detailName mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_detail.mas_bottom).offset(10);
+        make.left.offset(10);
+        make.right.offset(-10);
+        make.height.equalTo(@120);
+    }];
+    
+    [_scoreL mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_detailName.mas_bottom).offset(20);
+        make.centerX.offset(0);
+    }];
+    
+    [_score mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_scoreL.mas_bottom).offset(10);
+        make.centerX.offset(0);
+    }];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    //加载数据
+    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTitle:) name:@"gotFinalTitle" object:nil];
+    [TitleManager getTitleByStu:name];
+}
+
+-(void)setTitle:(NSNotification *)notice {
+    NSDictionary *data = notice.object;
+    if ([[data objectForKey:@"name"] isEqualToString:@""]) {
+        _titleL.text = @"没有选题";
+        _titleName.hidden = YES;
+        _detail.hidden = YES;
+        _detailName.hidden = YES;
+        _scoreL.hidden = YES;
+        _score.hidden = YES;
+    } else {
+        _titleL.text = @"题目名";
+        _titleName.text = [data objectForKey:@"name"];
+        _titleName.hidden = NO;
+        _detail.hidden = NO;
+        _detailName.text = [data objectForKey:@"detail"];
+        _detailName.hidden = NO;
+        _scoreL.hidden = NO;
+        _score.hidden = NO;
+        NSInteger score = [[data objectForKey:@"score"] integerValue];
+        if (score != 0) {
+            _score.text = [NSString stringWithFormat:@"%ld", (long)score];
+        } else {
+            _score.text = @"没有给定成绩";
+        }
+    }
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"gotFinalTitle" object:nil];
 }
 
 @end
