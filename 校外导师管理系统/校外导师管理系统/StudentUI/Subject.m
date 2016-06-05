@@ -39,14 +39,14 @@
     [super initializeAppearance];
     
     _titleL = [[UILabel alloc] init];
-    _titleL.text = @"题目名";
-    
     _titleName = [[UILabel alloc] init];
+    _titleName.hidden = YES;
     _titleName.backgroundColor = [UIColor lightGrayColor];
     _titleName.textAlignment = NSTextAlignmentCenter;
     
     _detail = [[UILabel alloc] init];
     _detail.text = @"题目描述";
+    _detail.hidden = YES;
     _detailName = [[UITextView alloc] init];
     _detailName.backgroundColor = [UIColor lightGrayColor];
     _detailName.hidden = YES;
@@ -111,7 +111,7 @@
 
 -(void)setTitle:(NSNotification *)notice {
     NSDictionary *data = notice.object;
-    if ([[data objectForKey:@"name"] isEqualToString:@""]) {
+    if (![data objectForKey:@"name"]) {
         _titleL.text = @"没有选题";
         _titleName.hidden = YES;
         _detail.hidden = YES;

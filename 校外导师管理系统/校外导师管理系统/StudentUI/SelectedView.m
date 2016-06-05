@@ -37,6 +37,7 @@
 }
 
 -(void)reload {
+    titles = [NSMutableArray array];
     //获取数据
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotAllChoisen:) name:@"gotAllChoisen" object:nil];
     NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
@@ -57,7 +58,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return titles.count;
+    if (titles.count == 0) {
+        return 1;
+    } else {
+      return titles.count;
+    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -73,8 +78,12 @@
     }
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     //设置cell的内容
-    NSString *title = [titles objectAtIndex:indexPath.row];
-    cell.textLabel.text = title;
+    if (titles.count == 0) {
+        cell.textLabel.text = @"没有选题";
+    } else {
+        NSString *title = [titles objectAtIndex:indexPath.row];
+        cell.textLabel.text = title;
+    }
     
     return cell;
 }
@@ -86,12 +95,14 @@
 
 //进入编辑模式，按下出现的编辑按钮后
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
-    //获取删除的名字
-    NSString *title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
-    //删除
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteResult:) name:@"deleteChosen" object:nil];
-    [TitleManager deleteChosenTitleWithTitle:title andName:name];
+    if (titles.count != 0) {
+        //获取删除的名字
+        NSString *title = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+        NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+        //删除
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deleteResult:) name:@"deleteChosen" object:nil];
+        [TitleManager deleteChosenTitleWithTitle:title andName:name];
+    }
 }
 
 -(void)deleteResult:(NSNotification *)notice {

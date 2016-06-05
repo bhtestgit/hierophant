@@ -50,6 +50,7 @@
 }
 
 -(void)reload {
+    names = [NSMutableArray array];
     //添加监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setHieroName:) name:@"gotNames" object:nil];
     [HierophentManager getAllHiero];
@@ -75,7 +76,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return names.count;
+    if (names.count == 0) {
+        return 1;
+    } else {
+      return names.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -85,16 +90,22 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.textLabel.text = [names objectAtIndex:indexPath.row];
+    if (names.count == 0) {
+        cell.textLabel.text = @"暂时没有导师";
+    } else {
+        cell.textLabel.text = [names objectAtIndex:indexPath.row];
+    }
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //获取老师名字
-    NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-    //建立聊天页面
-    [self startCommunicateWithTargetId:name];
+    if (names.count != 0) {
+        //获取老师名字
+        NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+        //建立聊天页面
+        [self startCommunicateWithTargetId:name];
+    }
 }
 
 -(void)startCommunicateWithTargetId:(NSString *)name {

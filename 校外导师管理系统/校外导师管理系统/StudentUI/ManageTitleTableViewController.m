@@ -32,14 +32,14 @@
     [self reload];
 }
 
--(void)viewWillDisappear:(BOOL)animated {
-    interTitles = [NSMutableArray array];
-    titles = [NSMutableArray array];
-}
 
 //加载数据
 -(void)reload {
+    interTitles = [NSMutableArray array];
+    titles = [NSMutableArray array];
     //添加监听
+    interTitles = [NSMutableArray array];
+    titles = [NSMutableArray array];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setCellData:) name:@"gotTitles" object:nil];
     [TitleManager getAllTitle];
 }
@@ -75,11 +75,20 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return interTitles.count;
+            if (interTitles.count == 0) {
+                return 1;
+            } else {
+                return interTitles.count;
+            }
             break;
             
         default:
-            return titles.count;
+            if (titles.count == 0) {
+                return 1;
+            } else {
+                return titles.count;
+            }
+            
             break;
     }
 }
@@ -93,13 +102,22 @@
     }
         switch (indexPath.section) {
             case 0:
-                cell.textLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:0];
-                cell.detailTextLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:1];
+                if (interTitles.count == 0) {
+                    cell.textLabel.text = @"没有需要审核题目";
+                    cell.detailTextLabel.text = nil;
+                } else {
+                    cell.textLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:0];
+                    cell.detailTextLabel.text = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:1];
+                }
                 break;
                 
             default:
-                cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:0];
-                cell.detailTextLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:1];
+                if (titles.count == 0) {
+                    cell.textLabel.text = @"没有通过题目";
+                } else {
+                    cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:0];
+                    cell.detailTextLabel.text = [[titles objectAtIndex:indexPath.row] objectAtIndex:1];
+                }
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 break;
         }
@@ -110,27 +128,30 @@
 //点击
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        //创建通知
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否通过" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"通过" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            //获取题目名字
-            NSString *title = [[interTitles objectAtIndex:indexPath.section] objectAtIndex:0];
-            //连接服务器
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmTitle" object:nil];
-            [TitleManager confirmTitleWithName:title];
-            
-        }]];
-        __weak typeof(self) weakSelf = self;
-        [alert addAction:[UIAlertAction actionWithTitle:@"联系导师" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            //获取导师名字
-            NSString *name = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:2];
-            //跳转联系导师界面
-            [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"connetHiero"];
-            weakSelf.tabBarController.selectedIndex = 3;
-            
-        }]];
-        [self presentViewController:alert animated:YES completion:nil];
+        if (interTitles.count != 0) {
+            //创建通知
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否通过" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            [alert addAction:[UIAlertAction actionWithTitle:@"通过" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //获取题目名字
+                NSString *title = [[interTitles objectAtIndex:indexPath.section] objectAtIndex:0];
+                //连接服务器
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmTitle" object:nil];
+                [TitleManager confirmTitleWithName:title];
+                
+            }]];
+            __weak typeof(self) weakSelf = self;
+            [alert addAction:[UIAlertAction actionWithTitle:@"联系导师" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                //获取导师名字
+                NSString *name = [[interTitles objectAtIndex:indexPath.row] objectAtIndex:2];
+                //跳转联系导师界面
+                [[NSUserDefaults standardUserDefaults] setObject:name forKey:@"connetHiero"];
+                weakSelf.tabBarController.selectedIndex = 3;
+                
+            }]];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
     }
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 
 -(void)confirmResult:(NSNotification *)notice {

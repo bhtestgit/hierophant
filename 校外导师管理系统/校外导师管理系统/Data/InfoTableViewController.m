@@ -40,6 +40,8 @@
 }
 
 -(void)reload {
+    hieroNames = [NSMutableArray array];
+    titles = [NSMutableArray array];
     //添加监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setHieroName:) name:@"gotNames" object:nil];
     [HierophentManager getAllHiero];
@@ -97,7 +99,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return hieroNames.count;
+        if (hieroNames.count == 0) {
+            return 1;
+        } else {
+            return hieroNames.count;
+        }
+    } else if (titles.count == 0) {
+        return 1;
     } else {
         return titles.count;
     }
@@ -112,11 +120,19 @@
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [hieroNames objectAtIndex:indexPath.row];
+            if (hieroNames.count == 0) {
+                cell.textLabel.text = @"暂时没有导师";
+            } else {
+                cell.textLabel.text = [hieroNames objectAtIndex:indexPath.row];
+            }
             break;
             
         default:
-            cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"studentId"];
+            if (titles.count == 0) {
+                cell.textLabel.text = @"好没有打成绩";
+            } else {
+                cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"studentId"];
+            }
             
             break;
     }
@@ -127,18 +143,21 @@
 //点击cell
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        //跳转到详情界面
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
-        NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-        [subview setButtonByManagerWithName:name];
-        subview.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:subview animated:YES];
-    } else {
-        NSInteger score = [[[titles objectAtIndex:indexPath.row] objectForKey:@"score"] integerValue];
-        NSString *s = [NSString stringWithFormat:@"%ld分", score];
-        [self addAlertWithTitle:@"成绩" andDetail:s];
-    }
+            if (hieroNames.count != 0) {
+            //跳转到详情界面
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
+            NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+            [subview setButtonByManagerWithName:name];
+            subview.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:subview animated:YES];
+        }
+    } else if (titles.count != 0) {
+            NSInteger score = [[[titles objectAtIndex:indexPath.row] objectForKey:@"score"] integerValue];
+            NSString *s = [NSString stringWithFormat:@"%ld分", score];
+            [self addAlertWithTitle:@"成绩" andDetail:s];
+        }
+    
     [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 

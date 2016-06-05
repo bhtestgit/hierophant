@@ -75,6 +75,8 @@
 //        [self setLocalData];
     }
     //获取数据
+    titles = [NSMutableArray array];
+    interlayers = [NSMutableArray array];
     NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     //添加监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTitles:) name:@"gotTitles" object:nil];
@@ -145,13 +147,17 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
+        if (interlayers.count == 0) {
+            return 1;
+        }
         return interlayers.count;
-    }
-    if (section == 1) {
-        return titles.count;
     } else {
-        return 0;
+        if (titles.count == 0) {
+            return 1;
+        }
+        return titles.count;
     }
+    
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -163,13 +169,23 @@
     //设置cell
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [[interlayers objectAtIndex:indexPath.row] objectForKey:@"name"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[interlayers objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            if (interlayers.count == 0) {
+                cell.textLabel.text = @"没有题目审核";
+                cell.detailTextLabel.text = nil;
+            } else {
+                cell.textLabel.text = [[interlayers objectAtIndex:indexPath.row] objectForKey:@"name"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[interlayers objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            }
+            
             break;
             
         case 1:
-            cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"name"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[titles objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            if (titles.count == 0) {
+                cell.textLabel.text = @"没有正式题目";
+            } else {
+                cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"name"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[titles objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            }
             break;
             
         default:

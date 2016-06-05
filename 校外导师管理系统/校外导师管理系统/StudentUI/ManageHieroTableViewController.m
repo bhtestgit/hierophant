@@ -44,6 +44,8 @@
 
 //加载数据
 -(void)reload {
+    names = [NSMutableArray array];
+    hieroNames = [NSMutableArray array];
     //添加监听
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setInterHieroName:) name:@"gotHieros" object:nil];
     [HierophentManager getAllInterHiero];
@@ -96,7 +98,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return names.count;
+        if (names.count == 0) {
+            return 1;
+        } else {
+            return names.count;
+        }
+    } else if (hieroNames.count == 0){
+        return 1;
     } else {
         return hieroNames.count;
     }
@@ -112,11 +120,19 @@
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [names objectAtIndex:indexPath.row];
+            if (names.count == 0) {
+                cell.textLabel.text = @"没有应聘者";
+            } else {
+                cell.textLabel.text = [names objectAtIndex:indexPath.row];
+            }
             break;
             
         default:
-            cell.textLabel.text = [hieroNames objectAtIndex:indexPath.row];
+            if (hieroNames.count == 0) {
+                cell.textLabel.text = @"没有导师";
+            } else {
+                cell.textLabel.text = [hieroNames objectAtIndex:indexPath.row];
+            }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             break;
     }
@@ -127,15 +143,18 @@
 //点击cell
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        //跳转到详情界面
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
-        NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-        [subview setButtonByManagerWithName:name];
-        subview.hidesBottomBarWhenPushed = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configResult:) name:@"configResult" object:nil];
-        [self.navigationController pushViewController:subview animated:YES];
+        if (names.count != 0) {
+            //跳转到详情界面
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            subview = [storyboard instantiateViewControllerWithIdentifier:@"HcommunicateView"];
+            NSString *name = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+            [subview setButtonByManagerWithName:name];
+            subview.hidesBottomBarWhenPushed = YES;
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(configResult:) name:@"configResult" object:nil];
+            [self.navigationController pushViewController:subview animated:YES];
+        }
     }
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 
 -(void)configResult:(NSNotification *)notice {

@@ -30,6 +30,7 @@
 }
 
 -(void)reload {
+    datas = [NSMutableArray array];
     //获取导师名字
     NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     //获取学生数据
@@ -71,6 +72,7 @@
     }
     if (datas.count == 0) {
         cell.textLabel.text = @"没有辅导学生";
+        cell.detailTextLabel.text = nil;
     } else {
         cell.textLabel.text = [[datas objectAtIndex:indexPath.row]objectAtIndex:0];
         NSString *title = [[datas objectAtIndex:indexPath.row] objectAtIndex:1];
@@ -82,27 +84,30 @@
 
 //点击
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //弹出窗口
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"给定成绩" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-        textField.placeholder = @"分数";
-        textField.keyboardType = UIKeyboardTypeNumberPad;
-    }];
-    __weak typeof(self)weakSelf = self;
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        //获取题目
-        NSString *title = [[datas objectAtIndex:indexPath.row] objectAtIndex:1];
-        NSString *score = alert.textFields.firstObject.text;
-        if ([score isEqualToString:@""]) {
-            [weakSelf addAlert:@"不能为空" message:@"请输入成绩"];
-        } else {
-            //连接服务器
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scoreResult:) name:@"scoreResult" object:nil];
-            [TitleManager confirmScoreWithTitle:title andScore:score];
-        }
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"思考一下" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    if (datas.count != 0) {
+        //弹出窗口
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"给定成绩" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+            textField.placeholder = @"分数";
+            textField.keyboardType = UIKeyboardTypeNumberPad;
+        }];
+        __weak typeof(self)weakSelf = self;
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //获取题目
+            NSString *title = [[datas objectAtIndex:indexPath.row] objectAtIndex:1];
+            NSString *score = alert.textFields.firstObject.text;
+            if ([score isEqualToString:@""]) {
+                [weakSelf addAlert:@"不能为空" message:@"请输入成绩"];
+            } else {
+                //连接服务器
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scoreResult:) name:@"scoreResult" object:nil];
+                [TitleManager confirmScoreWithTitle:title andScore:score];
+            }
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"思考一下" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
     [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 

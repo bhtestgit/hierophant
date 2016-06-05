@@ -132,6 +132,7 @@
     if (indexPath.section == 0) {
         if (names.count == 0) {
             cell.textLabel.text = @"没有辅导学生";
+            cell.detailTextLabel.text = nil;
         } else {
             cell.textLabel.text = [[names objectAtIndex:indexPath.row] objectAtIndex:0];
             NSString *title = [[names objectAtIndex:indexPath.row] objectAtIndex:1];

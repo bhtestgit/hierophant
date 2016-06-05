@@ -66,6 +66,7 @@
 }
 
 -(void)reload {
+    datas = [NSMutableArray array];
     //获取数据
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setTitleAndHiero:) name:@"gotTitlesAndHieros" object:nil];
     [TitleManager getAllTitleAndHiero];
@@ -93,12 +94,20 @@
 
 //分区数
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return datas.count;
+    if (datas.count == 0) {
+        return 1;
+    } else {
+      return datas.count;  
+    }
 }
 
 //每个分区的行数
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[datas objectAtIndex:section] count];
+    if (datas.count == 0) {
+        return 1;
+    } else {
+      return [[datas objectAtIndex:section] count];
+    }
 }
 
 //设置高度
@@ -108,8 +117,12 @@
 
 //标题：导师名字
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *hieroName = [[[datas objectAtIndex:section] objectAtIndex:0] objectForKey:@"hieroId"];
-    return [NSString stringWithFormat:@"导师：%@",hieroName];
+    if (datas.count == 0) {
+        return @"";
+    } else {
+        NSString *hieroName = [[[datas objectAtIndex:section] objectAtIndex:0] objectForKey:@"hieroId"];
+        return [NSString stringWithFormat:@"导师：%@",hieroName];
+    }
 }
 
 //每个分区数据
@@ -119,30 +132,38 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    //设置cell的内容
-    NSString *title = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
-    NSString *detail = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"detail"];
-    
-    cell.textLabel.text = title;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@",detail];
+    if (datas.count == 0) {
+        cell.textLabel.text = @"暂时没有题目";
+        cell.detailTextLabel.text = nil;
+    } else {
+        //设置cell的内容
+        NSString *title = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"name"];
+        NSString *detail = [[[datas objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectForKey:@"detail"];
+        
+        cell.textLabel.text = title;
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@",detail];
+    }
     
     return cell;
 }
 
 //选择课程
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //获取题目名字和自己名字
-    NSString *title = [[tableView cellForRowAtIndexPath:indexPath] textLabel].text;
-    NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
-    UIAlertController *chooceAlert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [chooceAlert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        //发送数据
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseTitle:) name:@"chooseTitle" object:nil];
-        [TitleManager selectTitleWithName:name andTitle:title];
-        [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
-    }]];
-    [chooceAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
-    [self presentViewController:chooceAlert animated:YES completion:nil];
+    if (datas.count != 0) {
+        //获取题目名字和自己名字
+        NSString *title = [[tableView cellForRowAtIndexPath:indexPath] textLabel].text;
+        NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
+        UIAlertController *chooceAlert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [chooceAlert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //发送数据
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(chooseTitle:) name:@"chooseTitle" object:nil];
+            [TitleManager selectTitleWithName:name andTitle:title];
+            [[tableView cellForRowAtIndexPath:indexPath] setSelected:NO];
+        }]];
+        [chooceAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:chooceAlert animated:YES completion:nil];
+    }
+    
     [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 

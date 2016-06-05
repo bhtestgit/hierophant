@@ -29,6 +29,7 @@
 }
 
 -(void)reload {
+    students = [NSMutableArray array];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setStudentData:) name:@"gotStudents" object:nil];
     NSString *hieroId = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     [StudentManager getAllInterlayerStuWithHieroId:hieroId];
@@ -43,16 +44,25 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (students.count == 0) {
+        return 1;
+    }
     return students.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (students.count == 0) {
+        return 1;
+    }
     
     return [[students objectAtIndex:section] count];
 }
 
 //设置标题，题目名
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (students.count == 0) {
+        return @"";
+    }
     NSString *titleName = [[[students objectAtIndex:section] objectAtIndex:0] objectAtIndex:0];
     return [NSString stringWithFormat:@"题目：%@", titleName];
 }
@@ -67,30 +77,38 @@
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
-    NSString *oneName = [[[students objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:1];
-    NSString *number = [[[students objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:2];
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"姓名：%@", oneName];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"学号：%@", number];
+    if (students.count == 0) {
+        cell.textLabel.text = @"没有学生选题";
+        cell.detailTextLabel.text = nil;
+    } else {
+        NSString *oneName = [[[students objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:1];
+        NSString *number = [[[students objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] objectAtIndex:2];
+        
+        cell.textLabel.text = [NSString stringWithFormat:@"姓名：%@", oneName];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"学号：%@", number];
+    }
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //弹出窗口
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        //获取学生姓名
-        NSMutableString *name = [NSMutableString stringWithString:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
-        [name deleteCharactersInRange:NSMakeRange(0, 3)];
-        //获取题目
-        NSString *title = [[[students objectAtIndex:indexPath.section] objectAtIndex:0] objectAtIndex:0];
-        //连接服务器
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmStudent" object:nil];
-        [StudentManager confirmStudentWithTitle:title andName:name];
-    }]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"思考一下" style:UIAlertActionStyleDefault handler:nil]];
-    [self presentViewController:alert animated:YES completion:nil];
+    if (students.count != 0) {
+        //弹出窗口
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"是否选择" message:nil preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            //获取学生姓名
+            NSMutableString *name = [NSMutableString stringWithString:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+            [name deleteCharactersInRange:NSMakeRange(0, 3)];
+            //获取题目
+            NSString *title = [[[students objectAtIndex:indexPath.section] objectAtIndex:0] objectAtIndex:0];
+            //连接服务器
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(confirmResult:) name:@"confirmStudent" object:nil];
+            [StudentManager confirmStudentWithTitle:title andName:name];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"思考一下" style:UIAlertActionStyleDefault handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
     [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 

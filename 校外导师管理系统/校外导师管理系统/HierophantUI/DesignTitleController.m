@@ -161,6 +161,8 @@
 
 //加载数据
 -(void)reloadData {
+    titles = [NSMutableArray array];
+    interlayers = [NSMutableArray array];
     //获取数据
     NSString *name = [[NSUserDefaults standardUserDefaults] stringForKey:@"userName"];
     //添加监听
@@ -228,12 +230,15 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
+        if (interlayers.count == 0) {
+            return 1;
+        }
         return interlayers.count;
-    }
-    if (section == 1) {
-        return titles.count;
     } else {
-        return 0;
+        if (titles.count == 0) {
+            return 1;
+        }
+        return titles.count;
     }
 }
 
@@ -246,14 +251,25 @@
     //设置cell
     switch (indexPath.section) {
         case 0:
-            cell.textLabel.text = [[interlayers objectAtIndex:indexPath.row] objectForKey:@"name"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[interlayers objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            if (interlayers.count == 0) {
+                cell.textLabel.text = @"没有设计题目";
+                cell.detailTextLabel.text = nil;
+            } else {
+                cell.textLabel.text = [[interlayers objectAtIndex:indexPath.row] objectForKey:@"name"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[interlayers objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+            }
+            
             break;
             
         case 1:
-            cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"name"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[titles objectAtIndex:indexPath.row] objectForKey:@"detail"]];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            if (titles.count == 0) {
+                cell.textLabel.text = @"没有题目通过";
+            } else {
+                cell.textLabel.text = [[titles objectAtIndex:indexPath.row] objectForKey:@"name"];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"描述：%@", [[titles objectAtIndex:indexPath.row] objectForKey:@"detail"]];
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            }
+            
             break;
             
         default:
@@ -276,38 +292,41 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        //弹出窗口
-        UIAlertController *insertAlert = [UIAlertController alertControllerWithTitle:@"修改" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [insertAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.placeholder = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-            //字数限制
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TextFieldIsNotNil:) name:UITextFieldTextDidChangeNotification object:textField];
-        }];
-        [insertAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
-            textField.placeholder = [tableView cellForRowAtIndexPath:indexPath].detailTextLabel.text;
-            //字数限制
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TextFieldIsNotNil:) name:UITextFieldTextDidChangeNotification object:textField];
-        }];
-        [insertAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-        }]];
-        [insertAlert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            //获取数据
-            oldTitle = (NSMutableString *)[tableView cellForRowAtIndexPath:indexPath].textLabel.text;
-            title = (NSMutableString *)insertAlert.textFields.firstObject.text;
-            detail = (NSMutableString *)insertAlert.textFields.lastObject.text;
-            InsertTitleController *updateController = [[InsertTitleController alloc] init];
-            //发送数据
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateResult:) name:@"updateResult" object:nil];
-            [updateController updateTitleInServletWithOldTitle:oldTitle andNewTitle:title andNewDetail:detail];
-            
-            [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
-        }]];
-        [self presentViewController:insertAlert animated:YES completion:nil];
-        //设置选中
-        [tableView cellForRowAtIndexPath:indexPath].selected = NO;
+    if (interlayers.count != 0) {
+        if (indexPath.section == 0) {
+            //弹出窗口
+            UIAlertController *insertAlert = [UIAlertController alertControllerWithTitle:@"修改" message:nil preferredStyle:UIAlertControllerStyleAlert];
+            [insertAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = [tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+                //字数限制
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TextFieldIsNotNil:) name:UITextFieldTextDidChangeNotification object:textField];
+            }];
+            [insertAlert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+                textField.placeholder = [tableView cellForRowAtIndexPath:indexPath].detailTextLabel.text;
+                //字数限制
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(TextFieldIsNotNil:) name:UITextFieldTextDidChangeNotification object:textField];
+            }];
+            [insertAlert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+            }]];
+            [insertAlert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //获取数据
+                oldTitle = (NSMutableString *)[tableView cellForRowAtIndexPath:indexPath].textLabel.text;
+                title = (NSMutableString *)insertAlert.textFields.firstObject.text;
+                detail = (NSMutableString *)insertAlert.textFields.lastObject.text;
+                InsertTitleController *updateController = [[InsertTitleController alloc] init];
+                //发送数据
+                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateResult:) name:@"updateResult" object:nil];
+                [updateController updateTitleInServletWithOldTitle:oldTitle andNewTitle:title andNewDetail:detail];
+                
+                [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nil];
+            }]];
+            [self presentViewController:insertAlert animated:YES completion:nil];
+        }
     }
+    
+    //设置选中
+    [tableView cellForRowAtIndexPath:indexPath].selected = NO;
 }
 
 //定义编辑样式

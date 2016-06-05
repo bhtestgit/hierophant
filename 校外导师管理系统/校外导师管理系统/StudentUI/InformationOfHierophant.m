@@ -36,7 +36,7 @@
     //添加联系按钮
     connect = [[UIButton alloc] init];
     connect.bounds = CGRectMake(0, 0, 60, 40);
-    connect.enabled = NO;
+    connect.hidden = YES;
     connect.layer.cornerRadius = 5;
     connect.layer.masksToBounds = YES;
     connect.backgroundColor = [UIColor redColor];
@@ -60,13 +60,14 @@
 }
 
 -(void)gotHiero:(NSNotification *)notice {
-    NSString *n = [[notice object] objectAtIndex:0];
-    if ([n isEqualToString:@""]) {
-        name.text = @"还没有选题成功";
+    if (notice.object == [NSArray array]) {
+        name.text = @"还没有选题";
     } else {
+        NSString *n = [[notice object] objectAtIndex:0];
         name.text = n;
-        connect.enabled = YES;
+        connect.hidden = NO;
     }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"goHiero" object:nil];
 }
 
