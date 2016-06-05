@@ -77,6 +77,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    
     //设置cell的内容
     if (titles.count == 0) {
         cell.textLabel.text = @"没有选题";
@@ -85,6 +86,7 @@
         cell.textLabel.text = title;
     }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

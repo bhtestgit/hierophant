@@ -43,14 +43,19 @@
     _titleName.hidden = YES;
     _titleName.backgroundColor = [UIColor lightGrayColor];
     _titleName.textAlignment = NSTextAlignmentCenter;
+    _titleName.layer.cornerRadius = 5.0;
+    _titleName.layer.masksToBounds = YES;
     
     _detail = [[UILabel alloc] init];
     _detail.text = @"题目描述";
     _detail.hidden = YES;
     _detailName = [[UITextView alloc] init];
+    _detailName.editable = NO;
     _detailName.backgroundColor = [UIColor lightGrayColor];
     _detailName.hidden = YES;
     _detailName.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    _detailName.layer.cornerRadius = 5.0;
+    _detailName.layer.masksToBounds = YES;
     
     _scoreL = [[UILabel alloc] init];
     _scoreL.text = @"成绩";
@@ -59,6 +64,8 @@
     _score.hidden = YES;
     _score.backgroundColor = [UIColor lightGrayColor];
     _score.textAlignment = NSTextAlignmentCenter;
+    _score.layer.cornerRadius = 5.0;
+    _score.layer.masksToBounds = YES;
     
     [self.view addSubview:_titleL];
     [self.view addSubview:_titleName];
